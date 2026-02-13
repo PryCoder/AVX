@@ -31,7 +31,7 @@ const ContactPage = () => {
     // Clear error when user starts typing
     if (error) setError('');
   };
-
+  const API = import.meta.env.VITE_API_URL;
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -39,7 +39,7 @@ const ContactPage = () => {
     
     try {
       const response = await axios.post(
-        'http://localhost:5005/api/contacts', 
+        `${API}/contacts`, 
         formData,
         { headers: { 'Content-Type': 'application/json' } }
       );

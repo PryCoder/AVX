@@ -278,7 +278,7 @@ const JoinUsPageContent = () => {
     return matchesSearch && matchesDepartment && matchesLocation && 
            matchesJobType && matchesRemote && matchesExperience;
   });
-
+  const API = import.meta.env.VITE_API_URL;
   const handleResumeUpload = (event) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -321,7 +321,7 @@ const JoinUsPageContent = () => {
     formData.append('resume', resumeFile);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/applications/job`, {
+      const response = await fetch(`${API}/applications/job`, {
         method: 'POST',
         body: formData,
       });
@@ -369,7 +369,7 @@ const JoinUsPageContent = () => {
     formData.append('resume', spontaneousResume);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/applications/spontaneous`, {
+      const response = await fetch(`${API}/applications/spontaneous`, {
         method: 'POST',
         body: formData,
       });

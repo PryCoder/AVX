@@ -204,7 +204,7 @@ const useToast = () => {
   return { showToast };
 };
 
-const API_BASE_URL = 'http://localhost:5005/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 // Mock job listings for filter
 const jobListings = [

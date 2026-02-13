@@ -85,8 +85,10 @@ import {
   AreaChart
 } from 'recharts';
 
-const API_BASE_URL = 'http://localhost:5005/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+console.log(import.meta.env);
 
+console.log(API_BASE_URL);
 // Contact API Service with router endpoints
 const contactAPI = {
   // GET /api/contacts - Get all contacts
