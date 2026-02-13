@@ -159,7 +159,7 @@ console.log(projects.id)
   }
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-stone-50 via-white to-stone-50 overflow-x-hidden">
+    <div className=" min-h-screen w-full bg-gradient-to-br from-stone-50 via-white to-stone-50 overflow-x-hidden">
       {/* Hero Section - Full Width */}
       <div className="relative w-full overflow-hidden pt-24 sm:pt-32 pb-16 sm:pb-24 px-4 sm:px-6 lg:px-8">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(0,0,0,0.02)_0%,transparent_50%)]"></div>
@@ -192,24 +192,24 @@ console.log(projects.id)
       </div>
 
       {/* Main Content - Full Width with Padding */}
-      <div className="w-full px-4 sm:px-6 lg:px-8 pb-16 sm:pb-24">
+      <div className="!text-white w-full px-4 sm:px-6 lg:px-8 pb-16 sm:pb-24">
         <div className="max-w-7xl mx-auto">
           {/* Filters Section */}
-          <div className="mb-8 sm:mb-12 space-y-4 sm:space-y-6">
+          <div className="!text-white mb-8 sm:mb-12 space-y-4 sm:space-y-6">
             <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab} className="w-full">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6">
                 <TabsList className="grid w-full sm:w-auto grid-cols-3 rounded-full bg-stone-100/80 p-1">
                   <TabsTrigger 
                     value="all" 
-                    className="rounded-full data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all duration-300 sfpro-font text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2"
+                    className="!text-white rounded-full data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all duration-300 sfpro-font text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2"
                   >
                     <Grid className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
-                    <span className="hidden xs:inline">All</span>
+                    <span className="!text-white hidden xs:inline">All</span>
                     <span className="xs:hidden">All</span>
                   </TabsTrigger>
                   <TabsTrigger 
                     value="featured" 
-                    className="rounded-full data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all duration-300 sfpro-font text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2"
+                    className="!text-white rounded-full data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all duration-300 sfpro-font text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2"
                   >
                     <Star className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
                     <span className="hidden xs:inline">Featured</span>
@@ -217,7 +217,7 @@ console.log(projects.id)
                   </TabsTrigger>
                   <TabsTrigger 
                     value="recent" 
-                    className="rounded-full data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all duration-300 sfpro-font text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2"
+                    className="!text-white rounded-full data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all duration-300 sfpro-font text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2"
                   >
                     <Clock className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
                     <span className="hidden xs:inline">Recent</span>
@@ -256,7 +256,7 @@ console.log(projects.id)
                     placeholder="Search projects..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-9 sm:pl-11 pr-10 sm:pr-12 py-4 sm:py-6 w-full text-xs sm:text-sm rounded-full border-stone-200 bg-white/80 backdrop-blur-sm focus:border-stone-300 focus:ring-0 transition-all duration-300 sfpro-font"
+                    className="text-black pl-9 sm:pl-11 pr-10 sm:pr-12 py-4 sm:py-6 w-full text-xs sm:text-sm rounded-full border-stone-200 bg-white/80 backdrop-blur-sm focus:border-stone-300 focus:ring-0 transition-all duration-300 sfpro-font"
                   />
                   {searchQuery && (
                     <Button

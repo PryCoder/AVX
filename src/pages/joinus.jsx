@@ -405,7 +405,7 @@ const JoinUsPageContent = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white sfpro-font">
+    <div className="mt-2 min-h-screen bg-white sfpro-font">
       {/* Subtle background pattern */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:32px_32px] opacity-20" />
@@ -460,13 +460,13 @@ const JoinUsPageContent = () => {
                     onClick={() => setShowFilters(!showFilters)}
                     className="flex items-center justify-center gap-2 px-4 sm:px-5 py-4 sm:py-5 rounded-full border-gray-200/70 bg-white/80 backdrop-blur-sm text-sm w-full xs:w-auto"
                   >
-                    <Filter className="w-4 h-4" />
-                    <span>Filters</span>
+                    <Filter className="!text-white w-4 h-4" />
+                    <span className="!text-white">Filters</span>
                     {showFilters && <X className="w-4 h-4 ml-1" />}
                   </Button>
                   
                   <Select value={selectedDepartment} onValueChange={setSelectedDepartment}>
-                    <SelectTrigger className="w-full xs:w-[140px] sm:w-[160px] py-4 sm:py-5 rounded-full border-gray-200/70 bg-white/80 backdrop-blur-sm text-sm">
+                    <SelectTrigger className="!text-white w-full xs:w-[140px] sm:w-[160px] py-4 sm:py-5 rounded-full border-gray-200/70 bg-white/80 backdrop-blur-sm text-sm">
                       <SelectValue placeholder="Department" />
                     </SelectTrigger>
                     <SelectContent>
@@ -480,7 +480,7 @@ const JoinUsPageContent = () => {
 
               {/* Filters Panel - Responsive Grid */}
               {showFilters && (
-                <Card className="mt-4 sm:mt-6 border-0 bg-gray-50/80 backdrop-blur-sm rounded-2xl">
+                <Card className="!text-white mt-4 sm:mt-6 border-0 bg-gray-50/80 backdrop-blur-sm rounded-2xl">
                   <CardContent className="p-4 sm:p-6">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                       <div className="space-y-2">
@@ -791,7 +791,7 @@ const JoinUsPageContent = () => {
                 
                 <Button 
                   onClick={() => setIsSpontaneousDialogOpen(true)}
-                  className="bg-white text-gray-900 hover:bg-gray-100 px-5 sm:px-6 py-4 sm:py-5 rounded-full text-xs sm:text-sm font-medium transition-all hover:scale-105"
+                  className="!text-white bg-white text-gray-900 hover:bg-gray-100 px-5 sm:px-6 py-4 sm:py-5 rounded-full text-xs sm:text-sm font-medium transition-all hover:scale-105"
                 >
                   Send your resume
                   <Mail className="w-3.5 h-3.5 sm:w-4 sm:h-4 ml-2" />

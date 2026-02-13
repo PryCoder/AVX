@@ -2,6 +2,7 @@ import Navbar from "../components/Navbar";
 import { Button } from "../components/ui/button";
 import logo from '../assets/test.png';
 import { ChevronDown } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Landingpage = () => {
    
@@ -50,12 +51,12 @@ const Landingpage = () => {
                 
                 {/* CTA Buttons */}
                 <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center">
-                  <Button 
+                 <Link to={'/contact'}> <Button 
                     size="lg" 
                     className="bg-black text-white hover:bg-black/90 font-medium text-sm sm:text-base h-12 sm:h-14 px-6 sm:px-10 rounded-none shadow-lg transform hover:scale-105 transition-all duration-300 w-full sm:w-auto"
                   >
                     Make an appointment
-                  </Button>
+                  </Button></Link>
                   
                   {/* 10+ Projects Badge */}
                   <div className="flex items-center gap-2 sm:gap-3 px-5 sm:px-6 py-2 sm:py-3 bg-black/[0.02] backdrop-blur-md border border-black/10 w-full sm:w-auto justify-center sm:justify-start">

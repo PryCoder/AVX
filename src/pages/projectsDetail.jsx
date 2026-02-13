@@ -458,7 +458,7 @@ const ProjectDetailPage = () => {
           <div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(circle_at_70%_70%,_#ffe8f0,_transparent_70%)] opacity-40"></div>
         </div>
 
-        <div className="relative w-full px-4 sm:px-6 lg:px-8">
+        <div className="text-white relative w-full px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col sm:flex-row justify-between items-center gap-6">
               <Button
@@ -473,7 +473,7 @@ const ProjectDetailPage = () => {
                 <ArrowLeft className="w-4 h-4 mr-3 group-hover:-translate-x-1 transition-transform" />
                 <div className="text-left">
                   <p className="sfpro-font text-xs text-gray-500 group-hover:text-gray-400 mb-1">Previous</p>
-                  <p className="clash-font font-bold group-hover:text-white">
+                  <p className="text-white clash-font font-bold group-hover:text-white">
                     {parseInt(id) > 1 ? projectsData.projects[parseInt(id) - 2]?.name : '—'}
                   </p>
                 </div>
@@ -493,12 +493,12 @@ const ProjectDetailPage = () => {
                   const nextId = parseInt(id) + 1;
                   if (nextId <= projectsData.projects.length) navigate(`/project/${nextId}`);
                 }}
-                className="group px-8 py-6 rounded-full hover:bg-gray-900 hover:text-white transition-all duration-300"
+                className="group px-30 py-30 rounded-full hover:bg-gray-900 hover:text-white transition-all duration-300"
                 disabled={parseInt(id) === projectsData.projects.length}
               >
                 <div className="text-right">
                   <p className="sfpro-font text-xs text-gray-500 group-hover:text-gray-400 mb-1">Next</p>
-                  <p className="clash-font font-bold group-hover:text-white">
+                  <p className=" text-white clash-font font-bold group-hover:text-white">
                     {parseInt(id) < projectsData.projects.length ? projectsData.projects[parseInt(id)]?.name : '—'}
                   </p>
                 </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
@@ -90,13 +90,13 @@ const ProjectsPage = () => {
 
         {/* Simple CTA */}
         <div className="flex justify-center mt-12">
-          <Button 
+         <Link to={'/projects'}> <Button 
             variant="outline"
-            className="sfpro-font font-medium border-gray-300 text-gray-900 hover:bg-gray-900 hover:text-white hover:border-gray-900 px-8 py-5 rounded-full text-sm font-medium transition-all duration-300"
+            className=" !text-white sfpro-font font-medium border-gray-300 text-gray-900 hover:bg-gray-900 hover:text-white hover:border-gray-900 px-8 py-5 rounded-full text-sm font-medium transition-all duration-300"
           >
             View all projects
             <ArrowUpRight className="w-3.5 h-3.5 ml-2" />
-          </Button>
+          </Button></Link>
         </div>
       </div>
     </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from "../components/ui/button";
+import { Link } from 'react-router-dom';
 
 const HowCanWeHelp = () => {
   return (
@@ -87,12 +88,12 @@ const HowCanWeHelp = () => {
           
           {/* CTA Button - Fully responsive */}
           <div className="flex justify-center mt-10 sm:mt-12 md:mt-16 lg:mt-20 px-4 sm:px-0">
-            <Button 
+           <Link to={'/contact'}><Button 
               size="lg" 
               className="sfpro-font font-medium bg-black text-white hover:bg-black/90 font-medium text-sm sm:text-base lg:text-lg h-12 sm:h-14 px-6 sm:px-8 lg:px-10 rounded-none shadow-lg hover:shadow-xl transition-all duration-300 w-full sm:w-auto font-sans"
             >
               Book a free appointment
-            </Button>
+            </Button></Link> 
           </div>
           
         </div>

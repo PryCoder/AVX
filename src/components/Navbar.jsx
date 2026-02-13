@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
+import { Link, useNavigate } from 'react-router-dom'; // Add useNavigate
 import logo from '../assets/avx.png';
 
 import { Button } from "../components/ui/button";
@@ -22,9 +23,9 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "../components/ui/dropdown-menu";
-import { Separator } from "../components/ui/separator";
 
 const Navbar = () => {
+  const navigate = useNavigate(); // Add navigate hook
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
@@ -58,6 +59,13 @@ const Navbar = () => {
     return () => window.removeEventListener("click", handleClickOutside);
   }, []);
 
+  // Navigation handlers
+  const handleNavigation = (path) => {
+    navigate(path);
+    setIsMobileMenuOpen(false);
+    setOpenDropdown(null);
+  };
+
   // Mobile Accordion Item with improved UX
   const MobileAccordionItem = ({ title, children }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -69,7 +77,7 @@ const Navbar = () => {
           className="w-full flex items-center justify-between py-4 px-4 sm:px-5 text-base font-medium hover:bg-accent/30 transition-colors"
           aria-expanded={isOpen}
         >
-          <span className="text-foreground font-sans">{title}</span>
+          <span className="text-white font-sans">{title}</span>
           <ChevronDown 
             className={`h-4 w-4 text-muted-foreground transition-transform duration-200 ${
               isOpen ? "rotate-180" : ""
@@ -115,7 +123,11 @@ const Navbar = () => {
             </h3>
             <ul className="space-y-1 font-sans">
               {["Web Development", "Mobile Applications", "UI/UX Design", "Cloud Solutions"].map((item) => (
-                <DropdownMenuItem key={item} className="cursor-pointer px-0 py-1 hover:bg-transparent focus:bg-transparent">
+                <DropdownMenuItem 
+                  key={item} 
+                  className="cursor-pointer px-0 py-1 hover:bg-transparent focus:bg-transparent"
+                  onClick={() => handleNavigation('/projects')}
+                >
                   <span className="text-xs sm:text-sm text-foreground/80 hover:text-primary transition-colors">
                     {item}
                   </span>
@@ -129,7 +141,11 @@ const Navbar = () => {
             </h3>
             <ul className="space-y-1 font-sans">
               {["Digital Strategy", "Technology Advisory", "Process Optimization", "Innovation Workshops"].map((item) => (
-                <DropdownMenuItem key={item} className="cursor-pointer px-0 py-1 hover:bg-transparent focus:bg-transparent">
+                <DropdownMenuItem 
+                  key={item} 
+                  className="cursor-pointer px-0 py-1 hover:bg-transparent focus:bg-transparent"
+                  onClick={() => handleNavigation('/projects')}
+                >
                   <span className="text-xs sm:text-sm text-foreground/80 hover:text-primary transition-colors">
                     {item}
                   </span>
@@ -140,10 +156,20 @@ const Navbar = () => {
         </div>
         <DropdownMenuSeparator className="my-3 sm:my-4" />
         <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-          <Button variant="default" size="sm" className="flex-1 text-white font-sans text-xs sm:text-sm h-8 sm:h-9">
+          <Button 
+            variant="default" 
+            size="sm" 
+            className="flex-1 text-white font-sans text-xs sm:text-sm h-8 sm:h-9"
+            onClick={() => handleNavigation('/projects')}
+          >
             Discover our work
           </Button>
-          <Button variant="outline" size="sm" className="flex-1 text-foreground font-sans text-xs sm:text-sm h-8 sm:h-9">
+          <Button 
+            variant="outline"
+            size="sm" 
+            className="flex-1 !text-white border-white hover:!text-white hover:border-white font-sans text-xs sm:text-sm h-8 sm:h-9"
+            onClick={() => handleNavigation('/contact')}
+          >
             Make an appointment
           </Button>
         </div>
@@ -181,7 +207,11 @@ const Navbar = () => {
             </h3>
             <ul className="space-y-1 font-sans">
               {["Blog", "Case Studies", "Whitepapers", "Webinars"].map((item) => (
-                <DropdownMenuItem key={item} className="cursor-pointer px-0 py-1 hover:bg-transparent focus:bg-transparent">
+                <DropdownMenuItem 
+                  key={item} 
+                  className="cursor-pointer px-0 py-1 hover:bg-transparent focus:bg-transparent"
+                  onClick={() => handleNavigation('/projects')}
+                >
                   <span className="text-xs sm:text-sm text-foreground/80 hover:text-primary transition-colors">
                     {item}
                   </span>
@@ -195,7 +225,11 @@ const Navbar = () => {
             </h3>
             <ul className="space-y-1 font-sans">
               {["ROI Calculator", "Tech Stack Guide", "Project Planner", "Assessment Tool"].map((item) => (
-                <DropdownMenuItem key={item} className="cursor-pointer px-0 py-1 hover:bg-transparent focus:bg-transparent">
+                <DropdownMenuItem 
+                  key={item} 
+                  className="cursor-pointer px-0 py-1 hover:bg-transparent focus:bg-transparent"
+                  onClick={() => handleNavigation('/projects')}
+                >
                   <span className="text-xs sm:text-sm text-foreground/80 hover:text-primary transition-colors">
                     {item}
                   </span>
@@ -209,7 +243,11 @@ const Navbar = () => {
             </h3>
             <ul className="space-y-1 font-sans">
               {["Documentation", "FAQs", "Community", "Help Center"].map((item) => (
-                <DropdownMenuItem key={item} className="cursor-pointer px-0 py-1 hover:bg-transparent focus:bg-transparent">
+                <DropdownMenuItem 
+                  key={item} 
+                  className="cursor-pointer px-0 py-1 hover:bg-transparent focus:bg-transparent"
+                  onClick={() => handleNavigation('/contact')}
+                >
                   <span className="text-xs sm:text-sm text-foreground/80 hover:text-primary transition-colors">
                     {item}
                   </span>
@@ -220,10 +258,20 @@ const Navbar = () => {
         </div>
         <DropdownMenuSeparator className="my-3 sm:my-4" />
         <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-          <Button variant="default" size="sm" className="flex-1 text-white font-sans text-xs sm:text-sm h-8 sm:h-9">
+          <Button 
+            variant="default" 
+            size="sm" 
+            className="flex-1 text-white font-sans text-xs sm:text-sm h-8 sm:h-9"
+            onClick={() => handleNavigation('/projects')}
+          >
             Discover our work
           </Button>
-          <Button variant="outline" size="sm" className="flex-1 text-foreground font-sans text-xs sm:text-sm h-8 sm:h-9">
+          <Button 
+            variant="outline"
+            size="sm" 
+            className="flex-1 !text-white border-white hover:!text-white hover:border-white font-sans text-xs sm:text-sm h-8 sm:h-9"
+            onClick={() => handleNavigation('/contact')}
+          >
             Make an appointment
           </Button>
         </div>
@@ -231,7 +279,7 @@ const Navbar = () => {
     </DropdownMenu>
   );
 
-  // Who We Are dropdown content - UPDATED with Team, About Us, Join Us
+  // Who We Are dropdown content
   const WhoWeAreDropdown = () => (
     <DropdownMenu 
       onOpenChange={(open) => setOpenDropdown(open ? "whoweare" : null)}
@@ -255,20 +303,11 @@ const Navbar = () => {
         onMouseLeave={() => setOpenDropdown(null)}
       >
         <div className="space-y-1">
-          {/* Team Link */}
-          <DropdownMenuItem className="cursor-pointer px-3 py-2.5 hover:bg-accent/50 focus:bg-accent/50 rounded-lg group">
-            <div className="flex flex-col">
-              <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors font-sans">
-                Team
-              </span>
-              <span className="text-xs text-muted-foreground/70 group-hover:text-muted-foreground transition-colors">
-                Meet our experts and leadership
-              </span>
-            </div>
-          </DropdownMenuItem>
-          
           {/* About Us Link */}
-          <DropdownMenuItem className="cursor-pointer px-3 py-2.5 hover:bg-accent/50 focus:bg-accent/50 rounded-lg group">
+          <DropdownMenuItem 
+            className="cursor-pointer px-3 py-2.5 hover:bg-accent/50 focus:bg-accent/50 rounded-lg group"
+            onClick={() => handleNavigation('/aboutus')}
+          >
             <div className="flex flex-col">
               <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors font-sans">
                 About Us
@@ -280,7 +319,10 @@ const Navbar = () => {
           </DropdownMenuItem>
           
           {/* Join Us Link */}
-          <DropdownMenuItem className="cursor-pointer px-3 py-2.5 hover:bg-accent/50 focus:bg-accent/50 rounded-lg group">
+          <DropdownMenuItem 
+            className="cursor-pointer px-3 py-2.5 hover:bg-accent/50 focus:bg-accent/50 rounded-lg group"
+            onClick={() => handleNavigation('/joinus')}
+          >
             <div className="flex flex-col">
               <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors font-sans">
                 Join Us
@@ -314,14 +356,14 @@ const Navbar = () => {
       `}
     >
       <div className="container mx-auto flex h-14 sm:h-16 items-center justify-between px-3 sm:px-4 md:px-6 lg:px-8">
-        {/* Logo/Brand */}
-        <div className="flex items-center gap-1.5 sm:gap-2">
+        {/* Logo/Brand - Link to homepage */}
+        <Link to="/" className="flex items-center gap-1.5 sm:gap-2">
           <img
             src={logo} 
             alt="Hero"
             className="h-25 w-auto object-contain" 
           />
-        </div>
+        </Link>
 
         {/* Desktop Navigation - Hidden on Tablet/Mobile */}
         <div className="hidden lg:flex items-center gap-1 xl:gap-4">
@@ -346,6 +388,7 @@ const Navbar = () => {
             variant="default" 
             size="sm" 
             className="sfpro-font font-medium bg-primary hover:bg-primary/90 text-white shadow-sm hover:shadow-md transition-all px-3 xl:px-5 h-8 xl:h-9 font-sans text-xs xl:text-sm"
+            onClick={() => handleNavigation('/projects')}
           >
             Discover
           </Button>
@@ -353,6 +396,7 @@ const Navbar = () => {
             variant="default"
             size="sm" 
             className="sfpro-font font-medium bg-primary hover:bg-primary/90 text-white shadow-sm hover:shadow-md transition-all px-3 xl:px-5 h-8 xl:h-9 font-sans text-xs xl:text-sm"
+            onClick={() => handleNavigation('/contact')}
           >
             Appointment
           </Button>
@@ -366,13 +410,15 @@ const Navbar = () => {
               variant="default" 
               size="sm" 
               className="sfpro-font font-medium bg-primary hover:bg-primary/90 text-white shadow-sm px-3 h-8 font-sans text-xs"
+              onClick={() => handleNavigation('/projects')}
             >
               Discover
             </Button>
             <Button 
-              variant="default"
+              variant="outline"
               size="sm" 
-              className="sfpro-font font-medium bg-primary hover:bg-primary/90 text-white shadow-sm px-3 h-8 font-sans text-xs"
+              className="flex-1 !text-white border-white hover:!text-white hover:border-white font-sans text-xs sm:text-sm h-8 sm:h-9"
+              onClick={() => handleNavigation('/contact')}
             >
               Appointment
             </Button>
@@ -380,16 +426,16 @@ const Navbar = () => {
           
           {/* Mobile Menu Button */}
           <Button
-            variant="ghost"
+            variant="default"
             size="icon"
             className="relative h-8 w-8 sm:h-9 sm:w-9 z-[101]"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle menu"
           >
             {isMobileMenuOpen ? (
-              <X className="h-4 w-4 sm:h-5 sm:w-5 transition-transform rotate-90 duration-300" />
+              <X className="h-4 w-4 sm:h-5 sm:w-5 !text-white transition-transform rotate-90 duration-300" />
             ) : (
-              <Menu className="h-4 w-4 sm:h-5 sm:w-5 transition-transform duration-300" />
+              <Menu className="h-4 w-4 sm:h-5 sm:w-5 !text-white transition-transform duration-300" />
             )}
           </Button>
         </div>
@@ -400,7 +446,7 @@ const Navbar = () => {
         <SheetContent side="right" className="w-full sm:w-[450px] md:w-[500px] p-0 bg-background border-l border-border/40 z-[200] overflow-y-auto">
           <SheetHeader className="p-4 sm:p-5 md:p-6 border-b border-border/40 bg-gradient-to-r from-primary/5 to-transparent sticky top-0 bg-background/95 backdrop-blur-sm z-[201]">
             <SheetTitle className="text-left text-xl sm:text-2xl md:text-2xl bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent font-bold font-serif">
-              anxvvion
+              <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>anxvvion</Link>
             </SheetTitle>
             <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5 sm:mt-1 font-sans">Innovate. Transform. Succeed.</p>
             <SheetClose className="absolute right-4 top-4 sm:right-5 sm:top-5 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
@@ -413,7 +459,7 @@ const Navbar = () => {
             {/* Mobile Navigation Links */}
             <div className="flex-1 py-1 sm:py-2">
               <MobileAccordionItem title="Services">
-                <div className="space-y-3 sm:space-y-4">
+                <div className="text-white space-y-3 sm:space-y-4">
                   <div>
                     <h4 className="text-[10px] sm:text-xs font-semibold text-foreground/80 uppercase tracking-wider mb-1.5 sm:mb-2 font-serif">
                       Digital Solutions
@@ -421,7 +467,10 @@ const Navbar = () => {
                     <ul className="space-y-0.5 sm:space-y-1 font-sans">
                       {["Web Development", "Mobile Applications", "UI/UX Design", "Cloud Solutions"].map((item) => (
                         <SheetClose asChild key={item}>
-                          <li className="text-xs sm:text-sm text-foreground/70 hover:text-primary transition-colors cursor-pointer py-1.5 sm:py-2 px-2 sm:px-2 hover:bg-accent/50 rounded-md">
+                          <li 
+                            className="text-xs sm:text-sm text-foreground/70 hover:text-primary transition-colors cursor-pointer py-1.5 sm:py-2 px-2 sm:px-2 hover:bg-accent/50 rounded-md"
+                            onClick={() => handleNavigation('/projects')}
+                          >
                             {item}
                           </li>
                         </SheetClose>
@@ -435,7 +484,10 @@ const Navbar = () => {
                     <ul className="space-y-0.5 sm:space-y-1 font-sans">
                       {["Digital Strategy", "Technology Advisory", "Process Optimization", "Innovation Workshops"].map((item) => (
                         <SheetClose asChild key={item}>
-                          <li className="text-xs sm:text-sm text-foreground/70 hover:text-primary transition-colors cursor-pointer py-1.5 sm:py-2 px-2 sm:px-2 hover:bg-accent/50 rounded-md">
+                          <li 
+                            className="text-xs sm:text-sm text-foreground/70 hover:text-primary transition-colors cursor-pointer py-1.5 sm:py-2 px-2 sm:px-2 hover:bg-accent/50 rounded-md"
+                            onClick={() => handleNavigation('/projects')}
+                          >
                             {item}
                           </li>
                         </SheetClose>
@@ -444,13 +496,23 @@ const Navbar = () => {
                   </div>
                   <div className="flex flex-col sm:flex-row gap-2 pt-2 sm:pt-3">
                     <SheetClose asChild>
-                      <Button size="sm" variant="default" className="flex-1 text-xs h-8 sm:h-9 text-white font-sans">
+                      <Button 
+                        size="sm" 
+                        variant="default" 
+                        className="flex-1 text-xs h-8 sm:h-9 text-white font-sans"
+                        onClick={() => handleNavigation('/projects')}
+                      >
                         Discover work
                       </Button>
                     </SheetClose>
                     <SheetClose asChild>
-                      <Button size="sm" variant="outline" className="flex-1 text-xs h-8 sm:h-9 text-foreground font-sans">
-                        Appointment
+                      <Button 
+                        variant="outline"
+                        size="sm" 
+                        className="flex-1 !text-white border-white hover:!text-white hover:border-white font-sans text-xs sm:text-sm h-8 sm:h-9"
+                        onClick={() => handleNavigation('/contact')}
+                      >
+                        Make an appointment
                       </Button>
                     </SheetClose>
                   </div>
@@ -458,7 +520,7 @@ const Navbar = () => {
               </MobileAccordionItem>
 
               <MobileAccordionItem title="Resources">
-                <div className="space-y-3 sm:space-y-4">
+                <div className="text-white space-y-3 sm:space-y-4">
                   <div>
                     <h4 className="text-[10px] sm:text-xs font-semibold text-foreground/80 uppercase tracking-wider mb-1.5 sm:mb-2 font-serif">
                       Learning
@@ -466,7 +528,10 @@ const Navbar = () => {
                     <ul className="space-y-0.5 sm:space-y-1 font-sans">
                       {["Blog", "Case Studies", "Whitepapers", "Webinars"].map((item) => (
                         <SheetClose asChild key={item}>
-                          <li className="text-xs sm:text-sm text-foreground/70 hover:text-primary transition-colors cursor-pointer py-1.5 sm:py-2 px-2 sm:px-2 hover:bg-accent/50 rounded-md">
+                          <li 
+                            className="text-xs sm:text-sm text-foreground/70 hover:text-primary transition-colors cursor-pointer py-1.5 sm:py-2 px-2 sm:px-2 hover:bg-accent/50 rounded-md"
+                            onClick={() => handleNavigation('/projects')}
+                          >
                             {item}
                           </li>
                         </SheetClose>
@@ -480,7 +545,10 @@ const Navbar = () => {
                     <ul className="space-y-0.5 sm:space-y-1 font-sans">
                       {["ROI Calculator", "Tech Stack Guide", "Project Planner", "Assessment Tool"].map((item) => (
                         <SheetClose asChild key={item}>
-                          <li className="text-xs sm:text-sm text-foreground/70 hover:text-primary transition-colors cursor-pointer py-1.5 sm:py-2 px-2 sm:px-2 hover:bg-accent/50 rounded-md">
+                          <li 
+                            className="text-xs sm:text-sm text-foreground/70 hover:text-primary transition-colors cursor-pointer py-1.5 sm:py-2 px-2 sm:px-2 hover:bg-accent/50 rounded-md"
+                            onClick={() => handleNavigation('/projects')}
+                          >
                             {item}
                           </li>
                         </SheetClose>
@@ -494,7 +562,10 @@ const Navbar = () => {
                     <ul className="space-y-0.5 sm:space-y-1 font-sans">
                       {["Documentation", "FAQs", "Community", "Help Center"].map((item) => (
                         <SheetClose asChild key={item}>
-                          <li className="text-xs sm:text-sm text-foreground/70 hover:text-primary transition-colors cursor-pointer py-1.5 sm:py-2 px-2 sm:px-2 hover:bg-accent/50 rounded-md">
+                          <li 
+                            className="text-xs sm:text-sm text-foreground/70 hover:text-primary transition-colors cursor-pointer py-1.5 sm:py-2 px-2 sm:px-2 hover:bg-accent/50 rounded-md"
+                            onClick={() => handleNavigation('/contact')}
+                          >
                             {item}
                           </li>
                         </SheetClose>
@@ -503,13 +574,23 @@ const Navbar = () => {
                   </div>
                   <div className="flex flex-col sm:flex-row gap-2 pt-2 sm:pt-3">
                     <SheetClose asChild>
-                      <Button size="sm" variant="default" className="flex-1 text-xs h-8 sm:h-9 text-white font-sans">
+                      <Button 
+                        size="sm" 
+                        variant="default" 
+                        className="flex-1 text-xs h-8 sm:h-9 text-white font-sans"
+                        onClick={() => handleNavigation('/projects')}
+                      >
                         Discover work
                       </Button>
                     </SheetClose>
                     <SheetClose asChild>
-                      <Button size="sm" variant="outline" className="flex-1 text-xs h-8 sm:h-9 text-foreground font-sans">
-                        Appointment
+                      <Button 
+                        variant="outline"
+                        size="sm" 
+                        className="flex-1 !text-white border-white hover:!text-white hover:border-white font-sans text-xs sm:text-sm h-8 sm:h-9"
+                        onClick={() => handleNavigation('/contact')}
+                      >
+                        Make an appointment
                       </Button>
                     </SheetClose>
                   </div>
@@ -518,23 +599,12 @@ const Navbar = () => {
 
               <MobileAccordionItem title="Who we are">
                 <div className="space-y-2">
-                  {/* Team Link */}
-                  <SheetClose asChild>
-                    <div className="cursor-pointer px-3 py-3 hover:bg-accent/50 rounded-lg transition-colors group">
-                      <div className="flex flex-col">
-                        <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors font-sans">
-                          Team
-                        </span>
-                        <span className="text-xs text-muted-foreground/70 group-hover:text-muted-foreground">
-                          Meet our experts and leadership
-                        </span>
-                      </div>
-                    </div>
-                  </SheetClose>
-                  
                   {/* About Us Link */}
                   <SheetClose asChild>
-                    <div className="cursor-pointer px-3 py-3 hover:bg-accent/50 rounded-lg transition-colors group">
+                    <div 
+                      className="cursor-pointer px-3 py-3 hover:bg-accent/50 rounded-lg transition-colors group"
+                      onClick={() => handleNavigation('/aboutus')}
+                    >
                       <div className="flex flex-col">
                         <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors font-sans">
                           About Us
@@ -548,7 +618,10 @@ const Navbar = () => {
                   
                   {/* Join Us Link */}
                   <SheetClose asChild>
-                    <div className="cursor-pointer px-3 py-3 hover:bg-accent/50 rounded-lg transition-colors group">
+                    <div 
+                      className="cursor-pointer px-3 py-3 hover:bg-accent/50 rounded-lg transition-colors group"
+                      onClick={() => handleNavigation('/joinus')}
+                    >
                       <div className="flex flex-col">
                         <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors font-sans">
                           Join Us
@@ -563,13 +636,23 @@ const Navbar = () => {
                   <div className="pt-3 mt-1 border-t border-border/40">
                     <div className="flex flex-col sm:flex-row gap-2">
                       <SheetClose asChild>
-                        <Button size="sm" variant="default" className="flex-1 text-xs h-8 sm:h-9 text-white font-sans">
+                        <Button 
+                          size="sm" 
+                          variant="default" 
+                          className="flex-1 text-xs h-8 sm:h-9 text-white font-sans"
+                          onClick={() => handleNavigation('/projects')}
+                        >
                           Discover work
                         </Button>
                       </SheetClose>
                       <SheetClose asChild>
-                        <Button size="sm" variant="outline" className="flex-1 text-xs h-8 sm:h-9 text-foreground font-sans">
-                          Appointment
+                        <Button 
+                          variant="outline"
+                          size="sm" 
+                          className="flex-1 !text-white border-white hover:!text-white hover:border-white font-sans text-xs sm:text-sm h-8 sm:h-9"
+                          onClick={() => handleNavigation('/contact')}
+                        >
+                          Make an appointment
                         </Button>
                       </SheetClose>
                     </div>
@@ -585,15 +668,17 @@ const Navbar = () => {
                   className="w-full shadow-sm h-10 sm:h-11 text-white font-sans text-xs sm:text-sm" 
                   size="lg"
                   variant="default"
+                  onClick={() => handleNavigation('/projects')}
                 >
                   Discover our work
                 </Button>
               </SheetClose>
               <SheetClose asChild>
                 <Button 
-                  className="w-full h-10 sm:h-11 text-foreground font-sans text-xs sm:text-sm" 
+                  className="!text-white w-full h-10 sm:h-11 text-foreground font-sans text-xs sm:text-sm" 
                   variant="outline" 
                   size="lg"
+                  onClick={() => handleNavigation('/contact')}
                 >
                   Make an appointment
                 </Button>
