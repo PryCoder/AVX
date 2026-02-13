@@ -279,6 +279,7 @@ const JoinUsPageContent = () => {
            matchesJobType && matchesRemote && matchesExperience;
   });
   const API = import.meta.env.VITE_API_URL;
+  console.log(API);
   const handleResumeUpload = (event) => {
     const file = event.target.files?.[0];
     if (file) {
