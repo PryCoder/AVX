@@ -1,0 +1,162 @@
+{
+    "projects": [
+      {
+        "id": 1,
+        "name": "Chift",
+        "slug": "chift",
+        "stack": "Figma + Webflow",
+        "shortDescription": "Financial dashboard for modern businesses with real-time analytics and seamless integrations.",
+        "fullDescription": "Chift is a comprehensive financial dashboard designed for modern businesses that need real-time insights into their financial health. The platform integrates seamlessly with major banking APIs, accounting software, and payment processors to provide a unified view of all financial operations. With intuitive data visualization and customizable reporting, Chift empowers finance teams to make data-driven decisions quickly.",
+        "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop",
+        "gallery": [
+          "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop",
+          "https://images.unsplash.com/photo-1543286386-713bdd548da4?q=80&w=2070&auto=format&fit=crop",
+          "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop"
+        ],
+        "icon": "Figma",
+        "color": "from-blue-500/20 to-indigo-500/20",
+        "client": "FinTech Innovations",
+        "year": "2024",
+        "duration": "4 months",
+        "role": "Lead Designer & Developer",
+        "website": "https://chift.example.com",
+        "features": [
+          "Real-time financial dashboard",
+          "Multi-currency support",
+          "Automated reporting",
+          "Banking API integrations",
+          "Customizable data visualization",
+          "Role-based access control"
+        ],
+        "technologies": ["Figma", "Webflow", "React", "D3.js", "REST API"],
+        "challenge": "The client needed a way to consolidate financial data from multiple sources into a single, easy-to-understand dashboard. The existing solution was fragmented and required manual data entry, leading to errors and delays in financial reporting.",
+        "solution": "We designed and developed a custom financial dashboard that connects directly to banking APIs and accounting software. The automated data sync eliminates manual entry, while the intuitive interface makes financial insights accessible to non-technical team members.",
+        "results": [
+          "75% reduction in time spent on financial reporting",
+          "Real-time visibility into cash flow across 12 accounts",
+          "Successful integration with 5 major banking platforms",
+          "Adopted by 50+ finance professionals within first month"
+        ]
+      },
+      {
+        "id": 2,
+        "name": "Arche",
+        "slug": "arche",
+        "stack": "Webflow + GSAP",
+        "shortDescription": "Architecture studio portfolio showcasing immersive project experiences and spatial design.",
+        "fullDescription": "Arche is an immersive portfolio website for a forward-thinking architecture studio. The site showcases their most significant projects through cinematic scrolling experiences, interactive floor plans, and high-resolution imagery. Every interaction is designed to reflect the precision and artistry of their architectural work.",
+        "image": "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?q=80&w=2071&auto=format&fit=crop",
+        "gallery": [
+          "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?q=80&w=2071&auto=format&fit=crop",
+          "https://images.unsplash.com/photo-1582268611958-eb7e9799b9c8?q=80&w=2070&auto=format&fit=crop",
+          "https://images.unsplash.com/photo-1486718448742-163732cd1544?q=80&w=2070&auto=format&fit=crop"
+        ],
+        "icon": "Globe",
+        "color": "from-amber-500/20 to-orange-500/20",
+        "client": "Arche Studio",
+        "year": "2024",
+        "duration": "3 months",
+        "role": "Creative Developer",
+        "website": "https://arche.example.com",
+        "features": [
+          "Cinematic scroll animations",
+          "Interactive project galleries",
+          "3D floor plan viewers",
+          "Smooth page transitions",
+          "Mobile-optimized experience",
+          "CMS-driven project pages"
+        ],
+        "technologies": ["Webflow", "GSAP", "Three.js", "Figma", "Finsweet"],
+        "challenge": "Arche needed a digital presence that matched the quality and sophistication of their physical architecture. Standard portfolio templates couldn't capture the spatial experience they wanted to convey.",
+        "solution": "We created a custom Webflow site with advanced GSAP animations that guide visitors through each project like a architectural tour. Parallax effects, smooth scrolling, and interactive elements create an immersive experience that reflects their design philosophy.",
+        "results": [
+          "300% increase in portfolio engagement time",
+          "Featured on 3 major design publications",
+          "15% increase in project inquiries",
+          "Successfully showcased 8 award-winning projects"
+        ]
+      },
+      {
+        "id": 3,
+        "name": "Nexus",
+        "slug": "nexus",
+        "stack": "Webflow + Finsweet",
+        "shortDescription": "E-commerce platform for sustainable brands with custom CMS and membership features.",
+        "fullDescription": "Nexus is a purpose-built e-commerce platform for sustainable and ethical brands. Beyond standard e-commerce functionality, Nexus includes a membership system for loyal customers, a sustainability scoring system for products, and a content hub for brand storytelling. The platform helps conscious consumers make informed purchasing decisions.",
+        "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop",
+        "gallery": [
+          "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop",
+          "https://images.unsplash.com/photo-1472851294608-062f824d29cc?q=80&w=2070&auto=format&fit=crop",
+          "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop"
+        ],
+        "icon": "Code",
+        "color": "from-emerald-500/20 to-teal-500/20",
+        "client": "Sustainable Collective",
+        "year": "2023",
+        "duration": "5 months",
+        "role": "Full-stack Developer",
+        "website": "https://nexus.example.com",
+        "features": [
+          "Custom e-commerce CMS",
+          "Membership & loyalty program",
+          "Product sustainability scoring",
+          "Content marketing hub",
+          "Seamless checkout flow",
+          "Analytics dashboard"
+        ],
+        "challenge": "Sustainable brands struggle to communicate their ethical practices effectively on traditional e-commerce platforms. The client needed a solution that could showcase their sustainability credentials while providing robust e-commerce functionality.",
+        "solution": "We built a custom Webflow e-commerce platform with Finsweet CMS enhancements. The site features a unique sustainability badge system, detailed product sourcing information, and a membership program that rewards eco-conscious purchases.",
+        "results": [
+          "40+ sustainable brands onboarded",
+          "25% repeat purchase rate from members",
+          "10,000+ monthly active users",
+          "Featured in 'Best Sustainable Shopping' guides"
+        ]
+      },
+      {
+        "id": 4,
+        "name": "Verdant",
+        "slug": "verdant",
+        "stack": "Webflow + Alpine.js",
+        "shortDescription": "Sustainable marketplace connecting local farmers with urban consumers.",
+        "image": "https://images.unsplash.com/photo-1488459716781-31db52582fe9?q=80&w=2070&auto=format&fit=crop",
+        "icon": "Globe",
+        "color": "from-green-500/20 to-emerald-500/20",
+        "client": "Verdant Co-op",
+        "year": "2024",
+        "duration": "4 months",
+        "role": "Lead Developer",
+        "website": "https://verdant.example.com"
+      },
+      {
+        "id": 5,
+        "name": "Aether",
+        "slug": "aether",
+        "stack": "Figma + Webflow",
+        "shortDescription": "AI-powered analytics platform for marketing teams.",
+        "image": "https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=2070&auto=format&fit=crop",
+        "icon": "Figma",
+        "color": "from-purple-500/20 to-violet-500/20",
+        "client": "Aether Analytics",
+        "year": "2023",
+        "duration": "6 months",
+        "role": "UI/UX Designer",
+        "website": "https://aether.example.com"
+      },
+      {
+        "id": 6,
+        "name": "Solara",
+        "slug": "solara",
+        "stack": "Webflow + GSAP",
+        "shortDescription": "Renewable energy company website with interactive carbon footprint calculator.",
+        "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?q=80&w=2072&auto=format&fit=crop",
+        "icon": "Code",
+        "color": "from-yellow-500/20 to-amber-500/20",
+        "client": "Solara Energy",
+        "year": "2024",
+        "duration": "3 months",
+        "role": "Creative Developer",
+        "website": "https://solara.example.com"
+      }
+    ]
+  }

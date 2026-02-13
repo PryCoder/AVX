@@ -1,0 +1,36 @@
+{
+    "jobs": [
+      
+      {
+        "id": 5,
+        "title": "UX Researcher",
+        "department": "Design",
+        "location": "Remote",
+        "type": "Full-time",
+        "experience": "2+ years",
+        "salary": "$90k - $130k",
+        "remote": "Remote",
+        "posted": "1 week ago",
+        "description": "Conduct user research to inform product decisions. Plan and execute studies, synthesize findings, and collaborate with designers and product managers.",
+        "requirements": [
+          "2+ years of UX research experience",
+          "Experience with various research methodologies",
+          "Strong analytical and communication skills",
+          "Portfolio of research work"
+        ],
+        "benefits": [
+          "Competitive salary + equity",
+          "Remote-first culture",
+          "Research tools budget",
+          "Wellness stipend"
+        ],
+        "icon": "🔍",
+        "accent": "amber",
+        "color": "from-amber-50/40 to-orange-50/20",
+        "border": "hover:border-amber-200/40",
+        "badge": "bg-amber-50/80 text-amber-700 border-amber-100/50",
+        "button": "hover:bg-amber-50",
+        "dot": "bg-amber-400/30"
+      }
+    ]
+  }
