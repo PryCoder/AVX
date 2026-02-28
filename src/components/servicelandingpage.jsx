@@ -77,9 +77,9 @@ const HowCanWeHelp = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
                 </div>
-                <h3 className="clash-font font-semibold text-lg sm:text-xl lg:text-3xl font-bold text-black/90 mb-2 sm:mb-2 lg:mb-3 font-montserrat">Technical SEO on Webflow</h3>
+                <h3 className="clash-font font-semibold text-lg sm:text-xl lg:text-3xl font-bold text-black/90 mb-2 sm:mb-2 lg:mb-3 font-montserrat">AI Automation</h3>
                 <p className="text-sm sm:text-base lg:text-lg text-black/60 leading-relaxed flex-grow font-inter">
-                  We activate our SEO optimization skills in order to achieve sustainable results for your business.
+                  We activate our ai Automation optimization skills in order to achieve sustainable results for your business.
                 </p>
               </div>
             </div>

@@ -60,7 +60,7 @@ const Landingpage = () => {
                   
                   {/* 10+ Projects Badge */}
                   <div className="flex items-center gap-2 sm:gap-3 px-5 sm:px-6 py-2 sm:py-3 bg-black/[0.02] backdrop-blur-md border border-black/10 w-full sm:w-auto justify-center sm:justify-start">
-                    <span className="text-2xl sm:text-3xl font-light text-black/80">10</span>
+                    <span className="text-2xl sm:text-3xl font-light text-black/80">5</span>
                     <span className="text-lg sm:text-xl font-light text-black/50">+</span>
                     <span className="text-xs sm:text-sm uppercase tracking-wider text-black/50 ml-1">Projects</span>
                   </div>
@@ -69,7 +69,7 @@ const Landingpage = () => {
 
               {/* Right Content - Image at MAXIMUM z-index, ahead of EVERYTHING */}
               <div className="relative flex items-center justify-center h-full py-8 lg:py-0" style={{ zIndex: 10 }}>
-                <div className="relative w-[110%] lg:w-[120%] xl:w-[130%] -mr-[5%] lg:-mr-[15%]">
+                <div className="relative w-[110%] lg:w-[120%] xl:w-[130%] ">
                 <div className="absolute inset-0 bg-white rounded-3xl"></div>
                   {/* Shadow layers for depth - behind image */}
                   <div className="absolute -inset-4 bg-black/5 rounded-3xl blur-3xl opacity-60" style={{ zIndex: 1 }}></div>
@@ -107,11 +107,7 @@ const Landingpage = () => {
         </div>
         
             {/* Bottom Stats - Glass Grid */}
-            <div className="mt-12 lg:mt-16 xl:mt-20 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 relative z-20">
-              <div className="backdrop-blur-xl bg-black/[0.02] p-4 sm:p-6 text-center rounded-2xl border border-black/5 shadow-lg shadow-black/5">
-                <div className="text-2xl sm:text-3xl lg:text-4xl font-light text-black/80">50+</div>
-                <div className="text-xs uppercase tracking-wider text-black/50 mt-1 sm:mt-2">Websites</div>
-              </div>
+           <div className="mt-12 lg:mt-16 xl:mt-20 grid grid-cols-2 max-w-3xl mx-auto gap-3 sm:gap-4 relative z-20 justify-items-center">
               <div className="backdrop-blur-xl bg-black/[0.02] p-4 sm:p-6 text-center rounded-2xl border border-black/5 shadow-lg shadow-black/5">
                 <div className="text-2xl sm:text-3xl lg:text-4xl font-light text-black/80">100%</div>
                 <div className="text-xs uppercase tracking-wider text-black/50 mt-1 sm:mt-2">Satisfaction</div>
@@ -120,10 +116,7 @@ const Landingpage = () => {
                 <div className="text-2xl sm:text-3xl lg:text-4xl font-light text-black/80">24/7</div>
                 <div className="text-xs uppercase tracking-wider text-black/50 mt-1 sm:mt-2">Support</div>
               </div>
-              <div className="backdrop-blur-xl bg-black/[0.02] p-4 sm:p-6 text-center rounded-2xl border border-black/5 shadow-lg shadow-black/5">
-                <div className="text-2xl sm:text-3xl lg:text-4xl font-light text-black/80">5+</div>
-                <div className="text-xs uppercase tracking-wider text-black/50 mt-1 sm:mt-2">Years</div>
-              </div>
+             
             </div>
           </div>
         </section>

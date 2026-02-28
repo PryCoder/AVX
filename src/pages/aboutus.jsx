@@ -476,9 +476,9 @@ const TeamSection = () => {
 
   const team = [
     {
-      name: "Alex Rivera",
+      name: "Raj Koli",
       role: "Founder & Creative Director",
-      bio: "Former architect turned digital artist. Alex leads our creative vision, ensuring every project tells a compelling story.",
+      bio: "Former architect turned digital artist. Raj leads our creative vision, ensuring every project tells a compelling story.",
       quote: "Great design is invisible. Great experiences are unforgettable.",
       icon: Compass,
       color: "from-stone-800 to-stone-600",
@@ -486,9 +486,9 @@ const TeamSection = () => {
       social: { twitter: "#", linkedin: "#", github: "#" }
     },
     {
-      name: "Maya Chen",
-      role: "Lead Experience Designer",
-      bio: "Maya brings a background in cognitive science to create websites that feel intuitive and emotionally resonant.",
+      name: "Roshan",
+      role: "UI/UX Designer",
+      bio: "Roshan brings a background in cognitive science to create websites that feel intuitive and emotionally resonant.",
       quote: "We don't just design screens. We design moments.",
       icon: Eye,
       color: "from-stone-700 to-stone-500",
@@ -496,9 +496,9 @@ const TeamSection = () => {
       social: { twitter: "#", linkedin: "#", github: "#" }
     },
     {
-      name: "Kai Nakamura",
-      role: "Creative Technologist",
-      bio: "Kai bridges the gap between imagination and implementation, bringing cutting-edge ideas to life.",
+      name: "Priyanshu Gupta",
+      role: "Lead Creative Technologist",
+      bio: "Priyanshu bridges the gap between imagination and implementation, bringing cutting-edge ideas to life.",
       quote: "Technology should feel like magic, not mechanics.",
       icon: Zap,
       color: "from-stone-600 to-stone-400",
@@ -873,19 +873,7 @@ const ValuesSection = () => {
         </div>
 
         {/* Stats Section */}
-        <div className="mt-16 md:mt-20 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
-          {[
-            { number: "100+", label: "Projects Delivered" },
-            { number: "50+", label: "Happy Clients" },
-            { number: "5", label: "Years Creating" },
-            { number: "100%", label: "Passion Driven" }
-          ].map((stat, idx) => (
-            <div key={idx} className="text-center">
-              <div className="text-2xl md:text-3xl lg:text-4xl font-bold text-stone-800 clash-font">{stat.number}</div>
-              <div className="text-xs md:text-sm text-stone-500 sfpro-font mt-1">{stat.label}</div>
-            </div>
-          ))}
-        </div>
+      
       </div>
     </section>
   );

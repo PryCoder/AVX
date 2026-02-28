@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
-import { Link, useNavigate } from 'react-router-dom'; // Add useNavigate
+import { Link, useNavigate } from 'react-router-dom';
 import logo from '../assets/avx.png';
 
 import { Button } from "../components/ui/button";
@@ -25,7 +25,7 @@ import {
 } from "../components/ui/dropdown-menu";
 
 const Navbar = () => {
-  const navigate = useNavigate(); // Add navigate hook
+  const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
@@ -93,7 +93,7 @@ const Navbar = () => {
     );
   };
 
-  // Services dropdown content
+  // Services dropdown content - Updated to only Web Development, UI/UX, AI Automation
   const ServicesDropdown = () => (
     <DropdownMenu 
       onOpenChange={(open) => setOpenDropdown(open ? "services" : null)}
@@ -110,74 +110,36 @@ const Navbar = () => {
         </span>
       </DropdownMenuTrigger>
       <DropdownMenuContent 
-        className="w-screen max-w-[90vw] sm:max-w-[550px] p-4 sm:p-5 mx-2 sm:mx-4 z-[100]" 
+        className="w-screen max-w-[90vw] sm:max-w-[350px] p-4 sm:p-5 mx-2 sm:mx-4 z-[100]" 
         align="center" 
         sideOffset={8}
         onMouseEnter={() => setOpenDropdown("services")}
         onMouseLeave={() => setOpenDropdown(null)}
       >
-        <div className="grid gap-5 sm:gap-6 sm:grid-cols-2">
-          <div className="space-y-2 sm:space-y-3">
-            <h3 className="text-xs sm:text-sm font-semibold text-foreground border-b border-border pb-1.5 font-serif">
-              Digital Solutions
-            </h3>
-            <ul className="space-y-1 font-sans">
-              {["Web Development", "Mobile Applications", "UI/UX Design", "Cloud Solutions"].map((item) => (
-                <DropdownMenuItem 
-                  key={item} 
-                  className="cursor-pointer px-0 py-1 hover:bg-transparent focus:bg-transparent"
-                  onClick={() => handleNavigation('/projects')}
-                >
-                  <span className="text-xs sm:text-sm text-foreground/80 hover:text-primary transition-colors">
-                    {item}
-                  </span>
-                </DropdownMenuItem>
-              ))}
-            </ul>
-          </div>
-          <div className="space-y-2 sm:space-y-3">
-            <h3 className="text-xs sm:text-sm font-semibold text-foreground border-b border-border pb-1.5 font-serif">
-              Consulting
-            </h3>
-            <ul className="space-y-1 font-sans">
-              {["Digital Strategy", "Technology Advisory", "Process Optimization", "Innovation Workshops"].map((item) => (
-                <DropdownMenuItem 
-                  key={item} 
-                  className="cursor-pointer px-0 py-1 hover:bg-transparent focus:bg-transparent"
-                  onClick={() => handleNavigation('/projects')}
-                >
-                  <span className="text-xs sm:text-sm text-foreground/80 hover:text-primary transition-colors">
-                    {item}
-                  </span>
-                </DropdownMenuItem>
-              ))}
-            </ul>
-          </div>
+        <div className="space-y-3">
+          <h3 className="text-xs sm:text-sm font-semibold text-foreground border-b border-border pb-1.5 font-serif">
+            Our Expertise
+          </h3>
+          <ul className="space-y-2 font-sans">
+            {["Web Development", "UI/UX Design", "AI Automation"].map((item) => (
+              <DropdownMenuItem 
+                key={item} 
+                className="cursor-pointer px-0 py-1 hover:bg-transparent focus:bg-transparent"
+                onClick={() => handleNavigation('/projects')}
+              >
+                <span className="text-xs sm:text-sm text-foreground/80 hover:text-primary transition-colors">
+                  {item}
+                </span>
+              </DropdownMenuItem>
+            ))}
+          </ul>
         </div>
-        <DropdownMenuSeparator className="my-3 sm:my-4" />
-        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-          <Button 
-            variant="default" 
-            size="sm" 
-            className="flex-1 text-white font-sans text-xs sm:text-sm h-8 sm:h-9"
-            onClick={() => handleNavigation('/projects')}
-          >
-            Discover our work
-          </Button>
-          <Button 
-            variant="outline"
-            size="sm" 
-            className="flex-1 !text-white border-white hover:!text-white hover:border-white font-sans text-xs sm:text-sm h-8 sm:h-9"
-            onClick={() => handleNavigation('/contact')}
-          >
-            Make an appointment
-          </Button>
-        </div>
+        
       </DropdownMenuContent>
     </DropdownMenu>
   );
 
-  // Resources dropdown content
+  // Resources dropdown content - Updated to only Support
   const ResourcesDropdown = () => (
     <DropdownMenu 
       onOpenChange={(open) => setOpenDropdown(open ? "resources" : null)}
@@ -194,87 +156,31 @@ const Navbar = () => {
         </span>
       </DropdownMenuTrigger>
       <DropdownMenuContent 
-        className="w-screen max-w-[90vw] sm:max-w-[650px] p-4 sm:p-5 mx-2 sm:mx-4 z-[100]" 
+        className="w-screen max-w-[90vw] sm:max-w-[280px] p-4 sm:p-5 mx-2 sm:mx-4 z-[100]" 
         align="center" 
         sideOffset={8}
         onMouseEnter={() => setOpenDropdown("resources")}
         onMouseLeave={() => setOpenDropdown(null)}
       >
-        <div className="grid gap-5 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          <div className="space-y-2 sm:space-y-3">
-            <h3 className="text-xs sm:text-sm font-semibold text-foreground border-b border-border pb-1.5 font-serif">
-              Learning
-            </h3>
-            <ul className="space-y-1 font-sans">
-              {["Blog", "Case Studies", "Whitepapers", "Webinars"].map((item) => (
-                <DropdownMenuItem 
-                  key={item} 
-                  className="cursor-pointer px-0 py-1 hover:bg-transparent focus:bg-transparent"
-                  onClick={() => handleNavigation('/projects')}
-                >
-                  <span className="text-xs sm:text-sm text-foreground/80 hover:text-primary transition-colors">
-                    {item}
-                  </span>
-                </DropdownMenuItem>
-              ))}
-            </ul>
-          </div>
-          <div className="space-y-2 sm:space-y-3">
-            <h3 className="text-xs sm:text-sm font-semibold text-foreground border-b border-border pb-1.5 font-serif">
-              Tools
-            </h3>
-            <ul className="space-y-1 font-sans">
-              {["ROI Calculator", "Tech Stack Guide", "Project Planner", "Assessment Tool"].map((item) => (
-                <DropdownMenuItem 
-                  key={item} 
-                  className="cursor-pointer px-0 py-1 hover:bg-transparent focus:bg-transparent"
-                  onClick={() => handleNavigation('/projects')}
-                >
-                  <span className="text-xs sm:text-sm text-foreground/80 hover:text-primary transition-colors">
-                    {item}
-                  </span>
-                </DropdownMenuItem>
-              ))}
-            </ul>
-          </div>
-          <div className="space-y-2 sm:space-y-3 sm:col-span-2 lg:col-span-1">
-            <h3 className="text-xs sm:text-sm font-semibold text-foreground border-b border-border pb-1.5 font-serif">
-              Support
-            </h3>
-            <ul className="space-y-1 font-sans">
-              {["Documentation", "FAQs", "Community", "Help Center"].map((item) => (
-                <DropdownMenuItem 
-                  key={item} 
-                  className="cursor-pointer px-0 py-1 hover:bg-transparent focus:bg-transparent"
-                  onClick={() => handleNavigation('/contact')}
-                >
-                  <span className="text-xs sm:text-sm text-foreground/80 hover:text-primary transition-colors">
-                    {item}
-                  </span>
-                </DropdownMenuItem>
-              ))}
-            </ul>
-          </div>
+        <div className="space-y-3">
+          <h3 className="text-xs sm:text-sm font-semibold text-foreground border-b border-border pb-1.5 font-serif">
+            Support
+          </h3>
+          <ul className="space-y-2 font-sans">
+            {["Documentation", "FAQs", "Community", "Help Center"].map((item) => (
+              <DropdownMenuItem 
+                key={item} 
+                className="cursor-pointer px-0 py-1 hover:bg-transparent focus:bg-transparent"
+                onClick={() => handleNavigation('/contact')}
+              >
+                <span className="text-xs sm:text-sm text-foreground/80 hover:text-primary transition-colors">
+                  {item}
+                </span>
+              </DropdownMenuItem>
+            ))}
+          </ul>
         </div>
-        <DropdownMenuSeparator className="my-3 sm:my-4" />
-        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-          <Button 
-            variant="default" 
-            size="sm" 
-            className="flex-1 text-white font-sans text-xs sm:text-sm h-8 sm:h-9"
-            onClick={() => handleNavigation('/projects')}
-          >
-            Discover our work
-          </Button>
-          <Button 
-            variant="outline"
-            size="sm" 
-            className="flex-1 !text-white border-white hover:!text-white hover:border-white font-sans text-xs sm:text-sm h-8 sm:h-9"
-            onClick={() => handleNavigation('/contact')}
-          >
-            Make an appointment
-          </Button>
-        </div>
+        
       </DropdownMenuContent>
     </DropdownMenu>
   );
@@ -393,7 +299,7 @@ const Navbar = () => {
             Discover
           </Button>
           <Button 
-            variant="default"
+            variant="outline"
             size="sm" 
             className="sfpro-font font-medium bg-primary hover:bg-primary/90 text-white shadow-sm hover:shadow-md transition-all px-3 xl:px-5 h-8 xl:h-9 font-sans text-xs xl:text-sm"
             onClick={() => handleNavigation('/contact')}
@@ -446,7 +352,7 @@ const Navbar = () => {
         <SheetContent side="right" className="w-full sm:w-[450px] md:w-[500px] p-0 bg-background border-l border-border/40 z-[200] overflow-y-auto">
           <SheetHeader className="p-4 sm:p-5 md:p-6 border-b border-border/40 bg-gradient-to-r from-primary/5 to-transparent sticky top-0 bg-background/95 backdrop-blur-sm z-[201]">
             <SheetTitle className="text-left text-xl sm:text-2xl md:text-2xl bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent font-bold font-serif">
-              <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>anxvvion</Link>
+              <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>AVXONIA</Link>
             </SheetTitle>
             <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5 sm:mt-1 font-sans">Innovate. Transform. Succeed.</p>
             <SheetClose className="absolute right-4 top-4 sm:right-5 sm:top-5 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
@@ -462,27 +368,10 @@ const Navbar = () => {
                 <div className="text-white space-y-3 sm:space-y-4">
                   <div>
                     <h4 className="text-[10px] sm:text-xs font-semibold text-foreground/80 uppercase tracking-wider mb-1.5 sm:mb-2 font-serif">
-                      Digital Solutions
+                      Our Expertise
                     </h4>
                     <ul className="space-y-0.5 sm:space-y-1 font-sans">
-                      {["Web Development", "Mobile Applications", "UI/UX Design", "Cloud Solutions"].map((item) => (
-                        <SheetClose asChild key={item}>
-                          <li 
-                            className="text-xs sm:text-sm text-foreground/70 hover:text-primary transition-colors cursor-pointer py-1.5 sm:py-2 px-2 sm:px-2 hover:bg-accent/50 rounded-md"
-                            onClick={() => handleNavigation('/projects')}
-                          >
-                            {item}
-                          </li>
-                        </SheetClose>
-                      ))}
-                    </ul>
-                  </div>
-                  <div>
-                    <h4 className="text-[10px] sm:text-xs font-semibold text-foreground/80 uppercase tracking-wider mb-1.5 sm:mb-2 font-serif">
-                      Consulting
-                    </h4>
-                    <ul className="space-y-0.5 sm:space-y-1 font-sans">
-                      {["Digital Strategy", "Technology Advisory", "Process Optimization", "Innovation Workshops"].map((item) => (
+                      {["Web Development", "UI/UX Design", "AI Automation"].map((item) => (
                         <SheetClose asChild key={item}>
                           <li 
                             className="text-xs sm:text-sm text-foreground/70 hover:text-primary transition-colors cursor-pointer py-1.5 sm:py-2 px-2 sm:px-2 hover:bg-accent/50 rounded-md"
@@ -521,40 +410,6 @@ const Navbar = () => {
 
               <MobileAccordionItem title="Resources">
                 <div className="text-white space-y-3 sm:space-y-4">
-                  <div>
-                    <h4 className="text-[10px] sm:text-xs font-semibold text-foreground/80 uppercase tracking-wider mb-1.5 sm:mb-2 font-serif">
-                      Learning
-                    </h4>
-                    <ul className="space-y-0.5 sm:space-y-1 font-sans">
-                      {["Blog", "Case Studies", "Whitepapers", "Webinars"].map((item) => (
-                        <SheetClose asChild key={item}>
-                          <li 
-                            className="text-xs sm:text-sm text-foreground/70 hover:text-primary transition-colors cursor-pointer py-1.5 sm:py-2 px-2 sm:px-2 hover:bg-accent/50 rounded-md"
-                            onClick={() => handleNavigation('/projects')}
-                          >
-                            {item}
-                          </li>
-                        </SheetClose>
-                      ))}
-                    </ul>
-                  </div>
-                  <div>
-                    <h4 className="text-[10px] sm:text-xs font-semibold text-foreground/80 uppercase tracking-wider mb-1.5 sm:mb-2 font-serif">
-                      Tools
-                    </h4>
-                    <ul className="space-y-0.5 sm:space-y-1 font-sans">
-                      {["ROI Calculator", "Tech Stack Guide", "Project Planner", "Assessment Tool"].map((item) => (
-                        <SheetClose asChild key={item}>
-                          <li 
-                            className="text-xs sm:text-sm text-foreground/70 hover:text-primary transition-colors cursor-pointer py-1.5 sm:py-2 px-2 sm:px-2 hover:bg-accent/50 rounded-md"
-                            onClick={() => handleNavigation('/projects')}
-                          >
-                            {item}
-                          </li>
-                        </SheetClose>
-                      ))}
-                    </ul>
-                  </div>
                   <div>
                     <h4 className="text-[10px] sm:text-xs font-semibold text-foreground/80 uppercase tracking-wider mb-1.5 sm:mb-2 font-serif">
                       Support

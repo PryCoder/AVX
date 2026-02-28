@@ -15,7 +15,7 @@ function App() {
     <Router>
       <Navbar />
 
-      <div style={styles.pageWrapper}>
+   
         <Routes>
           <Route path="/" element={<Landingpage />} />
           <Route path="/projects" element={<ProjectGallery />} />
@@ -25,7 +25,7 @@ function App() {
           <Route path="/joinus" element={<JoinUsPage />} />
           <Route path="/project/:id" element={<ProjectDetailPage />} />
         </Routes>
-      </div>
+      
 
       <Footer />
     </Router>
