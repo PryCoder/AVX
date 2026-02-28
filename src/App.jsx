@@ -9,11 +9,12 @@ import JoinUsPage from './pages/joinus';
 import AboutUsPage from './pages/aboutus';
 import ContactPage from './pages/contact';
 import ProjectGallery from './pages/projectgallery';
+import Layout from './components/cta';
 
 function App() {
   return (
     <Router>
-      <Navbar />
+     <Layout>
 
    
         <Routes>
@@ -26,8 +27,8 @@ function App() {
           <Route path="/project/:id" element={<ProjectDetailPage />} />
         </Routes>
       
-
-      <Footer />
+</Layout>
+     
     </Router>
   );
 }

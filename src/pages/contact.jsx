@@ -31,7 +31,9 @@ const ContactPage = () => {
     // Clear error when user starts typing
     if (error) setError('');
   };
-  const API = import.meta.env.VITE_API_URL;
+  
+  const API = import.meta.env.VITE_API_URL || 'http://localhost:5005/api';
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -73,21 +75,16 @@ const ContactPage = () => {
     {
       icon: <Mail className="w-5 h-5" />,
       title: "Email",
-      value: "hello@company.com",
+      value: "Avxoniainnovations@gmail.com",
       link: "mailto:hello@company.com"
     },
     {
       icon: <Phone className="w-5 h-5" />,
       title: "Phone",
-      value: "+1 (555) 123-4567",
+      value: "+91-8898022337",
       link: "tel:+15551234567"
     },
-    {
-      icon: <MapPin className="w-5 h-5" />,
-      title: "Office",
-      value: "123 Business Ave, Suite 100",
-      link: "#"
-    }
+    
   ];
 
   return (
