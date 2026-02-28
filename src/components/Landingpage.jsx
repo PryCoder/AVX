@@ -107,17 +107,7 @@ const Landingpage = () => {
         </div>
         
             {/* Bottom Stats - Glass Grid */}
-           <div className="mt-12 lg:mt-16 xl:mt-20 grid grid-cols-2 max-w-3xl mx-auto gap-3 sm:gap-4 relative z-20 justify-items-center">
-              <div className="backdrop-blur-xl bg-black/[0.02] p-4 sm:p-6 text-center rounded-2xl border border-black/5 shadow-lg shadow-black/5">
-                <div className="text-2xl sm:text-3xl lg:text-4xl font-light text-black/80">100%</div>
-                <div className="text-xs uppercase tracking-wider text-black/50 mt-1 sm:mt-2">Satisfaction</div>
-              </div>
-              <div className="backdrop-blur-xl bg-black/[0.02] p-4 sm:p-6 text-center rounded-2xl border border-black/5 shadow-lg shadow-black/5">
-                <div className="text-2xl sm:text-3xl lg:text-4xl font-light text-black/80">24/7</div>
-                <div className="text-xs uppercase tracking-wider text-black/50 mt-1 sm:mt-2">Support</div>
-              </div>
-             
-            </div>
+          
           </div>
         </section>
       </main>

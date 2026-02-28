@@ -264,7 +264,13 @@ const AdminDashboardContent = () => {
     contacted: '#8b5cf6',
     archived: '#6b7280'
   };
-
+  useEffect(() => {
+    const storedAuth = localStorage.getItem("adminAuth");
+  
+    if (storedAuth === "true") {
+      setIsAuthenticated(true);
+    }
+  }, []);
   // Handle login
   const handleLogin = (e) => {
     e.preventDefault();
@@ -276,6 +282,7 @@ const AdminDashboardContent = () => {
         "Successfully logged in to admin dashboard.",
         "success"
       );
+      localStorage.setItem("adminAuth", "true");
     } else {
       setLoginError('Invalid username or password');
       showToast(

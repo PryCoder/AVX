@@ -284,6 +284,15 @@ const Navbar = () => {
               <NavigationMenuItem>
                 <WhoWeAreDropdown />
               </NavigationMenuItem>
+              <NavigationMenuItem>
+    <span
+      onClick={() => handleNavigation('/blog')}
+      className="inline-flex items-center text-sm font-medium text-foreground hover:text-primary transition-colors cursor-pointer py-2 px-2 font-sans"
+    >
+      Blog
+    </span>
+  </NavigationMenuItem>
+
             </NavigationMenuList>
           </NavigationMenu>
         </div>
@@ -427,6 +436,16 @@ const Navbar = () => {
                       ))}
                     </ul>
                   </div>
+                  <SheetClose asChild>
+  <div
+    className="cursor-pointer px-4 py-4 border-b border-border/40 hover:bg-accent/50 transition-colors"
+    onClick={() => handleNavigation('/blog')}
+  >
+    <span className="text-sm font-medium text-foreground font-sans">
+      Blog
+    </span>
+  </div>
+</SheetClose>
                   <div className="flex flex-col sm:flex-row gap-2 pt-2 sm:pt-3">
                     <SheetClose asChild>
                       <Button 
@@ -515,10 +534,20 @@ const Navbar = () => {
                 </div>
               </MobileAccordionItem>
             </div>
+            
 
             {/* Mobile Action Buttons - Sticky at bottom */}
             <div className="border-t border-border/40 p-4 sm:p-5 space-y-2 sm:space-y-3 bg-muted/30 mt-auto sticky bottom-0 backdrop-blur-sm">
-              <SheetClose asChild>
+            <SheetClose asChild>
+                <Button 
+                  className="w-full shadow-sm h-10 sm:h-11 text-white font-sans text-xs sm:text-sm" 
+                  size="lg"
+                  variant="default"
+                  onClick={() => handleNavigation('/blog')}
+                >
+                  blog
+                </Button>
+              </SheetClose><SheetClose asChild>
                 <Button 
                   className="w-full shadow-sm h-10 sm:h-11 text-white font-sans text-xs sm:text-sm" 
                   size="lg"

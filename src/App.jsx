@@ -10,6 +10,8 @@ import AboutUsPage from './pages/aboutus';
 import ContactPage from './pages/contact';
 import ProjectGallery from './pages/projectgallery';
 import Layout from './components/cta';
+import BlogPage from './pages/blog';
+import BlogDetail from './pages/blogDetail';
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
    
         <Routes>
           <Route path="/" element={<Landingpage />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/blog/:id" element={<BlogDetail />} />
           <Route path="/projects" element={<ProjectGallery />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/aboutus" element={<AboutUsPage />} />
