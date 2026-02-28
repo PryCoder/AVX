@@ -318,7 +318,7 @@ const HeroSection = () => {
 
           <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-light mb-4 md:mb-8 clash-font">
             <span className="block animate-text-reveal">WE ARE</span>
-            <span className="block font-bold text-stone-800 animate-text-reveal [animation-delay:0.2s]">NEXUS</span>
+            <span className="block font-bold text-stone-800 animate-text-reveal [animation-delay:0.2s]">AVX</span>
           </h1>
 
           <p className="text-base sm:text-lg md:text-xl text-stone-600 mb-8 md:mb-12 max-w-2xl mx-auto px-4 sfpro-font animate-text-reveal [animation-delay:0.4s]">
