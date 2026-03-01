@@ -123,6 +123,54 @@
         "Adopted by remote teams and freelancers",
         "Positive user retention within first 3 months"
       ]
+    },
+    {
+      "id": 4,
+      "name": "Behance",
+      "slug": "behance",
+      "services": "Website Development, UI/UX Design",
+      "stack": "Next.js + Node.js + MongoDB + Stripe",
+      "shortDescription": "Freelance marketplace platform for designers across logo, web, graphic, UI/UX, and architecture fields.",
+      "fullDescription": "Behance is a freelance career and job marketplace platform where designers can showcase portfolios and get hired. It supports logo design, website design, UI/UX, branding, graphic design, architecture, interior design, and more. Clients can post jobs, hire freelancers, manage contracts, and securely process payments.",
+      "image": "/projects/p41.png",
+      "gallery": [
+        "/projects/p42.png",
+        "/projects/p43.png",
+        "/projects/p44.png",
+        "/projects/p45.png"
+      ],
+      "icon": "Briefcase",
+      "color": "from-blue-500/20 to-cyan-500/20",
+      "client": "Behance Platform",
+      "year": "2026",
+      "duration": "7 months",
+      "role": "Full-Stack Developer & Marketplace Architect",
+      "website": "https://www.behance.net/",
+      "features": [
+        "Designer portfolio showcase system",
+        "Freelance job posting & bidding",
+        "Category-based hiring (Logo, Web, UI/UX, Architecture, Branding)",
+        "Secure escrow payment system",
+        "Messaging & contract management",
+        "Ratings & review system",
+        "Admin moderation dashboard"
+      ],
+      "technologies": [
+        "Next.js",
+        "Node.js",
+        "MongoDB",
+        "Stripe",
+        "Cloudinary",
+        "Tailwind CSS"
+      ],
+      "challenge": "Building a scalable freelance marketplace with secure payments, portfolio management, and real-time communication.",
+      "solution": "Implemented an escrow-based Stripe payment flow, real-time chat system, and scalable portfolio hosting with optimized performance.",
+      "results": [
+        "Successfully onboarded 5K+ designers",
+        "Secure freelance transactions",
+        "Improved client-designer matching system",
+        "High engagement in first launch phase"
+      ]
     }
   ]
 }

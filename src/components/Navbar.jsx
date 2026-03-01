@@ -12,6 +12,7 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
+  const [hoverTimeout, setHoverTimeout] = useState(null);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
@@ -25,11 +26,12 @@ const Navbar = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Cleanup timeout on unmount
   useEffect(() => {
-    const handleClickOutside = () => setOpenDropdown(null);
-    window.addEventListener("click", handleClickOutside);
-    return () => window.removeEventListener("click", handleClickOutside);
-  }, []);
+    return () => {
+      if (hoverTimeout) clearTimeout(hoverTimeout);
+    };
+  }, [hoverTimeout]);
 
   const handleNavigation = (path, service = null) => {
     if (service) {
@@ -43,6 +45,18 @@ const Navbar = () => {
 
   const handleServiceClick = (service) => handleNavigation('/projects', service);
 
+  const handleDropdownMouseEnter = (dropdownName) => {
+    if (hoverTimeout) clearTimeout(hoverTimeout);
+    setOpenDropdown(dropdownName);
+  };
+
+  const handleDropdownMouseLeave = () => {
+    const timeout = setTimeout(() => {
+      setOpenDropdown(null);
+    }, 150); // Small delay to prevent flickering when moving between dropdown items
+    setHoverTimeout(timeout);
+  };
+
   const serviceItems = [
     { label: "Web Development", value: "Website Development" },
     { label: "UI/UX Design", value: "UI/UX Design" },
@@ -50,10 +64,7 @@ const Navbar = () => {
   ];
 
   const resourceItems = [
-    { label: "Documentation", path: "/contact" },
     { label: "FAQs", path: "/faq" },
-    { label: "Community", path: "/contact" },
-    { label: "Help Center", path: "/contact" },
   ];
 
   const MobileAccordionItem = ({ title, children }) => {
@@ -78,87 +89,141 @@ const Navbar = () => {
   };
 
   const ServicesDropdown = () => (
-    <DropdownMenu onOpenChange={(open) => setOpenDropdown(open ? "services" : null)} open={openDropdown === "services"} modal={false}>
-      <DropdownMenuTrigger asChild>
-        <span className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-primary transition-colors cursor-pointer py-2 px-1 lg:px-6 group font-sans">
-          Services
-          <ChevronDown className={`h-3.5 w-3.5 lg:h-5 lg:w-5 transition-transform duration-200 ${openDropdown === "services" ? "rotate-180" : "group-hover:rotate-180"}`} />
-        </span>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-[280px] p-4 z-[100]" align="start" sideOffset={8} onMouseEnter={() => setOpenDropdown("services")} onMouseLeave={() => setOpenDropdown(null)}>
-        <div className="space-y-3">
-          <h3 className="text-xs sm:text-sm font-semibold text-foreground border-b border-border pb-1.5 font-serif">Our Expertise</h3>
-          <ul className="space-y-2 font-sans">
-            {serviceItems.map((item) => (
-              <DropdownMenuItem key={item.value} className="cursor-pointer px-0 py-1 hover:bg-transparent focus:bg-transparent" onClick={() => handleServiceClick(item.value)}>
-                <span className="text-xs sm:text-sm text-foreground/80 hover:text-primary transition-colors">{item.label}</span>
-              </DropdownMenuItem>
-            ))}
-          </ul>
-        </div>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <div 
+      className="relative inline-block"
+      onMouseEnter={() => handleDropdownMouseEnter("services")}
+      onMouseLeave={handleDropdownMouseLeave}
+    >
+      <DropdownMenu open={openDropdown === "services"} modal={false}>
+        <DropdownMenuTrigger asChild>
+          <span className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-primary transition-colors cursor-pointer py-2 px-1 lg:px-6 group font-sans">
+            Services
+            <ChevronDown className={`h-3.5 w-3.5 lg:h-5 lg:w-5 transition-transform duration-200 ${openDropdown === "services" ? "rotate-180" : "group-hover:rotate-180"}`} />
+          </span>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent 
+          className="w-[280px] p-4 z-[100]" 
+          align="start" 
+          sideOffset={8}
+          onMouseEnter={() => handleDropdownMouseEnter("services")}
+          onMouseLeave={handleDropdownMouseLeave}
+        >
+          <div className="space-y-3">
+            <h3 className="text-xs sm:text-sm font-semibold text-foreground border-b border-border pb-1.5 font-serif">Our Expertise</h3>
+            <ul className="space-y-2 font-sans">
+              {serviceItems.map((item) => (
+                <DropdownMenuItem 
+                  key={item.value} 
+                  className="cursor-pointer px-0 py-1 hover:bg-transparent focus:bg-transparent" 
+                  onClick={() => handleServiceClick(item.value)}
+                >
+                  <span className="text-xs sm:text-sm text-foreground/80 hover:text-primary transition-colors">{item.label}</span>
+                </DropdownMenuItem>
+              ))}
+            </ul>
+          </div>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
   );
 
   const ResourcesDropdown = () => (
-    <DropdownMenu onOpenChange={(open) => setOpenDropdown(open ? "resources" : null)} open={openDropdown === "resources"} modal={false}>
-      <DropdownMenuTrigger asChild>
-        <span className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-primary transition-colors cursor-pointer py-2 px-1 lg:px-2 group font-sans">
-          Resources
-          <ChevronDown className={`h-3.5 w-3.5 lg:h-4 lg:w-4 transition-transform duration-200 ${openDropdown === "resources" ? "rotate-180" : "group-hover:rotate-180"}`} />
-        </span>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-[240px] p-4 z-[100]" align="start" sideOffset={8} onMouseEnter={() => setOpenDropdown("resources")} onMouseLeave={() => setOpenDropdown(null)}>
-        <div className="space-y-3">
-          <h3 className="text-xs sm:text-sm font-semibold text-foreground border-b border-border pb-1.5 font-serif">Support</h3>
-          <ul className="space-y-2 font-sans">
-            {resourceItems.map((item) => (
-              <DropdownMenuItem key={item.label} className="cursor-pointer px-0 py-1 hover:bg-transparent focus:bg-transparent" onClick={() => handleNavigation(item.path)}>
-                <span className="text-xs sm:text-sm text-foreground/80 hover:text-primary transition-colors">{item.label}</span>
-              </DropdownMenuItem>
-            ))}
-          </ul>
-        </div>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <div 
+      className="relative inline-block"
+      onMouseEnter={() => handleDropdownMouseEnter("resources")}
+      onMouseLeave={handleDropdownMouseLeave}
+    >
+      <DropdownMenu open={openDropdown === "resources"} modal={false}>
+        <DropdownMenuTrigger asChild>
+          <span className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-primary transition-colors cursor-pointer py-2 px-1 lg:px-2 group font-sans">
+            Resources
+            <ChevronDown className={`h-3.5 w-3.5 lg:h-4 lg:w-4 transition-transform duration-200 ${openDropdown === "resources" ? "rotate-180" : "group-hover:rotate-180"}`} />
+          </span>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent 
+          className="w-[240px] p-4 z-[100]" 
+          align="start" 
+          sideOffset={8}
+          onMouseEnter={() => handleDropdownMouseEnter("resources")}
+          onMouseLeave={handleDropdownMouseLeave}
+        >
+          <div className="space-y-3">
+            <h3 className="text-xs sm:text-sm font-semibold text-foreground border-b border-border pb-1.5 font-serif">Support</h3>
+            <ul className="space-y-2 font-sans">
+              {resourceItems.map((item) => (
+                <DropdownMenuItem 
+                  key={item.label} 
+                  className="cursor-pointer px-0 py-1 hover:bg-transparent focus:bg-transparent" 
+                  onClick={() => handleNavigation(item.path)}
+                >
+                  <span className="text-xs sm:text-sm text-foreground/80 hover:text-primary transition-colors">{item.label}</span>
+                </DropdownMenuItem>
+              ))}
+            </ul>
+          </div>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
   );
 
   const WhoWeAreDropdown = () => (
-    <DropdownMenu onOpenChange={(open) => setOpenDropdown(open ? "whoweare" : null)} open={openDropdown === "whoweare"} modal={false}>
-      <DropdownMenuTrigger asChild>
-        <span className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-primary transition-colors cursor-pointer py-2 px-1 lg:px-2 group font-sans">
-          Who we are
-          <ChevronDown className={`h-3.5 w-3.5 lg:h-4 lg:w-4 transition-transform duration-200 ${openDropdown === "whoweare" ? "rotate-180" : "group-hover:rotate-180"}`} />
-        </span>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-[240px] p-3 z-[100]" align="start" sideOffset={8} onMouseEnter={() => setOpenDropdown("whoweare")} onMouseLeave={() => setOpenDropdown(null)}>
-        <div className="space-y-1">
-          <DropdownMenuItem className="cursor-pointer px-3 py-2.5 hover:bg-accent/50 focus:bg-accent/50 rounded-lg group" onClick={() => handleNavigation('/aboutus')}>
-            <div className="flex flex-col">
-              <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors font-sans">About Us</span>
-              <span className="text-xs text-muted-foreground/70 group-hover:text-muted-foreground transition-colors">Our story, mission & vision</span>
-            </div>
-          </DropdownMenuItem>
-          <DropdownMenuItem className="cursor-pointer px-3 py-2.5 hover:bg-accent/50 focus:bg-accent/50 rounded-lg group" onClick={() => handleNavigation('/joinus')}>
-            <div className="flex flex-col">
-              <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors font-sans">Join Us</span>
-              <span className="text-xs text-muted-foreground/70 group-hover:text-muted-foreground transition-colors">Careers & opportunities</span>
-            </div>
-          </DropdownMenuItem>
-        </div>
-        <DropdownMenuSeparator className="my-2" />
-        <div className="px-2 py-1">
-          <p className="text-[10px] sm:text-xs text-muted-foreground/60 italic font-sans">Be part of our journey</p>
-        </div>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <div 
+      className="relative inline-block"
+      onMouseEnter={() => handleDropdownMouseEnter("whoweare")}
+      onMouseLeave={handleDropdownMouseLeave}
+    >
+      <DropdownMenu open={openDropdown === "whoweare"} modal={false}>
+        <DropdownMenuTrigger asChild>
+          <span className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-primary transition-colors cursor-pointer py-2 px-1 lg:px-2 group font-sans">
+            Who we are
+            <ChevronDown className={`h-3.5 w-3.5 lg:h-4 lg:w-4 transition-transform duration-200 ${openDropdown === "whoweare" ? "rotate-180" : "group-hover:rotate-180"}`} />
+          </span>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent 
+          className="w-[240px] p-3 z-[100]" 
+          align="start" 
+          sideOffset={8}
+          onMouseEnter={() => handleDropdownMouseEnter("whoweare")}
+          onMouseLeave={handleDropdownMouseLeave}
+        >
+          <div className="space-y-1">
+            <DropdownMenuItem 
+              className="cursor-pointer px-3 py-2.5 hover:bg-accent/50 focus:bg-accent/50 rounded-lg group" 
+              onClick={() => handleNavigation('/aboutus')}
+            >
+              <div className="flex flex-col">
+                <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors font-sans">About Us</span>
+                <span className="text-xs text-muted-foreground/70 group-hover:text-muted-foreground transition-colors">Our story, mission & vision</span>
+              </div>
+            </DropdownMenuItem>
+            <DropdownMenuItem 
+              className="cursor-pointer px-3 py-2.5 hover:bg-accent/50 focus:bg-accent/50 rounded-lg group" 
+              onClick={() => handleNavigation('/joinus')}
+            >
+              <div className="flex flex-col">
+                <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors font-sans">Join Us</span>
+                <span className="text-xs text-muted-foreground/70 group-hover:text-muted-foreground transition-colors">Careers & opportunities</span>
+              </div>
+            </DropdownMenuItem>
+          </div>
+          <DropdownMenuSeparator className="my-2" />
+          <div className="px-2 py-1">
+            <p className="text-[10px] sm:text-xs text-muted-foreground/60 italic font-sans">Be part of our journey</p>
+          </div>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
   );
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${scrolled ? "bg-background/95 backdrop-blur-md border-b border-border/40 shadow-sm py-1 sm:py-2" : "bg-background/90 backdrop-blur-sm border-b border-border/40"}`}>
+    <nav className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${
+      scrolled 
+        ? "bg-background/95 backdrop-blur-md border-b border-border/40 shadow-sm py-1 sm:py-2" 
+        : "bg-background/90 backdrop-blur-sm border-b border-border/40"
+    }`}>
       <div className="container mx-auto flex h-14 sm:h-16 items-center justify-between px-3 sm:px-4 md:px-6 lg:px-8">
         <Link to="/" className="flex items-center gap-1.5 sm:gap-2">
-          <img src={logo} alt="Hero" className="h-25 w-auto object-contain" />
+          <img src={logo} alt="AVXONIA INNOVATIONS" className="h-20 sm:h-22 w-auto object-contain" />
         </Link>
 
         <div className="hidden lg:flex items-center gap-1 xl:gap-4">
@@ -168,7 +233,10 @@ const Navbar = () => {
               <NavigationMenuItem><ResourcesDropdown /></NavigationMenuItem>
               <NavigationMenuItem><WhoWeAreDropdown /></NavigationMenuItem>
               <NavigationMenuItem>
-                <span onClick={() => handleNavigation('/blog')} className="inline-flex items-center text-sm font-medium text-foreground hover:text-primary transition-colors cursor-pointer py-2 px-2 font-sans">
+                <span 
+                  onClick={() => handleNavigation('/blog')} 
+                  className="inline-flex items-center text-sm font-medium text-foreground hover:text-primary transition-colors cursor-pointer py-2 px-2 font-sans"
+                >
                   Blog
                 </span>
               </NavigationMenuItem>
@@ -177,16 +245,50 @@ const Navbar = () => {
         </div>
 
         <div className="hidden lg:flex items-center gap-2 xl:gap-3">
-          <Button variant="default" size="sm" className="bg-primary hover:bg-primary/90 text-white px-3 xl:px-5 h-8 xl:h-9 font-sans text-xs xl:text-sm" onClick={() => handleNavigation('/projects')}>Discover</Button>
-          <Button variant="outline" size="sm" className="bg-primary hover:bg-primary/90 text-white px-3 xl:px-5 h-8 xl:h-9 font-sans text-xs xl:text-sm" onClick={() => handleNavigation('/contact')}>Appointment</Button>
+          <Button 
+            variant="default" 
+            size="sm" 
+            className="bg-primary hover:bg-primary/90 text-white px-3 xl:px-5 h-8 xl:h-9 font-sans text-xs xl:text-sm" 
+            onClick={() => handleNavigation('/projects')}
+          >
+            Discover
+          </Button>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="bg-primary hover:bg-primary/90 text-white px-3 xl:px-5 h-8 xl:h-9 font-sans text-xs xl:text-sm" 
+            onClick={() => handleNavigation('/contact')}
+          >
+            Appointment
+          </Button>
         </div>
 
         <div className="flex lg:hidden items-center gap-2">
           <div className="hidden sm:flex lg:hidden items-center gap-2">
-            <Button variant="default" size="sm" className="bg-primary hover:bg-primary/90 text-white px-3 h-8 font-sans text-xs" onClick={() => handleNavigation('/projects')}>Discover</Button>
-            <Button variant="outline" size="sm" className="!text-white border-white hover:!text-white hover:border-white font-sans text-xs sm:text-sm h-8 sm:h-9" onClick={() => handleNavigation('/contact')}>Appointment</Button>
+            <Button 
+              variant="default" 
+              size="sm" 
+              className="bg-primary hover:bg-primary/90 text-white px-3 h-8 font-sans text-xs" 
+              onClick={() => handleNavigation('/projects')}
+            >
+              Discover
+            </Button>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="!text-white border-white hover:!text-white hover:border-white font-sans text-xs sm:text-sm h-8 sm:h-9" 
+              onClick={() => handleNavigation('/contact')}
+            >
+              Appointment
+            </Button>
           </div>
-          <Button variant="default" size="icon" className="relative h-8 w-8 sm:h-9 sm:w-9 z-[101]" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} aria-label="Toggle menu">
+          <Button 
+            variant="default" 
+            size="icon" 
+            className="relative h-8 w-8 sm:h-9 sm:w-9 z-[101]" 
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
+            aria-label="Toggle menu"
+          >
             {isMobileMenuOpen
               ? <X className="h-4 w-4 sm:h-5 sm:w-5 !text-white transition-transform rotate-90 duration-300" />
               : <Menu className="h-4 w-4 sm:h-5 sm:w-5 !text-white transition-transform duration-300" />
@@ -199,7 +301,7 @@ const Navbar = () => {
         <SheetContent side="right" className="w-full sm:w-[450px] md:w-[500px] p-0 bg-background border-l border-border/40 z-[200] overflow-y-auto">
           <SheetHeader className="p-4 sm:p-5 border-b border-border/40 sticky top-0 bg-background/95 backdrop-blur-sm z-[201]">
             <SheetTitle className="text-left text-xl sm:text-2xl bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent font-bold font-serif">
-              <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>AVXONIA</Link>
+              <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>AVXONIA INNOVATIONS</Link>
             </SheetTitle>
             <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5 font-sans">Innovate. Transform. Succeed.</p>
             <SheetClose className="absolute right-4 top-4 sm:right-5 sm:top-5 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none">
@@ -210,7 +312,6 @@ const Navbar = () => {
 
           <div className="flex flex-col h-[calc(100vh-5rem)] overflow-y-auto">
             <div className="flex-1 py-1 sm:py-2">
-
               <MobileAccordionItem title="Services">
                 <div className="text-white space-y-3">
                   <div>
@@ -218,7 +319,10 @@ const Navbar = () => {
                     <ul className="space-y-0.5 font-sans">
                       {serviceItems.map((item) => (
                         <SheetClose asChild key={item.value}>
-                          <li className="text-xs sm:text-sm text-foreground/70 hover:text-primary transition-colors cursor-pointer py-1.5 px-2 hover:bg-accent/50 rounded-md" onClick={() => handleServiceClick(item.value)}>
+                          <li 
+                            className="text-xs sm:text-sm text-foreground/70 hover:text-primary transition-colors cursor-pointer py-1.5 px-2 hover:bg-accent/50 rounded-md" 
+                            onClick={() => handleServiceClick(item.value)}
+                          >
                             {item.label}
                           </li>
                         </SheetClose>
@@ -227,10 +331,14 @@ const Navbar = () => {
                   </div>
                   <div className="flex flex-col sm:flex-row gap-2 pt-2">
                     <SheetClose asChild>
-                      <Button size="sm" variant="default" className="flex-1 text-xs h-8 sm:h-9 text-white font-sans" onClick={() => handleNavigation('/projects')}>Discover work</Button>
+                      <Button size="sm" variant="default" className="flex-1 text-xs h-8 sm:h-9 text-white font-sans" onClick={() => handleNavigation('/projects')}>
+                        Discover work
+                      </Button>
                     </SheetClose>
                     <SheetClose asChild>
-                      <Button variant="outline" size="sm" className="flex-1 !text-white border-white font-sans text-xs sm:text-sm h-8 sm:h-9" onClick={() => handleNavigation('/contact')}>Make an appointment</Button>
+                      <Button variant="outline" size="sm" className="flex-1 !text-white border-white font-sans text-xs sm:text-sm h-8 sm:h-9" onClick={() => handleNavigation('/contact')}>
+                        Make an appointment
+                      </Button>
                     </SheetClose>
                   </div>
                 </div>
@@ -243,7 +351,10 @@ const Navbar = () => {
                     <ul className="space-y-0.5 font-sans">
                       {resourceItems.map((item) => (
                         <SheetClose asChild key={item.label}>
-                          <li className="text-xs sm:text-sm text-foreground/70 hover:text-primary transition-colors cursor-pointer py-1.5 px-2 hover:bg-accent/50 rounded-md" onClick={() => handleNavigation(item.path)}>
+                          <li 
+                            className="text-xs sm:text-sm text-foreground/70 hover:text-primary transition-colors cursor-pointer py-1.5 px-2 hover:bg-accent/50 rounded-md" 
+                            onClick={() => handleNavigation(item.path)}
+                          >
                             {item.label}
                           </li>
                         </SheetClose>
@@ -252,10 +363,14 @@ const Navbar = () => {
                   </div>
                   <div className="flex flex-col sm:flex-row gap-2 pt-2">
                     <SheetClose asChild>
-                      <Button size="sm" variant="default" className="flex-1 text-xs h-8 sm:h-9 text-white font-sans" onClick={() => handleNavigation('/projects')}>Discover work</Button>
+                      <Button size="sm" variant="default" className="flex-1 text-xs h-8 sm:h-9 text-white font-sans" onClick={() => handleNavigation('/projects')}>
+                        Discover work
+                      </Button>
                     </SheetClose>
                     <SheetClose asChild>
-                      <Button variant="outline" size="sm" className="flex-1 !text-white border-white font-sans text-xs sm:text-sm h-8 sm:h-9" onClick={() => handleNavigation('/contact')}>Make an appointment</Button>
+                      <Button variant="outline" size="sm" className="flex-1 !text-white border-white font-sans text-xs sm:text-sm h-8 sm:h-9" onClick={() => handleNavigation('/contact')}>
+                        Make an appointment
+                      </Button>
                     </SheetClose>
                   </div>
                 </div>
@@ -277,10 +392,14 @@ const Navbar = () => {
                   </SheetClose>
                   <div className="pt-3 mt-1 border-t border-border/40 flex flex-col sm:flex-row gap-2">
                     <SheetClose asChild>
-                      <Button size="sm" variant="default" className="flex-1 text-xs h-8 sm:h-9 text-white font-sans" onClick={() => handleNavigation('/projects')}>Discover work</Button>
+                      <Button size="sm" variant="default" className="flex-1 text-xs h-8 sm:h-9 text-white font-sans" onClick={() => handleNavigation('/projects')}>
+                        Discover work
+                      </Button>
                     </SheetClose>
                     <SheetClose asChild>
-                      <Button variant="outline" size="sm" className="flex-1 !text-white border-white font-sans text-xs sm:text-sm h-8 sm:h-9" onClick={() => handleNavigation('/contact')}>Make an appointment</Button>
+                      <Button variant="outline" size="sm" className="flex-1 !text-white border-white font-sans text-xs sm:text-sm h-8 sm:h-9" onClick={() => handleNavigation('/contact')}>
+                        Make an appointment
+                      </Button>
                     </SheetClose>
                   </div>
                 </div>
@@ -289,13 +408,19 @@ const Navbar = () => {
 
             <div className="border-t border-border/40 p-4 sm:p-5 space-y-2 bg-muted/30 mt-auto sticky bottom-0 backdrop-blur-sm">
               <SheetClose asChild>
-                <Button className="w-full h-10 sm:h-11 text-white font-sans text-xs sm:text-sm" size="lg" variant="default" onClick={() => handleNavigation('/blog')}>Blog</Button>
+                <Button className="w-full h-10 sm:h-11 text-white font-sans text-xs sm:text-sm" size="lg" variant="default" onClick={() => handleNavigation('/blog')}>
+                  Blog
+                </Button>
               </SheetClose>
               <SheetClose asChild>
-                <Button className="w-full h-10 sm:h-11 text-white font-sans text-xs sm:text-sm" size="lg" variant="default" onClick={() => handleNavigation('/projects')}>Discover our work</Button>
+                <Button className="w-full h-10 sm:h-11 text-white font-sans text-xs sm:text-sm" size="lg" variant="default" onClick={() => handleNavigation('/projects')}>
+                  Discover our work
+                </Button>
               </SheetClose>
               <SheetClose asChild>
-                <Button className="!text-white w-full h-10 sm:h-11 font-sans text-xs sm:text-sm" variant="outline" size="lg" onClick={() => handleNavigation('/contact')}>Make an appointment</Button>
+                <Button className="!text-white w-full h-10 sm:h-11 font-sans text-xs sm:text-sm" variant="outline" size="lg" onClick={() => handleNavigation('/contact')}>
+                  Make an appointment
+                </Button>
               </SheetClose>
             </div>
           </div>

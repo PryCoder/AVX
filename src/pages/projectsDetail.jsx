@@ -232,7 +232,7 @@ const ProjectDetailPage = () => {
                     </CarouselItem>
                   ))}
                 </CarouselContent>
-                <div className="flex justify-end gap-2 mt-4 sm:mt-6">
+                <div className="flex justify-end gap-2 mt-4 sm:mt-6 text-white hover:text-gray-500">
                   <CarouselPrevious className="static translate-y-0 rounded-full w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10 border-gray-200" />
                   <CarouselNext className="static translate-y-0 rounded-full w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10 border-gray-200" />
                 </div>

@@ -296,13 +296,7 @@ const FAQ = () => {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(0,0,0,0.02)_0%,transparent_50%)]"></div>
         
         <div className="max-w-4xl mx-auto text-center">
-          <Badge 
-            variant="outline" 
-            className="rounded-full px-4 py-1.5 border-stone-200 bg-white/50 backdrop-blur-sm text-stone-600 sfpro-font text-xs sm:text-sm mb-6 inline-flex items-center gap-2"
-          >
-            <Sparkles className="w-3.5 h-3.5" />
-            Frequently Asked Questions
-          </Badge>
+         
           
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-stone-900 clash-font leading-[1.1] mb-6">
             Got questions?
@@ -334,7 +328,7 @@ const FAQ = () => {
                   onClick={() => setSearchQuery("")}
                   className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 p-0 rounded-full hover:bg-stone-100"
                 >
-                  <X className="w-4 h-4" />
+                  <X className="w-4 h-4 text-white" />
                 </Button>
               )}
             </div>
@@ -403,8 +397,8 @@ const FAQ = () => {
                         value={`${section.category}-${index}`}
                         className="border-none"
                       >
-                        <AccordionTrigger className="px-5 sm:px-8 py-5 hover:no-underline hover:bg-stone-50/50 transition-colors group">
-                          <span className="text-sm sm:text-base font-medium text-stone-800 group-hover:text-stone-900 sfpro-font text-left pr-8">
+                        <AccordionTrigger className="bg-gray-100 text-white px-5 sm:px-8 py-5 hover:no-underline hover:bg-stone-50/50 transition-colors group">
+                          <span className="text-sm text-white sm:text-base font-medium text-stone-800 group-hover:text-stone-400 sfpro-font text-left pr-8">
                             {item.q}
                           </span>
                         </AccordionTrigger>

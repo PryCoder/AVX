@@ -159,10 +159,10 @@ const jobListings = [
     id: 1,
     title: "Senior Frontend Developer",
     department: "Engineering",
-    location: "San Francisco, CA",
+    location: "Mumbai, India",
     type: "Full-time",
     experience: "5+ years",
-    salary: "$140k - $180k",
+    salary: "₹25k - ₹35k",
     remote: "Hybrid",
     posted: "2 days ago",
     description: "We're looking for a Senior Frontend Developer to lead our web application development. You'll work with React, TypeScript, and modern CSS frameworks.",
@@ -183,10 +183,10 @@ const jobListings = [
     id: 2,
     title: "Product Designer",
     department: "Design",
-    location: "New York, NY",
+    location: "Mumbai, India",
     type: "Full-time",
     experience: "3+ years",
-    salary: "$110k - $150k",
+    salary: "₹18k - ₹25k",
     remote: "Remote",
     posted: "1 week ago",
     description: "Join our design team to create beautiful, intuitive interfaces for our products. Collaborate with product managers and engineers.",
@@ -203,34 +203,11 @@ const jobListings = [
     icon: "🎨",
     color: "from-pink-500/5 to-rose-500/5"
   },
-  {
-    id: 3,
-    title: "Backend Engineer",
-    department: "Engineering",
-    location: "Austin, TX",
-    type: "Full-time",
-    experience: "4+ years",
-    salary: "$130k - $170k",
-    remote: "On-site",
-    posted: "3 days ago",
-    description: "Build scalable APIs and microservices that power our platform. Work with Node.js, Python, and cloud infrastructure.",
-    requirements: [
-      "4+ years of backend development experience",
-      "Strong experience with Node.js or Python",
-      "Knowledge of database design"
-    ],
-    benefits: [
-      "Competitive salary + equity",
-      "Gym membership",
-      "Continuing education budget"
-    ],
-    icon: "⚙️",
-    color: "from-emerald-500/5 to-teal-500/5"
-  }
+ 
 ];
 
-const departments = ["All Departments", "Engineering", "Design"];
-const locations = ["All Locations", "San Francisco, CA", "New York, NY", "Austin, TX", "Remote"];
+const departments = ["All Departments", "Engineering", "Design", "Product"];
+const locations = ["All Locations", "Mumbai, India"];
 const jobTypes = ["All Types", "Full-time"];
 const remoteOptions = ["All", "Remote", "Hybrid", "On-site"];
 
@@ -269,7 +246,7 @@ const JoinUsPageContent = () => {
       job.department.toLowerCase().includes(searchQuery.toLowerCase());
     
     const matchesDepartment = selectedDepartment === "All Departments" || job.department === selectedDepartment;
-    const matchesLocation = selectedLocation === "All Locations" || job.location.includes(selectedLocation);
+    const matchesLocation = selectedLocation === "All Locations" || job.location.includes("Mumbai");
     const matchesJobType = selectedJobType === "All Types" || job.type === selectedJobType;
     const matchesRemote = selectedRemote === "All" || job.remote === selectedRemote;
     const matchesExperience = parseInt(job.experience) >= experienceRange[0] && 
@@ -280,6 +257,7 @@ const JoinUsPageContent = () => {
   });
   const API = import.meta.env.VITE_API_URL;
   console.log(API);
+  
   const handleResumeUpload = (event) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -431,7 +409,7 @@ const JoinUsPageContent = () => {
             </h1>
             
             <p className="text-base sm:text-lg lg:text-xl text-gray-500 max-w-2xl mx-auto px-4 sfpro-font font-light">
-              Build the future of digital experiences with anxvvion
+              Build the future of digital experiences with anxvvion in Mumbai
             </p>
           </div>
         </div>
@@ -534,7 +512,7 @@ const JoinUsPageContent = () => {
             {/* Results count */}
             <div className="flex items-center justify-between mb-5 sm:mb-6">
               <p className="text-xs sm:text-sm text-gray-500 sfpro-font">
-                <span className="font-semibold text-gray-900">{filteredJobs.length}</span> open positions
+                <span className="font-semibold text-gray-900">{filteredJobs.length}</span> open positions in Mumbai
               </p>
               <div className="flex items-center gap-1 text-xs sm:text-sm text-gray-400">
                 <CircleDot className="w-3 h-3" />
@@ -787,7 +765,7 @@ const JoinUsPageContent = () => {
                   Don't see your role?
                 </h3>
                 <p className="text-gray-300 mb-5 sm:mb-6 max-w-lg mx-auto text-xs sm:text-sm px-2">
-                  Send us your resume and we'll reach out when a matching position opens.
+                  Send us your resume and we'll reach out when a matching position opens in Mumbai.
                 </p>
                 
                 <Button 
@@ -806,7 +784,7 @@ const JoinUsPageContent = () => {
                         Send your resume
                       </DialogTitle>
                       <DialogDescription className="text-xs sm:text-sm">
-                        We'll keep you in our talent pool and reach out when a matching position opens.
+                        We'll keep you in our talent pool and reach out when a matching position opens in Mumbai.
                       </DialogDescription>
                     </DialogHeader>
                     
