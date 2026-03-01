@@ -12,6 +12,7 @@ import ProjectGallery from './pages/projectgallery';
 import Layout from './components/cta';
 import BlogPage from './pages/blog';
 import BlogDetail from './pages/blogDetail';
+import FAQ from './pages/faq';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route path="/secure-admin" element={<AdminDashboard />} />
           <Route path="/joinus" element={<JoinUsPage />} />
           <Route path="/project/:id" element={<ProjectDetailPage />} />
+          <Route path="/faq" element={<FAQ />} />
         </Routes>
       
 </Layout>

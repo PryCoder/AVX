@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSearchParams } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import {
   Grid,
@@ -83,15 +84,29 @@ const ProjectGallery = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedStack, setSelectedStack] = useState("all");
   const [selectedYear, setSelectedYear] = useState("all");
+  const [selectedService, setSelectedService] = useState("all"); // Add this
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState("grid");
   const [activeTab, setActiveTab] = useState("all");
   const [hoveredId, setHoveredId] = useState(null);
-
+  const [searchParams] = useSearchParams();
   // Get unique stacks and years for filters
   const stacks = ["all", ...new Set(projects.map(p => p.stack?.split(" + ")[0]).filter(Boolean))];
   const years = ["all", ...new Set(projects.map(p => p.year).filter(Boolean))];
 
+  const serviceItems = [
+    { label: "All Services", value: "all" },
+    { label: "Web Development", value: "Website Development" },
+    { label: "UI/UX Design", value: "UI/UX Design" },
+    { label: "AI Automation", value: "Ai Automation" },
+  ];
+
+  useEffect(() => {
+    const serviceParam = searchParams.get('service');
+    if (serviceParam) {
+      setSelectedService(serviceParam); // Use selectedService instead of selectedStack
+    }
+  }, [searchParams]);
   useEffect(() => {
     // Simulate loading
     setTimeout(() => {
@@ -120,7 +135,14 @@ const ProjectGallery = () => {
       );
     }
 
-    // Filter by stack
+    // Filter by service (from navbar navigation)
+    if (selectedService !== "all") {
+      filtered = filtered.filter(p =>
+        p.services?.toLowerCase().includes(selectedService.toLowerCase())
+      );
+    }
+
+    // Filter by stack (from dropdown)
     if (selectedStack !== "all") {
       filtered = filtered.filter(p => p.stack?.includes(selectedStack));
     }
@@ -131,7 +153,7 @@ const ProjectGallery = () => {
     }
 
     setFilteredProjects(filtered);
-  }, [activeTab, searchQuery, selectedStack, selectedYear, projects]);
+  }, [activeTab, searchQuery, selectedStack, selectedYear, selectedService, projects]);
 
   const getIcon = (iconName) => {
     const IconComponent = iconMap[iconName] || iconMap.default;
@@ -167,13 +189,8 @@ console.log(projects.id)
         
         <div className="max-w-7xl mx-auto flex justify-center">
   <div className="max-w-3xl text-center">
-    <Badge
-      variant="outline"
-      className="mb-4 sm:mb-6 rounded-full px-3 sm:px-4 py-1 sm:py-1.5 border-stone-200 text-stone-600 sfpro-font text-xs sm:text-sm mx-auto w-fit"
-    >
-      <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1.5 sm:mr-2" />
-      Selected Works
-    </Badge>
+    
+      
 
     <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-stone-900 mb-4 sm:mb-6 clash-font leading-[1.1]">
       Crafting digital
@@ -249,8 +266,9 @@ console.log(projects.id)
                 </div>
               </div>
 
-              <div className="mt-4 sm:mt-6 flex flex-col sm:flex-row gap-3 sm:gap-4">
-                <div className="relative flex-1 group">
+              <div className="mt-4 sm:mt-6 flex flex-col gap-3">
+                {/* Search */}
+                <div className="relative w-full group">
                   <Search className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 sm:w-4 sm:h-4 text-stone-400 transition-colors group-focus-within:text-stone-600" />
                   <Input
                     placeholder="Search projects..."
@@ -270,13 +288,34 @@ console.log(projects.id)
                   )}
                 </div>
 
-                <div className="flex gap-2 sm:gap-3">
-                  <Select value={selectedStack} onValueChange={setSelectedStack}>
-                    <SelectTrigger className="w-full sm:w-[160px] rounded-full border-stone-200 bg-white/80 backdrop-blur-sm h-10 sm:h-12 px-3 sm:px-5 sfpro-font text-xs sm:text-sm">
-                      <Filter className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2" />
-                      <SelectValue placeholder="Stack" />
+                {/* Filters Row - scrollable on mobile */}
+                <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+                  {/* Service Filter */}
+                  <Select value={selectedService} onValueChange={setSelectedService}>
+                    <SelectTrigger className="min-w-[140px] flex-shrink-0 rounded-full border-stone-200 bg-white/80 backdrop-blur-sm h-9 sm:h-11 px-3 sm:px-4 sfpro-font text-xs sm:text-sm">
+                      <div className="flex items-center gap-1.5">
+                        <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 flex-shrink-0" />
+                        <SelectValue placeholder="Service" />
+                      </div>
                     </SelectTrigger>
-                    <SelectContent className="rounded-xl border-stone-200">
+                    <SelectContent className="rounded-xl border-stone-200" position="popper" sideOffset={4}>
+                      {serviceItems.map(item => (
+                        <SelectItem key={item.value} value={item.value} className="sfpro-font text-xs sm:text-sm">
+                          {item.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+
+                  {/* Stack Filter */}
+                  <Select value={selectedStack} onValueChange={setSelectedStack}>
+                    <SelectTrigger className="min-w-[120px] flex-shrink-0 rounded-full border-stone-200 bg-white/80 backdrop-blur-sm h-9 sm:h-11 px-3 sm:px-4 sfpro-font text-xs sm:text-sm">
+                      <div className="flex items-center gap-1.5">
+                        <Filter className="w-3 h-3 sm:w-3.5 sm:h-3.5 flex-shrink-0" />
+                        <SelectValue placeholder="Stack" />
+                      </div>
+                    </SelectTrigger>
+                    <SelectContent className="rounded-xl border-stone-200" position="popper" sideOffset={4}>
                       {stacks.map(stack => (
                         <SelectItem key={stack} value={stack} className="sfpro-font text-xs sm:text-sm capitalize">
                           {stack === "all" ? "All Stacks" : stack}
@@ -285,12 +324,15 @@ console.log(projects.id)
                     </SelectContent>
                   </Select>
 
+                  {/* Year Filter */}
                   <Select value={selectedYear} onValueChange={setSelectedYear}>
-                    <SelectTrigger className="w-full sm:w-[140px] rounded-full border-stone-200 bg-white/80 backdrop-blur-sm h-10 sm:h-12 px-3 sm:px-5 sfpro-font text-xs sm:text-sm">
-                      <Calendar className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2" />
-                      <SelectValue placeholder="Year" />
+                    <SelectTrigger className="min-w-[110px] flex-shrink-0 rounded-full border-stone-200 bg-white/80 backdrop-blur-sm h-9 sm:h-11 px-3 sm:px-4 sfpro-font text-xs sm:text-sm">
+                      <div className="flex items-center gap-1.5">
+                        <Calendar className="w-3 h-3 sm:w-3.5 sm:h-3.5 flex-shrink-0" />
+                        <SelectValue placeholder="Year" />
+                      </div>
                     </SelectTrigger>
-                    <SelectContent className="rounded-xl border-stone-200">
+                    <SelectContent className="rounded-xl border-stone-200" position="popper" sideOffset={4}>
                       {years.map(year => (
                         <SelectItem key={year} value={year} className="sfpro-font text-xs sm:text-sm">
                           {year === "all" ? "All Years" : year}
@@ -505,6 +547,7 @@ console.log(projects.id)
                   setSearchQuery("");
                   setSelectedStack("all");
                   setSelectedYear("all");
+                  setSelectedService("all"); // also reset service filter
                   setActiveTab("all");
                 }}
                 className="rounded-full px-6 sm:px-8 py-4 sm:py-6 border-stone-200 hover:border-stone-300 text-stone-600 hover:text-stone-900 transition-all sfpro-font text-xs sm:text-sm"

@@ -32,13 +32,13 @@ const Landingpage = () => {
                 <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-light tracking-tight">
                   <span className="font-serif italic text-black/80">Our</span>
                   <br />
-                  <span className="clash-font text-5xl sm:text-40xl md:text-20xl lg:text-10xl xl:text-9xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-black/90 to-black/70">
-  AVXONIA
+                  <span className="clash-font text-5xl sm:text-30xl md:text-15xl lg:text-7xl xl:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-black/90 to-black/70">
+  SERVICES
 </span>
 
 
                   <br />
-                  <span className="font-light text-black/60 text-4xl sm:text-5xl md:text-6xl lg:text-7xl">services</span>
+                
                 </h1>
                 
                 {/* Description */}
@@ -53,17 +53,13 @@ const Landingpage = () => {
                 <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center">
                  <Link to={'/contact'}> <Button 
                     size="lg" 
-                    className="bg-black text-white hover:bg-black/90 font-medium text-sm sm:text-base h-12 sm:h-14 px-6 sm:px-10 rounded-none shadow-lg transform hover:scale-105 transition-all duration-300 w-full sm:w-auto"
+                    className="bg-black sf-font text-white hover:bg-black/90 font-medium text-sm sm:text-base h-12 sm:h-14 px-6 sm:px-10 rounded-none shadow-lg transform hover:scale-105 transition-all duration-300 w-full sm:w-auto"
                   >
                     Make an appointment
                   </Button></Link>
                   
                   {/* 10+ Projects Badge */}
-                  <div className="flex items-center gap-2 sm:gap-3 px-5 sm:px-6 py-2 sm:py-3 bg-black/[0.02] backdrop-blur-md border border-black/10 w-full sm:w-auto justify-center sm:justify-start">
-                    <span className="text-2xl sm:text-3xl font-light text-black/80">5</span>
-                    <span className="text-lg sm:text-xl font-light text-black/50">+</span>
-                    <span className="text-xs sm:text-sm uppercase tracking-wider text-black/50 ml-1">Projects</span>
-                  </div>
+                 
                 </div>
               </div>
 

@@ -184,7 +184,7 @@ export default function BlogPage() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50">
+    <div className="mt-20 min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50">
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 text-white overflow-hidden">
         <div className="absolute inset-0">

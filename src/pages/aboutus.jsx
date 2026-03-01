@@ -310,15 +310,11 @@ const HeroSection = () => {
           transform transition-all duration-1000
           ${isTextVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}
         `}>
-          <div className="flex items-center justify-center gap-2 mb-4 md:mb-6">
-            <Sparkle className="w-4 h-4 md:w-5 md:h-5 text-stone-600 animate-sparkle" />
-            <span className="text-xs md:text-sm tracking-[0.3em] text-stone-600 sfpro-font">DIGITAL STUDIO</span>
-            <Sparkle className="w-4 h-4 md:w-5 md:h-5 text-stone-600 animate-sparkle-delayed" />
-          </div>
+          
 
           <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-light mb-4 md:mb-8 clash-font">
             <span className="block animate-text-reveal">WE ARE</span>
-            <span className="block font-bold text-stone-800 animate-text-reveal [animation-delay:0.2s]">AVX</span>
+            <span className="block font-bold text-stone-800 animate-text-reveal [animation-delay:0.2s]">AVXONIA INNOVATIONS</span>
           </h1>
 
           <p className="text-base sm:text-lg md:text-xl text-stone-600 mb-8 md:mb-12 max-w-2xl mx-auto px-4 sfpro-font animate-text-reveal [animation-delay:0.4s]">
