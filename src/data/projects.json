@@ -171,6 +171,50 @@
         "Improved client-designer matching system",
         "High engagement in first launch phase"
       ]
+    },
+    {
+      "id": 5,
+      "name": "HeavenlyWeds",
+      "slug": "heavenlyweds",
+      "services": "Website Development",
+      "stack": "React.js + Tailwind CSS",
+      "shortDescription": "Simple personal wedding website for sharing event details, couple story, and photo gallery.",
+      "fullDescription": "HeavenlyWeds is a clean and elegant personal wedding website created for a client to share their wedding details with friends and family. The website includes the couple’s story, event schedule, venue details, and a small photo gallery. It was designed to be simple, fast, and mobile-friendly so guests can easily view all wedding information in one place.",
+      "image": "/projects/p51.png",
+      "gallery": [
+        "/projects/p52.png",
+        "/projects/p53.png",
+        "/projects/p54.png"
+      ],
+      "icon": "Heart",
+      "color": "from-pink-500/20 to-rose-500/20",
+      "client": "Private Client",
+      "year": "2026",
+      "duration": "2 weeks",
+      "role": "Frontend Developer",
+      "website": "https://heavenly-6sqh.vercel.app/",
+      "features": [
+        "Couple introduction section",
+        "Wedding event schedule",
+        "Venue location details",
+        "Photo gallery",
+        "Whatsapp Integration",
+        "Contact Form",
+        "Mobile responsive design"
+      ],
+      "technologies": [
+        "React.js",
+        "Tailwind CSS",
+        "Vercel"
+      ],
+      "challenge": "The goal was to design a beautiful wedding website while keeping it simple and easy for guests to navigate.",
+      "solution": "A minimal and responsive design was built using Next.js and Tailwind CSS to ensure fast loading and a smooth user experience.",
+      "results": [
+        "Simple and elegant wedding website",
+        "Easy access to wedding details for guests",
+        "Fast and mobile-friendly experience"
+      ]
     }
   ]
+  
 }

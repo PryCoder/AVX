@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Badge } from "../components/ui/badge";
 import {
@@ -10,10 +10,13 @@ import {
   Heart,
   Moon,
 } from "lucide-react";
+import { motion, useInView } from "framer-motion";
 
 const Footer = () => {
   const navigate = useNavigate();
   const currentYear = new Date().getFullYear();
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
 
   const handleServiceClick = (service) => {
     navigate(`/projects?service=${encodeURIComponent(service)}`);
@@ -44,8 +47,10 @@ const Footer = () => {
   };
 
   return (
-    <footer className="relative bg-[#0a0a0a] border-t border-stone-800/60 w-full overflow-x-hidden">
-      
+    <footer
+      ref={ref}
+      className="relative bg-[#0a0a0a] border-t border-stone-800/60 w-full overflow-x-hidden"
+    >
       {/* Background */}
       <div className="absolute inset-0 w-screen bg-[#0a0a0a] left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]">
         <div className="absolute inset-0 pointer-events-none">
@@ -59,12 +64,15 @@ const Footer = () => {
 
       {/* Content */}
       <div className="relative max-w-7xl mx-auto px-6 sm:px-8 md:px-12 lg:px-16 xl:px-20 py-16 sm:py-20 lg:py-24">
-        
         {/* Grid */}
         <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 mb-12 lg:mb-16">
-          
           {/* Brand */}
-          <div className="lg:col-span-5 space-y-6">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="lg:col-span-5 space-y-6"
+          >
             <Badge
               variant="outline"
               className="border-stone-700/70 bg-stone-900/60 backdrop-blur-sm px-4 py-1.5 rounded-full"
@@ -88,15 +96,23 @@ const Footer = () => {
             </div>
 
             <p className="text-sm text-stone-400/80 leading-relaxed max-w-md font-light">
-              We believe in the alchemy of design and technology —
-              transforming complex ideas into elegant, human-centered solutions
-              that resonate and endure.
+              We believe in the alchemy of design and technology — transforming
+              complex ideas into elegant, human-centered solutions that
+              resonate and endure.
             </p>
-          </div>
+          </motion.div>
 
           {/* Navigation */}
-          <div className="lg:col-span-6 lg:col-start-7 grid grid-cols-2 md:grid-cols-2 gap-10 lg:gap-16">
-            
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{
+              duration: 0.8,
+              delay: 0.15,
+              ease: [0.25, 0.46, 0.45, 0.94],
+            }}
+            className="lg:col-span-6 lg:col-start-7 grid grid-cols-2 md:grid-cols-2 gap-10 lg:gap-16"
+          >
             {/* Services */}
             <div className="space-y-5">
               <h3 className="font-serif text-base italic text-stone-200 border-b border-stone-800/80 pb-2 inline-block">
@@ -116,10 +132,7 @@ const Footer = () => {
                 ))}
               </ul>
             </div>
-
-          
-
-          </div>
+          </motion.div>
         </div>
 
         {/* Divider */}
@@ -137,7 +150,12 @@ const Footer = () => {
         </div>
 
         {/* Bottom */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={inView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.8, delay: 0.35 }}
+          className="flex flex-col md:flex-row items-center justify-between gap-6"
+        >
           <div className="flex items-center gap-3 text-sm text-stone-500">
             <span>© {currentYear}</span>
             <span className="text-stone-700">✦</span>
@@ -153,20 +171,30 @@ const Footer = () => {
             <span className="text-[10px] uppercase tracking-[0.25em] text-stone-500 font-light">
               Connect
             </span>
-            {navigation.social.map((item) => {
+            {navigation.social.map((item, i) => {
               const Icon = item.icon;
               return (
-                <a
+                <motion.a
                   key={item.name}
                   href={item.href}
-                  className="group relative w-9 h-9 rounded-full bg-stone-900/80 hover:bg-stone-100 flex items-center justify-center transition-all duration-500 border border-stone-800 hover:border-stone-400"
+                  initial={{ opacity: 0, scale: 0.6 }}
+                  animate={inView ? { opacity: 1, scale: 1 } : {}}
+                  transition={{
+                    duration: 0.4,
+                    delay: 0.4 + i * 0.07,
+                    type: "spring",
+                    stiffness: 300,
+                  }}
+                  whileHover={{ scale: 1.15, rotate: 5 }}
+                  whileTap={{ scale: 0.92 }}
+                  className="group relative w-9 h-9 rounded-full bg-stone-900/80 hover:bg-stone-100 flex items-center justify-center transition-colors duration-300 border border-stone-800 hover:border-stone-400"
                 >
-                  <Icon className="w-4 h-4 text-stone-400 group-hover:text-stone-900 transition-colors duration-500" />
-                </a>
+                  <Icon className="w-4 h-4 text-stone-400 group-hover:text-stone-900 transition-colors duration-300" />
+                </motion.a>
               );
             })}
           </div>
-        </div>
+        </motion.div>
 
         {/* Signature */}
         <div className="mt-10 pt-8 flex justify-end border-t border-stone-800/40">

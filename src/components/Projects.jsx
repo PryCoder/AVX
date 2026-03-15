@@ -74,9 +74,9 @@ const ProjectsPage = () => {
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="rounded-full w-8 h-8 bg-gray-50 hover:bg-gray-900 hover:text-white transition-all duration-300 -mt-1"
+                    className="rounded-full w-8 h-8 bg-gray-50 text-gray-100 hover:bg-gray-900 hover:text-white transition-all duration-300 -mt-1"
                   >
-                    <ArrowUpRight className="w-4 h-4" />
+                    <ArrowUpRight className=" h-4" />
                   </Button>
                 </div>
                 
