@@ -1,865 +1,791 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  motion, useInView, useMotionValue, useSpring,
-} from 'framer-motion';
-import {
-  ArrowRight, ArrowUpRight, CheckCircle, XCircle,
-  BarChart3, Bot, Layout, MessageCircle,
-} from 'lucide-react';
+import { motion, useInView, useMotionValue, useSpring } from 'framer-motion';
+// Add Users and Clock to the imports here:
+import { ArrowRight, CheckCircle, XCircle, BarChart3, Bot, Layout, ArrowUpRight, MessageCircle, Sparkles, Zap, TrendingUp, Users, Clock } from 'lucide-react';
+import { Button } from "../components/ui/button";
 import Loader from "../components/loader";
 import projectsData from '../data/projects.json';
-// Import the navbar
 
-/* ─────────────────────────────────────────────────
-   DESIGN TOKENS — warm editorial dark
-───────────────────────────────────────────────── */
-const C = {
-  bg:       '#0A0908',
-  surface:  '#111110',
-  border:   '#1E1C1A',
-  borderMd: '#2C2926',
-  muted:    '#5C5852',
-  sub:      '#8C8880',
-  body:     '#C4BFB8',
-  head:     '#F0EDE8',
-  accent:   '#D4A96A',
-  accentDim:'#6B5535',
-};
-
-const ease = [0.22, 1, 0.36, 1];
-
-/* ─────────────────────────────────────────────────
-   HELPERS
-───────────────────────────────────────────────── */
-const Reveal = ({ children, delay = 0, y = 28, className = '', style = {} }) => {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, amount: 0.1 });
-  return (
-    <motion.div
-      ref={ref} 
-      className={className} 
-      style={style}
-      initial={{ opacity: 0, y }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.85, ease, delay }}
-    >
-      {children}
-    </motion.div>
-  );
-};
-
-const Tag = ({ children }) => (
-  <span style={{
-    display: 'inline-flex', alignItems: 'center', gap: 6,
-    fontFamily: '"DM Mono", monospace',
-    fontSize: 'clamp(0.5rem, 2vw, 0.625rem)',
-    letterSpacing: '0.16em',
-    textTransform: 'uppercase', color: C.accent,
-    border: `1px solid ${C.accentDim}`,
-    borderRadius: 4, padding: '4px 10px',
-  }}>
-    <span style={{ width: 5, height: 5, borderRadius: '50%', background: C.accent, display: 'inline-block' }} />
-    {children}
-  </span>
-);
-
-const Divider = () => (
-  <div style={{ height: 1, background: C.border }} />
-);
-
-/* ─────────────────────────────────────────────────
-   ANIMATED COUNTER
-───────────────────────────────────────────────── */
-const Counter = ({ to, suffix = '' }) => {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true });
-  const [val, setVal] = useState(0);
-  useEffect(() => {
-    if (!inView) return;
-    let animationFrameId;
-    const dur = 1400;
-    const startTime = performance.now();
-    
-    const updateCounter = (currentTime) => {
-      const elapsed = currentTime - startTime;
-      const progress = Math.min(elapsed / dur, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setVal(Math.round(eased * to));
-      
-      if (progress < 1) {
-        animationFrameId = requestAnimationFrame(updateCounter);
-      }
-    };
-    
-    animationFrameId = requestAnimationFrame(updateCounter);
-    return () => {
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
-      }
-    };
-  }, [inView, to]);
-  
-  return <span ref={ref}>{val}{suffix}</span>;
-};
-
-/* ─────────────────────────────────────────────────
-   GRAIN OVERLAY
-───────────────────────────────────────────────── */
-const Grain = () => (
-  <svg style={{
-    position: 'fixed', inset: 0, width: '100%', height: '100%',
-    pointerEvents: 'none', zIndex: 9999, opacity: 0.028,
-  }} xmlns="http://www.w3.org/2000/svg">
-    <filter id="noise">
-      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" />
-      <feColorMatrix type="saturate" values="0" />
-    </filter>
-    <rect width="100%" height="100%" filter="url(#noise)" />
-  </svg>
-);
-
-/* ─────────────────────────────────────────────────
-   MAIN COMPONENT
-───────────────────────────────────────────────── */
 const LandingPageWrapper = () => {
   const [loading, setLoading] = useState(true);
-  const [isMobile, setIsMobile] = useState(false);
   const navigate = useNavigate();
 
-  // Detect mobile for cursor effect
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  /* cursor glow - only on desktop */
-  const mouseX = useMotionValue(-600);
-  const mouseY = useMotionValue(-600);
-  const gX = useSpring(mouseX, { damping: 35, stiffness: 180 });
-  const gY = useSpring(mouseY, { damping: 35, stiffness: 180 });
+  // Performance fix: Use motion values instead of React state to avoid re-renders on mouse move
+  const mouseX = useMotionValue(-500);
+  const mouseY = useMotionValue(-500);
+  
+  // Smooth spring physics for the cursor follow
+  const cursorX = useSpring(mouseX, { damping: 40, stiffness: 200, mass: 0.5 });
+  const cursorY = useSpring(mouseY, { damping: 40, stiffness: 200, mass: 0.5 });
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1800);
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2000);
     return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
-    if (isMobile) return; // Disable cursor effect on mobile
-    
-    const handleMouseMove = (e) => { 
-      mouseX.set(e.clientX - 300); 
-      mouseY.set(e.clientY - 300); 
+    const handleMouseMove = (e) => {
+      // Offset by half the size of the cursor div (192px)
+      mouseX.set(e.clientX - 192);
+      mouseY.set(e.clientY - 192);
     };
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [mouseX, mouseY, isMobile]);
+  }, [mouseX, mouseY]);
 
-  const featuredProjects = projectsData.projects?.slice(0, 2) || [];
+  const featuredProjects = projectsData.projects.slice(0, 2);
 
-  const fonts = `@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500&family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap');`;
+  // Buttery smooth enterprise easing curves
+  const premiumEase = [0.22, 1, 0.36, 1];
 
-  // Responsive spacing
-  const sectionPadding = {
-    padding: 'clamp(60px, 10vw, 120px) clamp(20px, 5vw, 40px)',
+  const fadeInUp = {
+    initial: { opacity: 0, y: 40 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 1, ease: premiumEase }
   };
 
-  const containerMaxWidth = {
-    maxWidth: 1200,
-    margin: '0 auto',
+  const staggerContainer = {
+    animate: {
+      transition: {
+        staggerChildren: 0.15
+      }
+    }
+  };
+
+  const scaleIn = {
+    initial: { opacity: 0, scale: 0.95 },
+    animate: { opacity: 1, scale: 1 },
+    transition: { duration: 1, ease: premiumEase }
+  };
+
+  const SectionWrapper = ({ children, className = "" }) => {
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: true, amount: 0.15 });
+    
+    return (
+      <motion.div
+        ref={ref}
+        initial={{ opacity: 0, y: 50 }}
+        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+        transition={{ duration: 1, ease: premiumEase }}
+        className={className}
+      >
+        {children}
+      </motion.div>
+    );
   };
 
   return (
     <>
-      <style>{fonts}</style>
       {loading && <Loader />}
-      <Grain />
-
-      {/* ambient cursor glow - only on desktop */}
-      {!isMobile && (
-        <motion.div style={{
-          position: 'fixed', x: gX, y: gY, zIndex: 1, pointerEvents: 'none',
-          width: 600, height: 600, borderRadius: '50%',
-          background: `radial-gradient(circle, ${C.accentDim}1A 0%, transparent 70%)`,
-        }} />
-      )}
-
-      {/* floating CTA - responsive positioning */}
-      <motion.button
-        onClick={() => navigate('/contact')}
-        initial={{ y: 80, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 2.6, type: 'spring', damping: 20 }}
-        whileHover={{ scale: 1.05 }} 
-        whileTap={{ scale: 0.96 }}
+      
+      {/* Optimized Custom Cursor Effect */}
+      <motion.div 
+        className="fixed w-96 h-96 bg-stone-900/5 rounded-full blur-3xl pointer-events-none z-[1] hidden md:block"
         style={{
-          position: 'fixed', 
-          bottom: 'clamp(16px, 4vw, 28px)', 
-          right: 'clamp(16px, 4vw, 28px)', 
-          zIndex: 200,
-          display: 'flex', alignItems: 'center', gap: 9,
-          background: C.accent, color: C.bg,
-          border: 'none', borderRadius: 100,
-          padding: 'clamp(10px, 3vw, 12px) clamp(18px, 5vw, 22px)',
-          cursor: 'pointer',
-          fontFamily: '"Instrument Sans", sans-serif',
-          fontSize: 'clamp(0.7rem, 2.5vw, 0.78rem)',
-          fontWeight: 600, letterSpacing: '0.04em',
-          boxShadow: `0 8px 36px ${C.accentDim}90`,
+          x: cursorX,
+          y: cursorY,
         }}
-      >
-        <MessageCircle size={14} /> Book a Call
-      </motion.button>
+      />
 
-      {/* Use the provided Navbar component */}
-     
+      <div className="min-h-screen bg-stone-50 sfpro-font text-stone-900 overflow-hidden relative">
+        
+        {/* Animated Background Grid */}
+        <div className="absolute top-0 left-0 w-full h-[150vh] z-0 opacity-20 pointer-events-none">
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
+          <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-stone-50 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-stone-50 to-transparent" />
+        </div>
 
-      <div style={{
-        minHeight: '100vh', background: C.bg,
-        color: C.body, overflowX: 'hidden',
-        fontFamily: '"Instrument Sans", sans-serif',
-        paddingTop: '64px', // Add padding to account for fixed navbar
-      }}>
+        {/* Sticky CTA with Pulse Animation */}
+        <motion.a 
+          href="/contact" 
+          onClick={(e) => { e.preventDefault(); navigate('/contact'); }}
+          className="fixed bottom-6 right-6 z-50 bg-stone-900 text-white p-4 rounded-full shadow-2xl hover:bg-stone-800 transition-colors duration-300"
+          aria-label="Book a Call"
+          initial={{ scale: 0, rotate: -90 }}
+          animate={{ scale: 1, rotate: 0 }}
+          transition={{ type: "spring", damping: 15, stiffness: 200, delay: 2.5 }}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <motion.div
+            animate={{ scale: [1, 1.15, 1] }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <MessageCircle className="w-6 h-6" />
+          </motion.div>
+        </motion.a>
 
-        {/* ══ HERO ══ */}
-        <section style={{
-          minHeight: 'calc(100vh - 64px)',
-          display: 'flex', flexDirection: 'column', justifyContent: 'center',
-          ...sectionPadding,
-          ...containerMaxWidth,
-          position: 'relative',
-        }}>
-          {/* grid texture - responsive */}
-          <div style={{
-            position: 'absolute', inset: 0, pointerEvents: 'none',
-            backgroundImage: `linear-gradient(${C.border}55 1px, transparent 1px), linear-gradient(90deg, ${C.border}55 1px, transparent 1px)`,
-            backgroundSize: 'clamp(40px, 8vw, 80px) clamp(40px, 8vw, 80px)',
-            maskImage: 'radial-gradient(ellipse 60% 55% at 50% 50%, black, transparent)',
-            WebkitMaskImage: 'radial-gradient(ellipse 60% 55% at 50% 50%, black, transparent)',
-          }} />
-
-          <div style={{ position: 'relative', zIndex: 2 }}>
-            <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease, delay: 0.3 }} style={{ marginBottom: 'clamp(24px, 5vw, 32px)' }}>
-              <Tag>Digital Systems Studio</Tag>
-            </motion.div>
-
-            <motion.h1
-              initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, ease, delay: 0.45 }}
-              style={{
-                fontFamily: '"Cormorant", serif',
-                fontSize: 'clamp(2.5rem, 8vw, 6.8rem)',
-                fontWeight: 300, lineHeight: 1.04,
-                color: C.head, letterSpacing: '-0.01em',
-                maxWidth: 'clamp(300px, 90vw, 860px)', 
-                marginBottom: 0,
-              }}
-            >
-              Digital Systems<br />
-              <em style={{ fontStyle: 'italic', color: C.accent }}>Built to Scale</em><br />
-              <span style={{ color: C.muted }}>Your Business</span>
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease, delay: 0.7 }}
-              style={{
-                fontSize: 'clamp(0.85rem, 3vw, 0.98rem)',
-                lineHeight: 1.72, color: C.sub,
-                maxWidth: 'clamp(280px, 80vw, 460px)',
-                marginTop: 'clamp(20px, 4vw, 28px)',
-                marginBottom: 'clamp(32px, 6vw, 44px)',
-              }}
-            >
-              We design websites and AI automation systems that increase
-              conversions, streamline operations, and drive compounding growth.
-            </motion.p>
-
-            <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, ease, delay: 0.88 }}
-              style={{ display: 'flex', gap: 'clamp(8px, 3vw, 12px)', flexWrap: 'wrap' }}
-            >
-              <button onClick={() => navigate('/contact')} style={{
-                background: C.accent, color: C.bg, border: 'none', borderRadius: 100,
-                padding: 'clamp(10px, 3vw, 13px) clamp(20px, 5vw, 28px)',
-                cursor: 'pointer',
-                fontFamily: '"Instrument Sans", sans-serif',
-                fontSize: 'clamp(0.75rem, 2.5vw, 0.82rem)',
-                fontWeight: 600, letterSpacing: '0.04em',
-                display: 'flex', alignItems: 'center', gap: 8,
-                transition: 'opacity 0.2s',
-              }}
-                onMouseEnter={e => e.currentTarget.style.opacity = '0.85'}
-                onMouseLeave={e => e.currentTarget.style.opacity = '1'}
+        {/* SECTION 1: HERO */}
+        <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 px-6 lg:px-8 max-w-7xl mx-auto z-10">
+          <motion.div 
+            className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center"
+            variants={staggerContainer}
+            initial="initial"
+            animate="animate"
+          >
+            <motion.div className="space-y-8" variants={fadeInUp}>
+              <motion.h1 
+                className="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tight leading-[1.1] clash-font"
+                variants={fadeInUp}
               >
-                Book a Strategy Call <ArrowRight size={14} />
-              </button>
-
-              <button onClick={() => navigate('/contact')} style={{
-                background: 'transparent', color: C.body,
-                border: `1px solid ${C.borderMd}`, borderRadius: 100,
-                padding: 'clamp(10px, 3vw, 13px) clamp(20px, 5vw, 28px)',
-                cursor: 'pointer',
-                fontFamily: '"Instrument Sans", sans-serif',
-                fontSize: 'clamp(0.75rem, 2.5vw, 0.82rem)',
-                letterSpacing: '0.04em',
-                transition: 'border-color 0.2s, color 0.2s',
-              }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor = C.muted; e.currentTarget.style.color = C.head; }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = C.borderMd; e.currentTarget.style.color = C.body; }}
-              >
-                Free Website Audit
-              </button>
-            </motion.div>
-
-            {/* stat strip - responsive */}
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 1.2 }}
-              style={{
-                display: 'flex', 
-                gap: 'clamp(24px, 8vw, 56px)', 
-                marginTop: 'clamp(48px, 10vw, 72px)',
-                paddingTop: 'clamp(24px, 5vw, 40px)', 
-                borderTop: `1px solid ${C.border}`,
-                flexWrap: 'wrap',
-                justifyContent: 'space-between',
-              }}
-            >
-              {[
-                { val: 42, sfx: '%', label: 'Avg. conversion lift' },
-                { val: 3, sfx: '×', label: 'Revenue multiple, avg.' },
-                { val: 18, sfx: '+', label: 'Systems shipped' },
-              ].map((s, i) => (
-                <div key={i} style={{ flex: '1 1 auto', minWidth: '120px' }}>
-                  <div style={{
-                    fontFamily: '"Cormorant", serif',
-                    fontSize: 'clamp(1.8rem, 6vw, 2.5rem)',
-                    fontWeight: 400,
-                    color: C.head, lineHeight: 1,
-                  }}>
-                    <Counter to={s.val} suffix={s.sfx} />
-                  </div>
-                  <div style={{ 
-                    fontSize: 'clamp(0.6rem, 2vw, 0.7rem)', 
-                    color: C.muted, 
-                    marginTop: 7, 
-                    letterSpacing: '0.06em' 
-                  }}>{s.label}</div>
-                </div>
-              ))}
-            </motion.div>
-          </div>
-        </section>
-
-        <Divider />
-
-        {/* ══ PROBLEM ══ - responsive grid */}
-        <section style={{
-          ...sectionPadding,
-          ...containerMaxWidth,
-        }}>
-          <Reveal style={{ marginBottom: 'clamp(40px, 8vw, 56px)' }}>
-            <Tag>The Problem</Tag>
-            <h2 style={{
-              fontFamily: '"Cormorant", serif',
-              fontSize: 'clamp(1.5rem, 5vw, 3.5rem)',
-              fontWeight: 300, color: C.head,
-              lineHeight: 1.12, marginTop: 20, 
-              maxWidth: 'clamp(280px, 90vw, 680px)',
-            }}>
-              Most websites don't fail because of design —<br />
-              <em style={{ color: C.muted, fontStyle: 'italic' }}>they fail because they don't convert.</em>
-            </h2>
-          </Reveal>
-
-          <div style={{
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(min(300px, 100%), 1fr))',
-            gap: 1, 
-            background: C.border,
-            border: `1px solid ${C.border}`, 
-            borderRadius: 16, 
-            overflow: 'hidden',
-          }}>
-            {[
-              { sym: '↗', title: 'No conversion path', desc: 'Visitors arrive but leave without acting. The funnel was never designed.' },
-              { sym: '⊘', title: 'No user journey', desc: 'Pages exist in isolation. There\'s no structured narrative guiding decisions.' },
-              { sym: '⚙', title: 'No system beneath', desc: 'The business runs on manual effort. Growth creates friction, not momentum.' },
-              { sym: '⧖', title: 'Manual bottlenecks', desc: 'Repetitive tasks drain time that should be compounding into scale.' },
-            ].map((p, i) => (
-              <Reveal key={i} delay={i * 0.08}>
-                <div style={{
-                  padding: 'clamp(32px, 6vw, 44px) clamp(24px, 5vw, 40px)',
-                  background: C.surface,
-                  transition: 'background 0.28s',
-                }}
-                  onMouseEnter={e => e.currentTarget.style.background = '#161412'}
-                  onMouseLeave={e => e.currentTarget.style.background = C.surface}
+                Digital Systems Built to{' '}
+                <motion.span 
+                  className="relative inline-block"
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: "spring", damping: 12 }}
                 >
-                  <div style={{ fontSize: 'clamp(1rem, 4vw, 1.3rem)', color: C.muted, marginBottom: 20 }}>{p.sym}</div>
-                  <h3 style={{
-                    fontFamily: '"Instrument Sans", sans-serif',
-                    fontSize: 'clamp(0.85rem, 3vw, 0.95rem)',
-                    fontWeight: 600,
-                    color: C.head, marginBottom: 10,
-                  }}>{p.title}</h3>
-                  <p style={{ fontSize: 'clamp(0.75rem, 2.5vw, 0.82rem)', color: C.sub, lineHeight: 1.68 }}>{p.desc}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </section>
-
-        <Divider />
-
-        {/* ══ SERVICES ══ - responsive layout */}
-        <section style={{
-          ...sectionPadding,
-          ...containerMaxWidth,
-        }}>
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(min(280px, 100%), 1fr))', 
-            gap: 'clamp(40px, 8vw, 80px)', 
-            alignItems: 'start' 
-          }}>
-            <Reveal>
-              <Tag>What We Build</Tag>
-              <h2 style={{
-                fontFamily: '"Cormorant", serif',
-                fontSize: 'clamp(1.5rem, 5vw, 3.4rem)',
-                fontWeight: 300, color: C.head,
-                lineHeight: 1.1, marginTop: 20,
-              }}>
-                Structured digital<br />
-                <em style={{ color: C.accent }}>growth systems</em>
-              </h2>
-              <p style={{
-                fontSize: 'clamp(0.8rem, 2.8vw, 0.88rem)',
-                color: C.sub, 
-                lineHeight: 1.72,
-                marginTop: 22, 
-                maxWidth: '100%',
-              }}>
-                Not just a website. Not just an automation. A complete, interlocking
-                system where every part is accountable to your growth.
-              </p>
-            </Reveal>
-
-            <div>
-              {[
-                { n: '01', title: 'Web Development', Icon: Layout, desc: 'Conversion-focused architecture. Every element earns its place by moving visitors toward a decision.' },
-                { n: '02', title: 'AI Automation', Icon: Bot, desc: 'Replace manual processes with intelligent workflows. Free your team to focus on what compounds.' },
-                { n: '03', title: 'System Architecture', Icon: BarChart3, desc: 'Everything connected, everything measurable. Your digital presence becomes a business asset.' },
-              ].map((s, i) => (
-                <Reveal key={i} delay={i * 0.09}>
-                  <div style={{
-                    display: 'flex', 
-                    gap: 'clamp(16px, 4vw, 24px)', 
-                    padding: 'clamp(20px, 4vw, 30px) 0',
-                    borderBottom: `1px solid ${C.border}`,
-                    flexDirection: window.innerWidth < 640 ? 'column' : 'row',
-                  }}
-                    onMouseEnter={e => e.currentTarget.querySelector('h3').style.color = C.accent}
-                    onMouseLeave={e => e.currentTarget.querySelector('h3').style.color = C.head}
+                  Scale Your Business
+                  <motion.span 
+                    className="absolute -bottom-1 sm:-bottom-2 left-0 w-full h-1 sm:h-2 bg-stone-200/60 -z-10"
+                    initial={{ width: 0 }}
+                    animate={{ width: "100%" }}
+                    transition={{ delay: 0.8, duration: 1, ease: premiumEase }}
+                  />
+                </motion.span>
+                <br/>
+                <span className="text-stone-400">Not Just Make It Look Good</span>
+              </motion.h1>
+              
+              <motion.p 
+                className="text-base sm:text-lg lg:text-xl text-stone-600 max-w-xl leading-relaxed"
+                variants={fadeInUp}
+              >
+                We design websites and AI automation systems that increase conversions, 
+                streamline operations, and drive real growth.
+              </motion.p>
+              
+              <motion.div 
+                className="flex flex-col sm:flex-row gap-4"
+                variants={fadeInUp}
+              >
+                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="w-full sm:w-auto">
+                  <Button 
+                    onClick={() => navigate('/contact')} 
+                    size="lg" 
+                    className="w-full sm:w-auto bg-stone-900 text-white rounded-full px-8 py-6 text-sm sm:text-base hover:bg-stone-800 transition-all duration-300 shadow-xl"
                   >
-                    <span style={{
-                      fontFamily: '"DM Mono", monospace',
-                      fontSize: '0.58rem', color: C.muted,
-                      letterSpacing: '0.12em', 
-                      paddingTop: 4, 
-                      minWidth: 22,
-                    }}>{s.n}</span>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 9 }}>
-                        <h3 style={{
-                          fontFamily: '"Instrument Sans", sans-serif',
-                          fontSize: 'clamp(0.85rem, 3vw, 0.95rem)',
-                          fontWeight: 600,
-                          color: C.head, transition: 'color 0.22s',
-                        }}>{s.title}</h3>
-                        <s.Icon size={14} color={C.muted} />
-                      </div>
-                      <p style={{ fontSize: 'clamp(0.75rem, 2.5vw, 0.8rem)', color: C.sub, lineHeight: 1.68 }}>{s.desc}</p>
-                    </div>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <Divider />
-
-        {/* ══ PROCESS ══ - responsive grid */}
-        <section style={{
-          ...sectionPadding,
-          ...containerMaxWidth,
-        }}>
-          <Reveal style={{ textAlign: 'center', marginBottom: 'clamp(40px, 8vw, 64px)' }}>
-            <Tag>How It Works</Tag>
-            <h2 style={{
-              fontFamily: '"Cormorant", serif',
-              fontSize: 'clamp(1.5rem, 5vw, 3.4rem)',
-              fontWeight: 300, color: C.head,
-              lineHeight: 1.1, marginTop: 20,
-            }}>Our Proven Framework</h2>
-          </Reveal>
-
-          <div style={{
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(min(250px, 100%), 1fr))',
-            gap: 1, 
-            background: C.border,
-            border: `1px solid ${C.border}`, 
-            borderRadius: 16, 
-            overflow: 'hidden',
-          }}>
-            {[
-              { n: '01', title: 'Audit', desc: 'Diagnose your current system. Map the gaps between where you are and where you need to be.' },
-              { n: '02', title: 'Strategy', desc: 'Define precisely what to build, why it matters, and how it connects to your growth.' },
-              { n: '03', title: 'Build', desc: 'Clean, scalable execution. Architecture built for longevity, not just launch.' },
-              { n: '04', title: 'Scale', desc: 'Optimise, automate, measure. Turn the system into a compounding growth engine.' },
-            ].map((step, i) => (
-              <Reveal key={i} delay={i * 0.1}>
-                <div style={{
-                  padding: 'clamp(32px, 6vw, 44px) clamp(24px, 5vw, 32px)',
-                  background: C.surface,
-                  transition: 'background 0.28s', 
-                  height: '100%',
-                }}
-                  onMouseEnter={e => e.currentTarget.style.background = '#161412'}
-                  onMouseLeave={e => e.currentTarget.style.background = C.surface}
-                >
-                  <div style={{
-                    fontFamily: '"DM Mono", monospace',
-                    fontSize: '0.58rem', color: C.accentDim,
-                    letterSpacing: '0.14em', marginBottom: 26,
-                  }}>{step.n}</div>
-                  <h3 style={{
-                    fontFamily: '"Cormorant", serif',
-                    fontSize: 'clamp(1.2rem, 4vw, 1.65rem)',
-                    fontWeight: 400,
-                    color: C.head, marginBottom: 12,
-                  }}>{step.title}</h3>
-                  <p style={{ fontSize: 'clamp(0.75rem, 2.5vw, 0.79rem)', color: C.sub, lineHeight: 1.7 }}>{step.desc}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </section>
-
-        <Divider />
-
-        {/* ══ WORK ══ - responsive grid */}
-        <section style={{
-          ...sectionPadding,
-          ...containerMaxWidth,
-        }}>
-          <div style={{ 
-            display: 'flex', 
-            justifyContent: 'space-between', 
-            alignItems: 'flex-end', 
-            marginBottom: 'clamp(32px, 6vw, 52px)',
-            flexWrap: 'wrap',
-            gap: '16px',
-          }}>
-            <Reveal>
-              <Tag>Selected Work</Tag>
-              <h2 style={{
-                fontFamily: '"Cormorant", serif',
-                fontSize: 'clamp(1.5rem, 5vw, 3.4rem)',
-                fontWeight: 300, color: C.head,
-                lineHeight: 1.1, marginTop: 20,
-              }}>Systems in Action</h2>
-            </Reveal>
-            <Reveal delay={0.15}>
-              <button onClick={() => navigate('/projects')} style={{
-                background: 'none', border: 'none', cursor: 'pointer',
-                color: C.sub, fontSize: 'clamp(0.7rem, 2.5vw, 0.79rem)',
-                fontFamily: '"Instrument Sans", sans-serif',
-                display: 'flex', alignItems: 'center', gap: 6,
-                transition: 'color 0.2s',
-              }}
-                onMouseEnter={e => e.currentTarget.style.color = C.head}
-                onMouseLeave={e => e.currentTarget.style.color = C.sub}
+                    Book a Strategy Call
+                    <motion.div
+                      animate={{ x: [0, 4, 0] }}
+                      transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                      className="inline-block ml-2"
+                    >
+                      <ArrowRight className="w-4 h-4" />
+                    </motion.div>
+                  </Button>
+                </motion.div>
+                
+                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="w-full sm:w-auto">
+                  <Button 
+                    onClick={() => navigate('/contact')} 
+                    variant="outline" 
+                    size="lg" 
+                    className="text-white hover:text-gray-200 w-full sm:w-auto bg-transparent rounded-full px-8 py-6 border-stone-300  hover:bg-stone-100 transition-all duration-300 text-sm sm:text-base"
+                  >
+                    Get Free Website Audit
+                  </Button>
+                </motion.div>
+              </motion.div>
+              
+              <motion.div 
+                className="text-sm text-stone-500 font-medium flex items-center gap-2 pt-2"
+                variants={fadeInUp}
               >
-                View all work <ArrowRight size={13} />
-              </button>
-            </Reveal>
+                <motion.div
+                  animate={{ rotate: [0, 360] }}
+                  transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+                >
+                 
+                </motion.div>
+                Trusted by growing businesses & founders
+              </motion.div>
+            </motion.div>
+            <motion.div
+  className="relative w-full max-w-6xl mx-auto rounded-3xl overflow-hidden 
+  bg-white/80 backdrop-blur-xl border border-stone-200 shadow-xl 
+  p-4 sm:p-6 lg:p-8"
+  variants={scaleIn}
+  whileHover={{ y: -6 }}
+>
+
+  {/* 🔥 PREMIUM TOP RUNNING LINE */}
+  <div className="absolute top-0 left-0 w-full h-[2px] overflow-hidden">
+    <motion.div
+      className="h-full w-[40%] bg-gradient-to-r from-transparent via-stone-900 to-transparent"
+      animate={{ x: ["-100%", "250%"] }}
+      transition={{
+        duration: 2.5,
+        repeat: Infinity,
+        ease: "linear",
+      }}
+    />
+  </div>
+
+  {/* ✨ SUBTLE BORDER GLOW SWEEP */}
+  <motion.div
+    className="pointer-events-none absolute inset-0 rounded-3xl"
+    style={{
+      background:
+        "linear-gradient(120deg, transparent, rgba(0,0,0,0.06), transparent)",
+    }}
+    animate={{ x: ["-100%", "100%"] }}
+    transition={{
+      duration: 6,
+      repeat: Infinity,
+      ease: "easeInOut",
+    }}
+  />
+
+  <div className="flex flex-col gap-4 relative z-10">
+
+    {/* HEADER */}
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div className="flex items-center gap-3">
+        <div className="w-9 h-9 bg-stone-900 rounded-xl flex items-center justify-center">
+          <div className="w-4 h-4 bg-white rounded-sm" />
+        </div>
+        <div>
+          <div className="text-sm font-semibold text-stone-800">Dashboard</div>
+          <div className="text-xs text-stone-500">Overview</div>
+        </div>
+      </div>
+
+      <div className="flex items-center gap-2">
+        <span className="hidden sm:block text-xs text-green-600">● Live</span>
+        <div className="flex gap-1">
+          {["bg-red-400", "bg-yellow-400", "bg-green-400"].map((c, i) => (
+            <div key={i} className={`w-2.5 h-2.5 rounded-full ${c}`} />
+          ))}
+        </div>
+      </div>
+    </div>
+
+    {/* MAIN GRID */}
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+      {/* CHART */}
+      <div className="md:col-span-2 bg-white rounded-2xl border p-4 shadow-sm relative overflow-hidden">
+
+        {/* 🔥 MINI LINE SWEEP INSIDE CARD */}
+        <motion.div
+          className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-stone-400 to-transparent"
+          animate={{ x: ["-100%", "100%"] }}
+          transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+        />
+
+        <div className="flex justify-between items-center mb-3">
+          <div>
+            <div className="text-sm font-medium text-stone-800">Revenue</div>
+            <div className="text-xs text-stone-400">Monthly stats</div>
           </div>
 
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(min(300px, 100%), 1fr))', 
-            gap: 16 
-          }}>
-            {featuredProjects.map((cs, i) => (
-              <Reveal key={cs.id || i} delay={i * 0.1}>
-                <div onClick={() => navigate(`/project/${cs.id}`)} style={{
-                  background: C.surface, border: `1px solid ${C.border}`,
-                  borderRadius: 16, padding: 'clamp(28px, 6vw, 44px) clamp(24px, 5vw, 40px)',
-                  cursor: 'pointer', transition: 'border-color 0.25s, background 0.25s',
-                  display: 'flex', flexDirection: 'column', gap: 26,
-                }}
-                  onMouseEnter={e => { e.currentTarget.style.borderColor = C.muted; e.currentTarget.style.background = '#161412'; }}
-                  onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.background = C.surface; }}
-                >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Tag>{(cs.client || cs.name || '').substring(0, 20)}</Tag>
-                    <ArrowUpRight size={15} color={C.muted} />
-                  </div>
-
-                  <div style={{ 
-                    display: 'grid', 
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(min(200px, 100%), 1fr))', 
-                    gap: 24 
-                  }}>
-                    {[
-                      { label: 'Problem', text: cs.challenge || 'Low conversion rate and manual scaling bottlenecks.' },
-                      { label: 'Solution', text: cs.solution || 'Complete platform rebuild with custom AI automations.' },
-                    ].map((col) => (
-                      <div key={col.label}>
-                        <div style={{ fontSize: '0.6rem', color: C.muted, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 8 }}>{col.label}</div>
-                        <p style={{ fontSize: 'clamp(0.75rem, 2.5vw, 0.83rem)', color: C.body, lineHeight: 1.62 }}>{col.text}</p>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div style={{ paddingTop: 24, borderTop: `1px solid ${C.border}` }}>
-                    <div style={{ fontSize: '0.6rem', color: C.muted, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 10 }}>Key Result</div>
-                    <div style={{
-                      fontFamily: '"Cormorant", serif',
-                      fontSize: 'clamp(1.5rem, 5vw, 2.4rem)',
-                      fontWeight: 400, color: C.head,
-                    }}>{cs.results?.[0] || '+42% Conversion'}</div>
-                  </div>
-                </div>
-              </Reveal>
+          <div className="flex gap-1">
+            {["Day", "Week", "Month"].map((t, i) => (
+              <span
+                key={i}
+                className={`text-xs px-2 py-1 rounded-md ${
+                  i === 2
+                    ? "bg-stone-900 text-white"
+                    : "bg-stone-100 text-stone-600"
+                }`}
+              >
+                {t}
+              </span>
             ))}
           </div>
-        </section>
+        </div>
 
-        <Divider />
+        <div className="h-28 sm:h-32 w-full">
+          <svg className="w-full h-full" viewBox="0 0 200 60">
+            <motion.path
+              d="M0,40 L20,30 L40,45 L60,20 L80,35 L100,25 L120,40 L140,30 L160,35 L180,20 L200,30"
+              stroke="#111"
+              strokeWidth="2"
+              fill="none"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ duration: 1.5 }}
+            />
+          </svg>
+        </div>
+      </div>
 
-        {/* ══ WHY US + FOR / NOT FOR ══ - responsive layout */}
-        <section style={{
-          ...sectionPadding,
-          ...containerMaxWidth,
-        }}>
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(min(300px, 100%), 1fr))', 
-            gap: 'clamp(40px, 8vw, 80px)', 
-            alignItems: 'start' 
-          }}>
+      {/* SIDEBAR */}
+      <div className="flex flex-col gap-4">
 
-            <div>
-              <Reveal>
-                <Tag>Why Partner With Us</Tag>
-                <h2 style={{
-                  fontFamily: '"Cormorant", serif',
-                  fontSize: 'clamp(1.5rem, 5vw, 3rem)',
-                  fontWeight: 300, color: C.head,
-                  lineHeight: 1.12, marginTop: 20, marginBottom: 36,
-                }}>
-                  We think in systems,<br />
-                  <em style={{ color: C.accent }}>not deliverables.</em>
-                </h2>
-              </Reveal>
+        <div className="bg-stone-900 text-white rounded-2xl p-4">
+          <div className="text-xs text-stone-400">Revenue</div>
+          <div className="text-2xl font-bold">$42.5K</div>
+          <div className="text-xs text-green-400">+12.5%</div>
+        </div>
 
-              {[
-                'Strategic thinking over template execution',
-                'Conversion-focused at every layer',
-                'Clean, scalable architecture',
-                'Long-term growth mindset',
-              ].map((pt, i) => (
-                <Reveal key={i} delay={i * 0.07}>
-                  <div style={{
-                    display: 'flex', gap: 16, alignItems: 'flex-start',
-                    padding: '17px 0', borderBottom: `1px solid ${C.border}`,
-                  }}>
-                    <CheckCircle size={13} color={C.accent} style={{ marginTop: 3, flexShrink: 0 }} />
-                    <span style={{ fontSize: 'clamp(0.8rem, 2.8vw, 0.87rem)', color: C.body, lineHeight: 1.5 }}>{pt}</span>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
+        <div className="bg-white border rounded-2xl p-4">
+          <div className="text-sm font-semibold text-stone-800">Users</div>
+          <div className="text-xl font-bold">2,847</div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 14, paddingTop: 8 }}>
-              {[
-                {
-                  Icon: CheckCircle, iconColor: C.accent, label: 'Who we work with',
-                  items: ['Businesses ready to scale and grow', 'Founders who value actual systems', 'Long-term thinkers and visionaries'],
-                  dotColor: C.accent, textColor: C.body, bg: C.surface, border: C.border,
-                },
-                {
-                  Icon: XCircle, iconColor: C.muted, label: "Who we don't work with",
-                  items: ['"Just need a quick cheap website" clients', 'Highly price-sensitive buyers', 'Short-term mindset, no strategy'],
-                  dotColor: C.borderMd, textColor: C.muted, bg: 'transparent', border: C.border,
-                },
-              ].map((block, bi) => (
-                <Reveal key={bi} delay={bi * 0.1}>
-                  <div style={{
-                    background: block.bg, border: `1px solid ${block.border}`,
-                    borderRadius: 14, padding: 'clamp(28px, 5vw, 36px) clamp(24px, 5vw, 32px)',
-                  }}>
-                    <div style={{
-                      display: 'flex', alignItems: 'center', gap: 10,
-                      marginBottom: 22, fontSize: 'clamp(0.7rem, 2.5vw, 0.76rem)',
-                      fontWeight: 600,
-                      color: block.iconColor, letterSpacing: '0.04em',
-                    }}>
-                      <block.Icon size={13} color={block.iconColor} /> {block.label}
-                    </div>
-                    <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 13 }}>
-                      {block.items.map((item, ii) => (
-                        <li key={ii} style={{ display: 'flex', gap: 12, alignItems: 'flex-start', fontSize: 'clamp(0.75rem, 2.5vw, 0.83rem)', color: block.textColor }}>
-                          <div style={{ width: 5, height: 5, borderRadius: '50%', background: block.dotColor, marginTop: 6, flexShrink: 0 }} />
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
+          <div className="mt-2 h-1 bg-stone-100 rounded-full overflow-hidden">
+            <motion.div
+              className="h-1 bg-stone-900"
+              initial={{ width: 0 }}
+              animate={{ width: "75%" }}
+              transition={{ duration: 1.2 }}
+            />
           </div>
+        </div>
+
+      </div>
+    </div>
+
+    {/* STATS */}
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      {["Views", "Bounce", "Session", "Conversions"].map((s, i) => (
+        <div key={i} className="bg-white border rounded-xl p-3 text-center">
+          <div className="text-xs text-stone-400">{s}</div>
+          <div className="text-sm font-semibold text-stone-800">
+            {Math.floor(Math.random() * 1000)}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    {/* FOOTER */}
+    <div className="flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-stone-500 border-t pt-3">
+      <span>Updated 2 min ago</span>
+
+      <div className="flex gap-2">
+        {["New user", "Purchase", "Download"].map((a, i) => (
+          <span key={i} className="bg-stone-100 px-2 py-1 rounded-full">
+            {a}
+          </span>
+        ))}
+      </div>
+    </div>
+  </div>
+</motion.div>
+</motion.div>
         </section>
 
-        <Divider />
+        {/* SECTION 2: PROBLEM */}
+        <SectionWrapper>
+          <section className="py-24 lg:py-32 bg-white px-6 lg:px-8 border-t border-stone-100 relative z-10">
+            <div className="max-w-5xl mx-auto text-center space-y-12 lg:space-y-16">
+              <motion.h2 
+                className="text-3xl sm:text-4xl lg:text-5xl font-bold clash-font leading-tight"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: premiumEase }}
+                viewport={{ once: true }}
+              >
+                Most Websites Don't Fail Because of Design — <br className="hidden sm:block"/>
+                <span className="text-stone-400 mt-2 inline-block">They Fail Because They Don't Convert</span>
+              </motion.h2>
+              
+              <motion.div 
+                className="grid sm:grid-cols-2 gap-4 lg:gap-6 text-left max-w-4xl mx-auto"
+                variants={staggerContainer}
+                initial="initial"
+                whileInView="animate"
+                viewport={{ once: true }}
+              >
+                {[
+                  "Visitors come, but don't take action",
+                  "No clear structure or user journey",
+                  "No system behind the business",
+                  "Manual processes limiting growth"
+                ].map((point, i) => (
+                  <motion.div 
+                    key={i} 
+                    className="flex items-start gap-4 p-6 lg:p-8 rounded-2xl bg-stone-50 border border-stone-100 transition-all duration-300"
+                    variants={fadeInUp}
+                    whileHover={{ y: -2, backgroundColor: "#fff", borderColor: "#e5e5e5", boxShadow: "0 10px 30px -10px rgba(0,0,0,0.05)" }}
+                  >
+                    <XCircle className="w-6 h-6 text-stone-400 shrink-0 mt-0.5" />
+                    <p className="font-medium text-stone-700 sm:text-lg">{point}</p>
+                  </motion.div>
+                ))}
+              </motion.div>
+              
+              <motion.p 
+                className="text-2xl lg:text-3xl font-bold text-stone-900 pt-4 lg:pt-8 clash-font"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ duration: 1, delay: 0.4 }}
+                viewport={{ once: true }}
+              >
+                That's where we come in.
+              </motion.p>
+            </div>
+          </section>
+        </SectionWrapper>
 
-        {/* ══ BRAND STATEMENT ══ - responsive */}
-        <section style={{
-          ...sectionPadding,
-          ...containerMaxWidth,
-        }}>
-          <Reveal>
-            <div style={{
-              display: 'flex', 
-              gap: 'clamp(20px, 5vw, 40px)', 
-              alignItems: 'center',
-              background: C.surface, 
-              border: `1px solid ${C.border}`,
-              borderRadius: 16, 
-              padding: 'clamp(28px, 6vw, 44px) clamp(24px, 5vw, 48px)',
-              flexDirection: window.innerWidth < 640 ? 'column' : 'row',
-              textAlign: window.innerWidth < 640 ? 'center' : 'left',
-            }}>
-              <div style={{
-                width: 'clamp(40px, 10vw, 60px)', 
-                height: 'clamp(40px, 10vw, 60px)', 
-                borderRadius: '50%', 
-                flexShrink: 0,
-                background: `linear-gradient(135deg, ${C.accentDim}80, ${C.accent}30)`,
-                border: `1px solid ${C.accentDim}`,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontFamily: '"Cormorant", serif',
-                fontSize: 'clamp(1.2rem, 4vw, 1.5rem)', 
-                fontStyle: 'italic', color: C.accent,
-              }}>A</div>
-              <div>
-                <div style={{
-                  fontSize: '0.62rem', color: C.muted,
-                  letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 10,
-                }}>The AVXONIA Standard</div>
-                <p style={{
-                  fontFamily: '"Cormorant", serif',
-                  fontSize: 'clamp(1rem, 3vw, 1.5rem)',
-                  fontWeight: 300, color: C.head, lineHeight: 1.5,
-                }}>
-                  AVXONIA was built to move businesses from a basic online presence to{' '}
-                  <em style={{ color: C.accent }}>structured digital systems</em> that drive
-                  predictable, long-term growth.
-                </p>
+        {/* SECTION 3: SOLUTION with Parallax Cards */}
+        <SectionWrapper>
+          <section className="py-24 lg:py-32 bg-stone-900 text-white px-6 lg:px-8 relative overflow-hidden z-10">
+            {/* Animated background particles */}
+            <div className="absolute inset-0 opacity-[0.03]">
+              {[...Array(15)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="absolute w-1.5 h-1.5 bg-white rounded-full"
+                  initial={{ 
+                    x: `${Math.random() * 100}vw`,
+                    y: `${Math.random() * 100}vh` 
+                  }}
+                  animate={{ 
+                    y: [null, "-50vh"],
+                    opacity: [0, 1, 0]
+                  }}
+                  transition={{ 
+                    duration: Math.random() * 5 + 4,
+                    repeat: Infinity,
+                    ease: "linear",
+                    delay: Math.random() * 3
+                  }}
+                />
+              ))}
+            </div>
+
+            <div className="max-w-7xl mx-auto space-y-16 lg:space-y-24 relative z-10">
+              <div className="text-center max-w-3xl mx-auto space-y-6">
+                <motion.h2 
+                  className="text-3xl sm:text-4xl lg:text-6xl font-bold clash-font leading-tight"
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, ease: premiumEase }}
+                  viewport={{ once: true }}
+                >
+                  We Build Structured Digital Systems That Drive Growth
+                </motion.h2>
+                <motion.p 
+                  className="text-lg lg:text-xl text-stone-400 font-light"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
+                  viewport={{ once: true }}
+                >
+                  Not just websites. Not just automation. We build complete growth systems.
+                </motion.p>
+              </div>
+              
+              <motion.div 
+                className="grid md:grid-cols-3 gap-6 lg:gap-8"
+                variants={staggerContainer}
+                initial="initial"
+                whileInView="animate"
+                viewport={{ once: true }}
+              >
+                {[
+                  { icon: Layout, title: "Web Development", desc: "Conversion-focused architecture designed to turn visitors into leads, not just visual placeholders." },
+                  { icon: Bot, title: "AI Automation", desc: "Reduce manual work and improve efficiency internally so you can focus on scaling." },
+                  { icon: BarChart3, title: "System Thinking", desc: "Everything is connected and built for scalability. Your digital presence becomes a business asset." }
+                ].map((pillar, i) => (
+                  <motion.div 
+                    key={i} 
+                    className="p-8 lg:p-10 rounded-3xl bg-stone-800/50 border border-stone-700/50 hover:bg-stone-800 transition-all duration-500"
+                    variants={fadeInUp}
+                    whileHover={{ y: -5 }}
+                  >
+                    <pillar.icon className="w-10 h-10 lg:w-12 lg:h-12 text-stone-300 mb-6 lg:mb-8" />
+                    <h3 className="text-xl lg:text-2xl font-bold mb-3 lg:mb-4 clash-font">{pillar.title}</h3>
+                    <p className="text-sm lg:text-base text-stone-400 leading-relaxed">{pillar.desc}</p>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </div>
+          </section>
+        </SectionWrapper>
+
+        {/* SECTION 4: PROCESS with Animated Timeline */}
+        <SectionWrapper>
+          <section className="py-24 lg:py-32 bg-stone-50 px-6 lg:px-8 z-10 relative">
+            <div className="max-w-7xl mx-auto">
+              <motion.h2 
+                className="text-3xl lg:text-5xl font-bold clash-font text-center mb-16 lg:mb-24"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: premiumEase }}
+                viewport={{ once: true }}
+              >
+                Our Proven Framework
+              </motion.h2>
+              
+              <div className="flex flex-col lg:flex-row gap-6 relative">
+                {/* Desktop connecting line */}
+                <motion.div 
+                  className="hidden lg:block absolute top-[3.5rem] left-0 w-full h-[1px] bg-stone-200 z-0"
+                  initial={{ scaleX: 0 }}
+                  whileInView={{ scaleX: 1 }}
+                  transition={{ duration: 1.5, delay: 0.2, ease: "easeInOut" }}
+                  viewport={{ once: true }}
+                  style={{ originX: 0 }}
+                />
+                
+                {[
+                  { step: "01", title: "Audit", desc: "Analyze your current system & bottlenecks." },
+                  { step: "02", title: "Strategy", desc: "Define precisely what needs to be built." },
+                  { step: "03", title: "Build", desc: "Clean, scalable, and systematic execution." },
+                  { step: "04", title: "Scale", desc: "Optimize, automate, and improve conversions." }
+                ].map((item, i) => (
+                  <motion.div 
+                    key={i} 
+                    className="flex-1 relative z-10 bg-white p-8 lg:p-10 rounded-3xl shadow-sm border border-stone-100 transition-all duration-300"
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: i * 0.15, ease: premiumEase }}
+                    viewport={{ once: true }}
+                    whileHover={{ y: -5, boxShadow: "0 15px 35px -10px rgba(0,0,0,0.05)" }}
+                  >
+                    <div className="w-14 h-14 bg-stone-900 text-white rounded-full flex items-center justify-center font-bold text-xl mb-6 lg:mb-8 shadow-md clash-font">
+                      {item.step}
+                    </div>
+                    <h3 className="text-xl font-bold mb-2 lg:mb-3 clash-font">{item.title}</h3>
+                    <p className="text-sm lg:text-base text-stone-600 leading-relaxed">{item.desc}</p>
+                  </motion.div>
+                ))}
               </div>
             </div>
-          </Reveal>
-        </section>
+          </section>
+        </SectionWrapper>
 
-        <Divider />
-
-        {/* ══ FINAL CTA ══ - responsive */}
-        <section style={{
-          padding: 'clamp(80px, 15vw, 140px) clamp(20px, 5vw, 40px)',
-          ...containerMaxWidth,
-          textAlign: 'center',
-        }}>
-          <Reveal>
-            <Tag>Ready?</Tag>
-            <h2 style={{
-              fontFamily: '"Cormorant", serif',
-              fontSize: 'clamp(1.8rem, 7vw, 5rem)',
-              fontWeight: 300, color: C.head,
-              lineHeight: 1.07, marginTop: 24, marginBottom: 18,
-              maxWidth: 'clamp(280px, 90vw, 780px)', 
-              marginInline: 'auto',
-            }}>
-              Ready to build a system that<br />
-              <em style={{ color: C.accent }}>actually grows</em> your business?
-            </h2>
-            <p style={{ fontSize: 'clamp(0.8rem, 2.8vw, 0.88rem)', color: C.sub, marginBottom: 44 }}>
-              Limited slots each month to ensure quality execution.
-            </p>
-
-            <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-              <button onClick={() => navigate('/contact')} style={{
-                background: C.accent, color: C.bg, border: 'none', borderRadius: 100,
-                padding: 'clamp(12px, 3vw, 15px) clamp(24px, 6vw, 36px)',
-                cursor: 'pointer',
-                fontFamily: '"Instrument Sans", sans-serif',
-                fontSize: 'clamp(0.75rem, 2.5vw, 0.84rem)',
-                fontWeight: 600, letterSpacing: '0.04em',
-                display: 'flex', alignItems: 'center', gap: 8,
-                transition: 'opacity 0.2s',
-              }}
-                onMouseEnter={e => e.currentTarget.style.opacity = '0.85'}
-                onMouseLeave={e => e.currentTarget.style.opacity = '1'}
-              >
-                Book a Strategy Call <ArrowRight size={14} />
-              </button>
-
-              <button onClick={() => navigate('/contact')} style={{
-                background: 'transparent', color: C.body,
-                border: `1px solid ${C.borderMd}`, borderRadius: 100,
-                padding: 'clamp(12px, 3vw, 15px) clamp(24px, 6vw, 36px)',
-                cursor: 'pointer',
-                fontFamily: '"Instrument Sans", sans-serif',
-                fontSize: 'clamp(0.75rem, 2.5vw, 0.84rem)',
-                letterSpacing: '0.04em',
-                transition: 'border-color 0.2s, color 0.2s',
-              }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor = C.muted; e.currentTarget.style.color = C.head; }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = C.borderMd; e.currentTarget.style.color = C.body; }}
-              >
-                Free Website Audit
-              </button>
+        {/* SECTION 5: CASE STUDIES */}
+        <SectionWrapper>
+          <section className="py-24 lg:py-32 bg-white px-6 lg:px-8 border-t border-stone-100 z-10 relative">
+            <div className="max-w-7xl mx-auto space-y-12 lg:space-y-16">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6">
+                <motion.h2 
+                  className="text-3xl lg:text-5xl font-bold clash-font"
+                  initial={{ opacity: 0, x: -30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.8, ease: premiumEase }}
+                  viewport={{ once: true }}
+                >
+                  Systems in Action
+                </motion.h2>
+                
+                <motion.div
+                  initial={{ opacity: 0, x: 30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.8, ease: premiumEase }}
+                  viewport={{ once: true }}
+                >
+                  <Button 
+                    variant="ghost" 
+                    onClick={() => navigate('/projects')} 
+                    className="text-white hover:text-gray-200 group flex items-center gap-2 hover:bg-blue-20 rounded-full px-6 text-sm sm:text-base"
+                  >
+                    View All Work 
+                    <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  </Button>
+                </motion.div>
+              </div>
+              
+              <div className="grid md:grid-cols-2 gap-8">
+                {featuredProjects.map((cs, index) => (
+                  <motion.div 
+                    key={cs.id} 
+                    className="group relative bg-stone-50 border border-stone-200 rounded-[2rem] p-8 lg:p-10 hover:bg-stone-900 transition-colors duration-500 cursor-pointer flex flex-col overflow-hidden"
+                    onClick={() => navigate(`/project/${cs.id}`)}
+                    initial={{ opacity: 0, y: 50 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: index * 0.15, ease: premiumEase }}
+                    viewport={{ once: true }}
+                  >
+                    <div className="relative z-10 flex justify-between items-start mb-10">
+                      <span className="bg-stone-200 text-stone-800 group-hover:bg-white/10 group-hover:text-white transition-colors duration-300 text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider">
+                        {(cs.client || cs.name).substring(0, 20)}
+                      </span>
+                      <ArrowUpRight className="w-8 h-8 text-stone-400 group-hover:text-white transition-colors duration-300" />
+                    </div>
+                    
+                    <div className="relative z-10 space-y-6 lg:space-y-8 flex-1 group-hover:text-white transition-colors duration-300">
+                      <div>
+                        <p className="text-xs sm:text-sm text-stone-500 group-hover:text-stone-400 font-medium mb-1.5 lg:mb-2 uppercase tracking-wide transition-colors">The Problem</p>
+                        <p className="text-base sm:text-lg font-semibold">{cs.challenge || "Low conversion rate and manual scaling bottlenecks."}</p>
+                      </div>
+                      <div>
+                        <p className="text-xs sm:text-sm text-stone-500 group-hover:text-stone-400 font-medium mb-1.5 lg:mb-2 uppercase tracking-wide transition-colors">The Solution</p>
+                        <p className="text-base sm:text-lg font-semibold text-stone-600 group-hover:text-stone-300 transition-colors">{cs.solution || "Complete platform rebuild with custom AI automations."}</p>
+                      </div>
+                    </div>
+                    
+                    <div className="relative z-10 pt-6 mt-6 lg:pt-8 lg:mt-8 border-t border-stone-200 group-hover:border-stone-700/50 transition-colors duration-300">
+                      <p className="text-xs sm:text-sm text-stone-500 group-hover:text-stone-400 font-medium mb-1.5 lg:mb-2 uppercase tracking-wide transition-colors">Key Result</p>
+                      <p className="text-2xl sm:text-3xl lg:text-4xl font-bold clash-font text-stone-900 group-hover:text-white transition-colors">
+                        {cs.results?.[0] || "+42% Conversion Increase"}
+                      </p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
             </div>
-          </Reveal>
-        </section>
+          </section>
+        </SectionWrapper>
 
-        {/* ══ FOOTER ══ - responsive */}
-        <footer style={{
-          borderTop: `1px solid ${C.border}`,
-          padding: 'clamp(20px, 5vw, 28px) clamp(20px, 5vw, 40px)',
-          display: 'flex', 
-          justifyContent: 'space-between', 
-          alignItems: 'center',
-          flexDirection: window.innerWidth < 640 ? 'column' : 'row',
-          gap: window.innerWidth < 640 ? '16px' : '0',
-          textAlign: 'center',
-        }}>
-          <span style={{ fontFamily: '"Cormorant", serif', fontSize: 'clamp(0.8rem, 2.8vw, 0.88rem)', color: C.muted }}>AVXONIA</span>
-          <span style={{ fontFamily: '"DM Mono", monospace', fontSize: 'clamp(0.5rem, 2vw, 0.58rem)', color: C.muted, letterSpacing: '0.1em' }}>
-            © 2026 — All rights reserved
-          </span>
-        </footer>
+        {/* SECTION 6 & 7: WHY CHOOSE US & WHO IT'S FOR */}
+        <SectionWrapper>
+          <section className="py-24 lg:py-32 bg-stone-900 text-white px-6 lg:px-8 z-10 relative">
+            <div className="max-w-7xl mx-auto space-y-24 lg:space-y-32">
+              
+              <div>
+                <motion.h2 
+                  className="text-3xl lg:text-5xl font-bold clash-font mb-12 lg:mb-16 text-center"
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, ease: premiumEase }}
+                  viewport={{ once: true }}
+                >
+                  Why Partner With Us?
+                </motion.h2>
+                
+                <motion.div 
+                  className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6"
+                  variants={staggerContainer}
+                  initial="initial"
+                  whileInView="animate"
+                  viewport={{ once: true }}
+                >
+                  {[
+                    'Strategic Thinking', 
+                    'Conversion-Focused Approach', 
+                    'Clean & Scalable Execution', 
+                    'Long-Term Growth Focus'
+                  ].map((point, i) => (
+                    <motion.div 
+                      key={i} 
+                      className="p-6 lg:p-8 bg-stone-800/50 rounded-3xl border border-stone-700/50 hover:bg-stone-800 transition-colors"
+                      variants={fadeInUp}
+                    >
+                      <CheckCircle className="w-8 h-8 lg:w-10 lg:h-10 text-stone-400 mb-4 lg:mb-6" />
+                      <h3 className="font-bold text-lg lg:text-xl clash-font">{point}</h3>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              </div>
 
+              <div className="grid md:grid-cols-2 gap-8 lg:gap-10">
+                <motion.div 
+                  className="bg-white text-stone-900 p-8 sm:p-10 lg:p-14 rounded-[2rem] shadow-xl"
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, ease: premiumEase }}
+                  viewport={{ once: true }}
+                >
+                  <h3 className="text-2xl lg:text-3xl font-bold mb-8 lg:mb-10 flex items-center gap-4 clash-font">
+                    <CheckCircle className="text-stone-900 w-6 h-6 lg:w-8 lg:h-8"/> Who We Are For
+                  </h3>
+                  <ul className="space-y-5 lg:space-y-6 text-base lg:text-lg">
+                    {[
+                      "Businesses ready to scale & grow",
+                      "Founders who value actual systems",
+                      "Long-term thinkers and visionaries"
+                    ].map((item, i) => (
+                      <li key={i} className="flex items-start gap-4 font-medium">
+                        <div className="w-2.5 h-2.5 bg-stone-900 rounded-full mt-2 shrink-0" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+                
+                <motion.div 
+                  className="bg-stone-800/50 p-8 sm:p-10 lg:p-14 rounded-[2rem] border border-stone-700/50"
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.2, ease: premiumEase }}
+                  viewport={{ once: true }}
+                >
+                  <h3 className="text-2xl lg:text-3xl font-bold mb-8 lg:mb-10 flex items-center gap-4 clash-font text-stone-300">
+                    <XCircle className="text-stone-500 w-6 h-6 lg:w-8 lg:h-8"/> Who We Are NOT For
+                  </h3>
+                  <ul className="space-y-5 lg:space-y-6 text-base lg:text-lg text-stone-400">
+                    {[
+                      '"Just need a quick cheap website" clients',
+                      'Highly price-sensitive buyers',
+                      'Short-term mindset without a strategy'
+                    ].map((item, i) => (
+                      <li key={i} className="flex items-start gap-4">
+                        <div className="w-2.5 h-2.5 bg-stone-500 rounded-full mt-2 shrink-0" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              </div>
+            </div>
+          </section>
+        </SectionWrapper>
+
+        {/* SECTION 8: FOUNDER & SECTION 9: FINAL CTA */}
+        <SectionWrapper>
+          <section className="py-24 lg:py-32 bg-stone-100 px-6 lg:px-8 border-t border-stone-200 z-10 relative">
+            <div className="max-w-5xl mx-auto space-y-20 lg:space-y-24">
+              
+              {/* Founder/Brand Statement */}
+              <motion.div 
+                className="flex flex-col md:flex-row items-center gap-8 lg:gap-10 bg-white p-8 sm:p-10 lg:p-12 rounded-[2rem] shadow-sm border border-stone-200"
+                initial={{ opacity: 0, scale: 0.97 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8, ease: premiumEase }}
+                viewport={{ once: true }}
+              >
+                <div className="w-28 h-28 lg:w-36 lg:h-36 bg-stone-900 rounded-full shrink-0 flex items-center justify-center text-white font-bold text-3xl lg:text-4xl font-serif italic shadow-inner">
+                  A
+                </div>
+                
+                <div className="text-center md:text-left">
+                  <h3 className="text-2xl lg:text-3xl font-bold mb-3 lg:mb-4 clash-font">The AVXONIA Standard</h3>
+                  <p className="text-stone-600 text-base lg:text-xl leading-relaxed">
+                    AVXONIA was built to help businesses move from having just a basic online presence 
+                    to deploying structured digital systems that drive predictable, long-term growth.
+                  </p>
+                </div>
+              </motion.div>
+
+              {/* FINAL CTA */}
+              <motion.div 
+                className="text-center space-y-8 lg:space-y-10"
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: premiumEase }}
+                viewport={{ once: true }}
+              >
+                <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold clash-font leading-tight max-w-3xl mx-auto">
+                  Ready to Build a System That Actually Grows Your Business?
+                </h2>
+                
+                <p className="text-stone-500 font-medium text-base sm:text-lg lg:text-xl">
+                  Limited slots available each month to ensure highest quality execution.
+                </p>
+                
+                <div className="flex flex-col sm:flex-row justify-center gap-4 pt-2 lg:pt-4">
+                  <Button 
+                    onClick={() => navigate('/contact')} 
+                    size="lg" 
+                    className="w-full sm:w-auto bg-stone-900 text-white rounded-full px-8 lg:px-10 py-6 lg:py-7 text-sm sm:text-lg hover:bg-stone-800 shadow-xl transition-all duration-300 group"
+                  >
+                    Book a Strategy Call
+                    <ArrowRight className="w-4 h-4 lg:w-5 lg:h-5 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
+                  </Button>
+                  
+                  <Button 
+                    onClick={() => navigate('/contact')} 
+                    variant="outline" 
+                    size="lg" 
+                    className="text-white hover:text-gray-200 w-full sm:w-auto bg-white rounded-full px-8 lg:px-10 py-6 lg:py-7 border-stone-300 hover:bg-stone-50 text-sm sm:text-lg shadow-sm transition-all duration-300"
+                  >
+                    Get Free Website Audit
+                  </Button>
+                </div>
+              </motion.div>
+            </div>
+          </section>
+        </SectionWrapper>
+        
       </div>
     </>
   );

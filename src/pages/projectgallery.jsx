@@ -84,12 +84,14 @@ const ProjectGallery = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedStack, setSelectedStack] = useState("all");
   const [selectedYear, setSelectedYear] = useState("all");
-  const [selectedService, setSelectedService] = useState("all"); // Add this
+  const [selectedService, setSelectedService] = useState("all");
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState("grid");
   const [activeTab, setActiveTab] = useState("all");
   const [hoveredId, setHoveredId] = useState(null);
+  const [imageErrors, setImageErrors] = useState({});
   const [searchParams] = useSearchParams();
+  
   // Get unique stacks and years for filters
   const stacks = ["all", ...new Set(projects.map(p => p.stack?.split(" + ")[0]).filter(Boolean))];
   const years = ["all", ...new Set(projects.map(p => p.year).filter(Boolean))];
@@ -104,9 +106,10 @@ const ProjectGallery = () => {
   useEffect(() => {
     const serviceParam = searchParams.get('service');
     if (serviceParam) {
-      setSelectedService(serviceParam); // Use selectedService instead of selectedStack
+      setSelectedService(serviceParam);
     }
   }, [searchParams]);
+  
   useEffect(() => {
     // Simulate loading
     setTimeout(() => {
@@ -159,9 +162,13 @@ const ProjectGallery = () => {
     const IconComponent = iconMap[iconName] || iconMap.default;
     return <IconComponent className="w-5 h-5" />;
   };
-console.log(projects.id)
+
   const handleProjectClick = (id) => {
     navigate(`/project/${id}`);
+  };
+
+  const handleImageError = (projectId) => {
+    setImageErrors(prev => ({ ...prev, [projectId]: true }));
   };
 
   if (loading) {
@@ -181,66 +188,68 @@ console.log(projects.id)
   }
 
   return (
-    <div className=" min-h-screen w-full bg-gradient-to-br from-stone-50 via-white to-stone-50 overflow-x-hidden">
+    <div className="min-h-screen w-full bg-gradient-to-br from-stone-50 via-white to-stone-50 overflow-x-hidden">
       {/* Hero Section - Full Width */}
       <div className="relative w-full overflow-hidden pt-24 sm:pt-32 pb-16 sm:pb-24 px-4 sm:px-6 lg:px-8">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(0,0,0,0.02)_0%,transparent_50%)]"></div>
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(0,0,0,0.02)_0%,transparent_50%)]"></div>
         
         <div className="max-w-7xl mx-auto flex justify-center">
-  <div className="max-w-3xl text-center">
-    
-      
-
-    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-stone-900 mb-4 sm:mb-6 clash-font leading-[1.1]">
-      Crafting digital
-      <span className="block text-transparent bg-clip-text bg-gradient-to-r from-stone-700 to-stone-900">
-        experiences
-      </span>
-    </h1>
-
-    <p className="text-base sm:text-lg text-stone-600 max-w-2xl mx-auto sfpro-font leading-relaxed">
-      A curated collection of projects where design meets function.
-      Each piece tells a story of innovation and precision.
-    </p>
-  </div>
-</div>
-
+          <div className="max-w-3xl text-center">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-stone-900 mb-4 sm:mb-6 clash-font leading-[1.1]">
+              Crafting digital
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-stone-700 to-stone-900">
+                experiences
+              </span>
+            </h1>
+            <p className="text-base sm:text-lg text-stone-600 max-w-2xl mx-auto sfpro-font leading-relaxed">
+              A curated collection of projects where design meets function.
+              Each piece tells a story of innovation and precision.
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Main Content - Full Width with Padding */}
-      <div className="!text-white w-full px-4 sm:px-6 lg:px-8 pb-16 sm:pb-24">
+      <div className="w-full px-4 sm:px-6 lg:px-8 pb-16 sm:pb-24">
         <div className="max-w-7xl mx-auto">
           {/* Filters Section */}
-          <div className="!text-white mb-8 sm:mb-12 space-y-4 sm:space-y-6">
-            <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6">
-                <TabsList className="grid w-full sm:w-auto grid-cols-3 rounded-full bg-stone-100/80 p-1">
-                  <TabsTrigger 
-                    value="all" 
-                    className="!text-white rounded-full data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all duration-300 sfpro-font text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2"
-                  >
-                    <Grid className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
-                    <span className="!text-white hidden xs:inline">All</span>
-                    <span className="xs:hidden">All</span>
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="featured" 
-                    className="!text-white rounded-full data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all duration-300 sfpro-font text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2"
-                  >
-                    <Star className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
-                    <span className="hidden xs:inline">Featured</span>
-                    <span className="xs:hidden">Feat</span>
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="recent" 
-                    className="!text-white rounded-full data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all duration-300 sfpro-font text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2"
-                  >
-                    <Clock className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
-                    <span className="hidden xs:inline">Recent</span>
-                    <span className="xs:hidden">New</span>
-                  </TabsTrigger>
-                </TabsList>
+          <div className="text-white mb-8 sm:mb-12 space-y-4 sm:space-y-6">
+            <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab} className="text-white w-full">
+              <div className="text-white flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6">
+              <TabsList className="grid w-full sm:w-auto grid-cols-3 rounded-full text-white  p-1">
+
+<TabsTrigger 
+  value="all"
+  className="text-white rounded-full 
+  data-[state=active]:bg-white 
+  data-[state=active]:text-stone-900
+  transition-all duration-300 text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2"
+>
+  All
+</TabsTrigger>
+
+<TabsTrigger 
+  value="featured"
+  className="text-white rounded-full 
+  data-[state=active]:bg-white 
+  data-[state=active]:text-stone-900
+  transition-all duration-300"
+>
+  Featured
+</TabsTrigger>
+
+<TabsTrigger 
+  value="recent"
+  className="text-white rounded-full 
+  data-[state=active]:bg-white 
+  data-[state=active]:text-stone-900
+  transition-all duration-300"
+>
+  Recent
+</TabsTrigger>
+
+</TabsList>
 
                 <div className="flex items-center justify-between sm:justify-end gap-2 sm:gap-3">
                   <Button
@@ -266,7 +275,7 @@ console.log(projects.id)
                 </div>
               </div>
 
-              <div className="mt-4 sm:mt-6 flex flex-col gap-3">
+              <div className="mt-4 sm:mt-6 flex flex-col gap-3 text-black">
                 {/* Search */}
                 <div className="relative w-full group">
                   <Search className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 sm:w-4 sm:h-4 text-stone-400 transition-colors group-focus-within:text-stone-600" />
@@ -274,7 +283,7 @@ console.log(projects.id)
                     placeholder="Search projects..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="text-black pl-9 sm:pl-11 pr-10 sm:pr-12 py-4 sm:py-6 w-full text-xs sm:text-sm rounded-full border-stone-200 bg-white/80 backdrop-blur-sm focus:border-stone-300 focus:ring-0 transition-all duration-300 sfpro-font"
+                    className="pl-9 sm:pl-11 pr-10 sm:pr-12 py-4 sm:py-6 w-full text-xs sm:text-sm rounded-full border-stone-200 bg-white/80 backdrop-blur-sm focus:border-stone-300 focus:ring-0 transition-all duration-300 sfpro-font"
                   />
                   {searchQuery && (
                     <Button
@@ -283,7 +292,7 @@ console.log(projects.id)
                       onClick={() => setSearchQuery("")}
                       className="absolute right-1.5 sm:right-2 top-1/2 -translate-y-1/2 h-6 w-6 sm:h-8 sm:w-8 p-0 rounded-full hover:bg-stone-100"
                     >
-                      <X className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                      <X className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white" />
                     </Button>
                   )}
                 </div>
@@ -374,16 +383,20 @@ console.log(projects.id)
                         onClick={() => handleProjectClick(project.id)}
                         className="group relative overflow-hidden border-0 bg-white shadow-sm hover:shadow-xl transition-all duration-700 cursor-pointer rounded-2xl sm:rounded-3xl"
                       >
-                        {/* Image Container */}
-                        <div className="relative aspect-[4/5] overflow-hidden">
-                          <img
-                            src={project.image}
-                            alt={project.name}
-                            className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-105"
-                          />
+                        {/* Image Container - Fixed to show full image without cropping */}
+                        <div className="relative w-full bg-stone-100">
+                          <div className="relative w-full pt-[125%]"> {/* 4:5 Aspect Ratio container */}
+                            <img
+                              src={!imageErrors[project.id] ? project.image : "/fallback-image.jpg"}
+                              alt={project.name}
+                              className="absolute top-0 left-0 w-full h-full object-contain bg-stone-50"
+                              onError={() => handleImageError(project.id)}
+                              loading="lazy"
+                            />
+                          </div>
                           
                           {/* Overlay */}
-                          <div className="absolute inset-0 bg-gradient-to-t from-stone-900/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                          <div className="absolute inset-0 bg-gradient-to-t from-stone-900/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
                           
                           {/* Icon */}
                           <div className={`absolute top-4 right-4 sm:top-6 sm:right-6 w-8 h-8 sm:w-12 sm:h-12 bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg transform transition-all duration-500 ${
@@ -393,7 +406,7 @@ console.log(projects.id)
                           </div>
 
                           {/* Year */}
-                          <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6">
+                          <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 pointer-events-none">
                             <span className="text-[10px] sm:text-xs text-white/80 sfpro-font tracking-wider">
                               {project.year}
                             </span>
@@ -404,7 +417,7 @@ console.log(projects.id)
                         <CardContent className="p-4 sm:p-6 lg:p-8">
                           <div className="space-y-3 sm:space-y-4">
                             <div>
-                              <h3 className="text-lg sm:text-xl lg:text-2xl font-medium text-stone-900 mb-1 sm:mb-2 clash-font">
+                              <h3 className="text-lg sm:text-xl lg:text-2xl font-medium text-stone-900 mb-1 sm:mb-2 clash-font line-clamp-1">
                                 {project.name}
                               </h3>
                               <p className="text-xs sm:text-sm text-stone-500 sfpro-font leading-relaxed line-clamp-2">
@@ -413,7 +426,7 @@ console.log(projects.id)
                             </div>
 
                             <div className="flex items-center justify-between pt-3 sm:pt-4 border-t border-stone-100">
-                              <Badge variant="outline" className="rounded-full px-2 sm:px-4 py-1 sm:py-1.5 border-stone-200 text-stone-600 sfpro-font text-[10px] sm:text-xs">
+                              <Badge variant="outline" className="rounded-full px-2 sm:px-4 py-1 sm:py-1.5 border-stone-200 text-stone-600 sfpro-font text-[10px] sm:text-xs truncate max-w-[60%]">
                                 {project.stack}
                               </Badge>
                               
@@ -433,9 +446,9 @@ console.log(projects.id)
 
                             {/* Client */}
                             {project.client && (
-                              <div className="flex items-center text-[10px] sm:text-xs text-stone-400 sfpro-font">
-                                <Briefcase className="w-2.5 h-2.5 sm:w-3 sm:h-3 mr-1 sm:mr-1.5" />
-                                {project.client}
+                              <div className="flex items-center text-[10px] sm:text-xs text-stone-400 sfpro-font truncate">
+                                <Briefcase className="w-2.5 h-2.5 sm:w-3 sm:h-3 mr-1 sm:mr-1.5 flex-shrink-0" />
+                                <span className="truncate">{project.client}</span>
                               </div>
                             )}
                           </div>
@@ -449,7 +462,7 @@ console.log(projects.id)
                           {project.fullDescription || project.shortDescription}
                         </p>
                         <Separator className="bg-stone-100" />
-                        <div className="flex items-center justify-between text-[10px] sm:text-xs">
+                        <div className="flex items-center justify-between text-[10px] sm:text-xs flex-wrap gap-2">
                           <span className="text-stone-500 sfpro-font">Duration: {project.duration || "N/A"}</span>
                           <span className="text-stone-500 sfpro-font">Role: {project.role || "N/A"}</span>
                         </div>
@@ -474,7 +487,7 @@ console.log(projects.id)
               ))}
             </div>
           ) : (
-            /* List View */
+            /* List View - Improved with full image visibility */
             <div className="space-y-3 sm:space-y-4">
               {filteredProjects.map((project) => (
                 <Card
@@ -483,31 +496,37 @@ console.log(projects.id)
                   className="group relative overflow-hidden border-0 bg-white shadow-sm hover:shadow-md transition-all duration-500 cursor-pointer rounded-xl sm:rounded-2xl"
                 >
                   <div className="flex flex-col sm:flex-row">
-                    <div className="sm:w-48 lg:w-56 h-32 sm:h-auto overflow-hidden">
-                      <img
-                        src={project.image}
-                        alt={project.name}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                      />
+                    <div className="sm:w-48 lg:w-64 xl:w-80 flex-shrink-0 bg-stone-100">
+                      <div className="relative w-full pt-[75%] sm:pt-[100%]"> {/* Responsive aspect ratio */}
+                        <img
+                          src={!imageErrors[project.id] ? project.image : "/fallback-image.jpg"}
+                          alt={project.name}
+                          className="absolute top-0 left-0 w-full h-full object-contain bg-stone-50"
+                          onError={() => handleImageError(project.id)}
+                          loading="lazy"
+                        />
+                      </div>
                     </div>
                     <CardContent className="flex-1 p-4 sm:p-6 lg:p-8">
                       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
-                        <div className="space-y-1 sm:space-y-2">
-                          <h3 className="text-lg sm:text-xl lg:text-2xl font-medium text-stone-900 clash-font">{project.name}</h3>
-                          <p className="text-xs sm:text-sm text-stone-500 sfpro-font max-w-2xl leading-relaxed">
+                        <div className="space-y-1 sm:space-y-2 flex-1 min-w-0">
+                          <h3 className="text-lg sm:text-xl lg:text-2xl font-medium text-stone-900 clash-font truncate">
+                            {project.name}
+                          </h3>
+                          <p className="text-xs sm:text-sm text-stone-500 sfpro-font leading-relaxed line-clamp-2">
                             {project.shortDescription}
                           </p>
                           <div className="flex flex-wrap items-center gap-2 sm:gap-4 pt-1 sm:pt-2">
-                            <Badge variant="outline" className="rounded-full px-2 sm:px-4 py-1 sm:py-1.5 border-stone-200 text-stone-600 sfpro-font text-[10px] sm:text-xs">
+                            <Badge variant="outline" className="rounded-full px-2 sm:px-4 py-1 sm:py-1.5 border-stone-200 text-stone-600 sfpro-font text-[10px] sm:text-xs truncate max-w-[150px]">
                               {project.stack}
                             </Badge>
                             {project.client && (
-                              <span className="flex items-center text-[10px] sm:text-xs text-stone-400 sfpro-font">
-                                <Briefcase className="w-2.5 h-2.5 sm:w-3 sm:h-3 mr-1 sm:mr-1.5" />
-                                {project.client}
+                              <span className="flex items-center text-[10px] sm:text-xs text-stone-400 sfpro-font truncate min-w-0">
+                                <Briefcase className="w-2.5 h-2.5 sm:w-3 sm:h-3 mr-1 sm:mr-1.5 flex-shrink-0" />
+                                <span className="truncate">{project.client}</span>
                               </span>
                             )}
-                            <span className="flex items-center text-[10px] sm:text-xs text-stone-400 sfpro-font">
+                            <span className="flex items-center text-[10px] sm:text-xs text-stone-400 sfpro-font flex-shrink-0">
                               <Calendar className="w-2.5 h-2.5 sm:w-3 sm:h-3 mr-1 sm:mr-1.5" />
                               {project.year}
                             </span>
@@ -516,10 +535,10 @@ console.log(projects.id)
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="rounded-full text-stone-400 hover:text-stone-900 transition-colors self-start"
+                          className="rounded-full text-stone-400 hover:text-stone-900 transition-colors self-start flex-shrink-0"
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleProjectClick(project.slug);
+                            handleProjectClick(project.id);
                           }}
                         >
                           <span className="text-[10px] sm:text-xs mr-1 sm:mr-2 sfpro-font">View</span>
@@ -547,7 +566,7 @@ console.log(projects.id)
                   setSearchQuery("");
                   setSelectedStack("all");
                   setSelectedYear("all");
-                  setSelectedService("all"); // also reset service filter
+                  setSelectedService("all");
                   setActiveTab("all");
                 }}
                 className="rounded-full px-6 sm:px-8 py-4 sm:py-6 border-stone-200 hover:border-stone-300 text-stone-600 hover:text-stone-900 transition-all sfpro-font text-xs sm:text-sm"
