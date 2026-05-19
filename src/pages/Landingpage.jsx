@@ -180,9 +180,9 @@ const LandingPageWrapper = () => {
         variants={fadeInUp}
       >
         <div className="flex flex-col items-center gap-2 sm:gap-3 lg:gap-4">
-          <span className="text-3xl sm:text-5xl lg:text-6xl xl:text-7xl tracking-wide">
+     <p className="text-4xl sm:text-6xl md:text-7xl font-bold bg-clip-text text-transparent drop-shadow-2xl bg-gradient-to-b from-neutral-900 to-neutral-700 leading-tight">
   Digital Systems Built to
-</span>
+</p>
           <div className="inline-block">
             <CanvasText
               text="Scale Your Business"

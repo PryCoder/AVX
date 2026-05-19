@@ -33,7 +33,7 @@ export default function Layout({ children }) {
         <Navbar topOffset={showBanner ? "3.5rem" : 0} />
       </div>
       
-      <main className="min-h-screen pt-24">
+      <main className="min-h-screen pt-14">
         {children}
       </main>
       

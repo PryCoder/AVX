@@ -30,7 +30,7 @@ export function NavbarDemo({ topOffset = 0 }) {
   const [openDropdown, setOpenDropdown] = useState(null);
   const [hoverTimeout, setHoverTimeout] = useState(null);
   const [scrolled, setScrolled] = useState(false);
-  const [activeAceternityMenu, setActiveAceternityMenu] = useState(null); // Removed TypeScript syntax
+  const [activeAceternityMenu, setActiveAceternityMenu] = useState(null);
 
   // Handle scroll effect
   useEffect(() => {
@@ -44,7 +44,7 @@ export function NavbarDemo({ topOffset = 0 }) {
   // Custom Navbar Logo component
   const CustomNavbarLogo = () => (
     <Link to="/" className="flex items-center gap-1.5 sm:gap-2">
-      <img src={logo} alt="AVXONIA INNOVATIONS" className="h-12 sm:h-14 w-auto object-contain" />
+      <img src={logo} alt="AVXONIA INNOVATIONS" className="h-10 sm:h-12 w-auto object-contain" />
     </Link>
   );
 
@@ -177,7 +177,7 @@ export function NavbarDemo({ topOffset = 0 }) {
     </MenuItem>
   );
 
-  // Original ServicesDropdown (keep as backup or alternative)
+  // Original ServicesDropdown with improved text colors
   const ServicesDropdown = () => (
     <div 
       className="relative inline-block"
@@ -186,20 +186,20 @@ export function NavbarDemo({ topOffset = 0 }) {
     >
       <DropdownMenu open={openDropdown === "services"} modal={false}>
         <DropdownMenuTrigger asChild>
-          <span className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-primary transition-colors cursor-pointer py-1.5 px-1 lg:px-3 group font-sans">
+          <span className="inline-flex items-center gap-1.5 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-primary transition-colors cursor-pointer py-1.5 px-1 lg:px-3 group font-sans">
             Services
             <ChevronDown className={`h-3.5 w-3.5 lg:h-4 lg:w-4 transition-transform duration-200 ${openDropdown === "services" ? "rotate-180" : "group-hover:rotate-180"}`} />
           </span>
         </DropdownMenuTrigger>
         <DropdownMenuContent 
-          className="w-[280px] p-4 z-[100]" 
+          className="w-[280px] p-4 z-[100] bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700" 
           align="start" 
           sideOffset={8}
           onMouseEnter={() => handleDropdownMouseEnter("services")}
           onMouseLeave={handleDropdownMouseLeave}
         >
           <div className="space-y-3">
-            <h3 className="text-xs sm:text-sm font-semibold text-foreground border-b border-border pb-1.5 font-serif">Our Expertise</h3>
+            <h3 className="text-xs sm:text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-700 pb-1.5 font-serif">Our Expertise</h3>
             <ul className="space-y-2 font-sans">
               {serviceItems.map((item) => (
                 <DropdownMenuItem 
@@ -207,7 +207,7 @@ export function NavbarDemo({ topOffset = 0 }) {
                   className="cursor-pointer px-0 py-1 hover:bg-transparent focus:bg-transparent" 
                   onClick={() => handleServiceClick(item.value)}
                 >
-                  <span className="text-xs sm:text-sm text-foreground/80 hover:text-primary transition-colors">{item.label}</span>
+                  <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">{item.label}</span>
                 </DropdownMenuItem>
               ))}
             </ul>
@@ -217,15 +217,15 @@ export function NavbarDemo({ topOffset = 0 }) {
     </div>
   );
 
-  // Decide which menu system to use (can be toggled with a flag)
-  const USE_ACETERNITY_MENU = false; // Set to false to avoid potential issues with Aceternity components
+  // Decide which menu system to use
+  const USE_ACETERNITY_MENU = false;
 
   return (
     <div className="relative w-full">
       <ResizableNavbar scrolled={scrolled} topOffset={topOffset}>
         {/* Desktop Navigation */}
-        <NavBody className="py-5">
-          <div className="flex items-center justify-between w-full py-1">
+        <NavBody>
+          <div className="flex items-center justify-between w-full py-0.5">
             <CustomNavbarLogo />
             
             <div className="hidden lg:flex items-center gap-0.5 xl:gap-2">
@@ -248,7 +248,7 @@ export function NavbarDemo({ topOffset = 0 }) {
               {!USE_ACETERNITY_MENU && (
                 <span 
                   onClick={() => handleNavigation('/blog')} 
-                  className="inline-flex items-center text-sm font-medium text-foreground hover:text-primary transition-colors cursor-pointer py-2 px-2 font-sans"
+                  className="inline-flex items-center text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-primary transition-colors cursor-pointer py-1.5 px-2 font-sans"
                 >
                   Blog
                 </span>
@@ -258,13 +258,13 @@ export function NavbarDemo({ topOffset = 0 }) {
             <div className="hidden lg:flex items-center gap-1.5">
               <button 
                 onClick={() => handleNavigation('/projects')}
-                className="bg-primary hover:bg-primary/90 text-white px-3 py-1.5 rounded-md text-xs font-sans transition-colors"
+                className="bg-primary hover:bg-primary/90 text-white px-3 py-1 rounded-md text-xs font-sans transition-colors"
               >
                 Discover
               </button>
               <RainbowButton
                 onClick={() => handleNavigation('/contact')}
-                className="px-3 xl:px-5 py-2 h-9 xl:h-10 font-sans text-xs xl:text-sm"
+                className="px-3 xl:px-5 py-1.5 h-8 xl:h-9 font-sans text-xs xl:text-sm"
               >
                 Appointment
               </RainbowButton>
@@ -272,7 +272,7 @@ export function NavbarDemo({ topOffset = 0 }) {
           </div>
         </NavBody>
 
-        {/* Mobile Navigation - Keep existing mobile implementation */}
+        {/* Mobile Navigation */}
         <MobileNav>
           <MobileNavHeader>
             <CustomNavbarLogo />
@@ -286,26 +286,26 @@ export function NavbarDemo({ topOffset = 0 }) {
             isOpen={isMobileMenuOpen}
             onClose={() => setIsMobileMenuOpen(false)}
           >
-            <div className="flex flex-col h-full overflow-y-auto">
+            <div className="flex flex-col h-full overflow-y-auto bg-white dark:bg-gray-900">
               {/* Services Section */}
-              <div className="border-b border-border/60">
+              <div className="border-b border-gray-200 dark:border-gray-700">
                 <button
                   onClick={() => setOpenDropdown(openDropdown === "mobile-services" ? null : "mobile-services")}
-                  className="w-full flex items-center justify-between py-4 px-4 text-base font-medium hover:bg-accent/30 transition-colors"
+                  className="w-full flex items-center justify-between py-4 px-4 text-base font-medium hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                 >
-                  <span className="text-foreground font-sans">Services</span>
-                  <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform duration-200 ${openDropdown === "mobile-services" ? "rotate-180" : ""}`} />
+                  <span className="text-gray-900 text-white font-sans">Services</span>
+                  <ChevronDown className={`h-4 w-4 text-gray-500 dark:text-gray-400 transition-transform duration-200 ${openDropdown === "mobile-services" ? "rotate-180" : ""}`} />
                 </button>
                 {openDropdown === "mobile-services" && (
-                  <div className="px-4 pb-4 pt-2 bg-accent/10">
+                  <div className="px-4 pb-4 pt-2 bg-gray-50 dark:bg-gray-800/50">
                     <div className="space-y-3">
-                      <h3 className="text-xs font-semibold text-foreground/80 uppercase tracking-wider mb-1.5 font-serif">Our Expertise</h3>
+                      <h3 className="text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1.5 font-serif">Our Expertise</h3>
                       <ul className="space-y-0.5 font-sans">
                         {serviceItems.map((item) => (
                           <li
                             key={item.value}
                             onClick={() => handleServiceClick(item.value)}
-                            className="text-xs sm:text-sm text-foreground/70 hover:text-primary transition-colors cursor-pointer py-1.5 px-2 hover:bg-accent/50 rounded-md"
+                            className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors cursor-pointer py-1.5 px-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md"
                           >
                             {item.label}
                           </li>
@@ -317,24 +317,24 @@ export function NavbarDemo({ topOffset = 0 }) {
               </div>
 
               {/* Resources Section */}
-              <div className="border-b border-border/60">
+              <div className="border-b border-gray-200 dark:border-gray-700">
                 <button
                   onClick={() => setOpenDropdown(openDropdown === "mobile-resources" ? null : "mobile-resources")}
-                  className="w-full flex items-center justify-between py-4 px-4 text-base font-medium hover:bg-accent/30 transition-colors"
+                  className="w-full flex items-center justify-between py-4 px-4 text-base font-medium hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                 >
-                  <span className="text-foreground font-sans">Resources</span>
-                  <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform duration-200 ${openDropdown === "mobile-resources" ? "rotate-180" : ""}`} />
+                  <span className="text-gray-900 text-white font-sans">Resources</span>
+                  <ChevronDown className={`h-4 w-4 text-gray-500 dark:text-gray-400 transition-transform duration-200 ${openDropdown === "mobile-resources" ? "rotate-180" : ""}`} />
                 </button>
                 {openDropdown === "mobile-resources" && (
-                  <div className="px-4 pb-4 pt-2 bg-accent/10">
+                  <div className="px-4 pb-4 pt-2 bg-gray-50 dark:bg-gray-800/50">
                     <div className="space-y-3">
-                      <h3 className="text-xs font-semibold text-foreground/80 uppercase tracking-wider mb-1.5 font-serif">Support</h3>
+                      <h3 className="text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1.5 font-serif">Support</h3>
                       <ul className="space-y-0.5 font-sans">
                         {resourceItems.map((item) => (
                           <li
                             key={item.label}
                             onClick={() => handleNavigation(item.path)}
-                            className="text-xs sm:text-sm text-foreground/70 hover:text-primary transition-colors cursor-pointer py-1.5 px-2 hover:bg-accent/50 rounded-md"
+                            className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors cursor-pointer py-1.5 px-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md"
                           >
                             {item.label}
                           </li>
@@ -346,30 +346,30 @@ export function NavbarDemo({ topOffset = 0 }) {
               </div>
 
               {/* Who We Are Section */}
-              <div className="border-b border-border/60">
+              <div className="border-b border-gray-200 dark:border-gray-700">
                 <button
                   onClick={() => setOpenDropdown(openDropdown === "mobile-whoweare" ? null : "mobile-whoweare")}
-                  className="w-full flex items-center justify-between py-4 px-4 text-base font-medium hover:bg-accent/30 transition-colors"
+                  className="w-full flex items-center justify-between py-4 px-4 text-base font-medium hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                 >
-                  <span className="text-foreground font-sans">Who we are</span>
-                  <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform duration-200 ${openDropdown === "mobile-whoweare" ? "rotate-180" : ""}`} />
+                  <span className="text-gray-900 text-white font-sans">Who we are</span>
+                  <ChevronDown className={`h-4 w-4 text-gray-500 dark:text-gray-400 transition-transform duration-200 ${openDropdown === "mobile-whoweare" ? "rotate-180" : ""}`} />
                 </button>
                 {openDropdown === "mobile-whoweare" && (
-                  <div className="px-4 pb-4 pt-2 bg-accent/10">
+                  <div className="px-4 pb-4 pt-2 bg-gray-50 dark:bg-gray-800/50">
                     <div className="space-y-2">
                       <div
                         onClick={() => handleNavigation('/aboutus')}
-                        className="cursor-pointer px-3 py-3 hover:bg-accent/50 rounded-lg transition-colors group"
+                        className="cursor-pointer px-3 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors group"
                       >
-                        <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors font-sans block">About Us</span>
-                        <span className="text-xs text-muted-foreground/70">Our story, mission & vision</span>
+                        <span className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-primary dark:group-hover:text-primary transition-colors font-sans block">About Us</span>
+                        <span className="text-xs text-gray-500 dark:text-gray-400">Our story, mission & vision</span>
                       </div>
                       <div
                         onClick={() => handleNavigation('/joinus')}
-                        className="cursor-pointer px-3 py-3 hover:bg-accent/50 rounded-lg transition-colors group"
+                        className="cursor-pointer px-3 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors group"
                       >
-                        <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors font-sans block">Join Us</span>
-                        <span className="text-xs text-muted-foreground/70">Careers & opportunities</span>
+                        <span className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-primary dark:group-hover:text-primary transition-colors font-sans block">Join Us</span>
+                        <span className="text-xs text-gray-500 dark:text-gray-400">Careers & opportunities</span>
                       </div>
                     </div>
                   </div>
@@ -383,9 +383,9 @@ export function NavbarDemo({ topOffset = 0 }) {
                   e.preventDefault();
                   handleNavigation('/blog');
                 }}
-                className="block py-4 px-4 border-b border-border/60 hover:bg-accent/30 transition-colors"
+                className="block py-4 px-4 border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
               >
-                <span className="text-foreground font-sans">Blog</span>
+                <span className="text-gray-900 dark:text-white font-sans">Blog</span>
               </a>
 
               {/* Mobile Buttons */}
@@ -417,7 +417,7 @@ export function NavbarDemo({ topOffset = 0 }) {
   );
 }
 
-// WhoWeAreDropdown component
+// WhoWeAreDropdown component with improved text colors
 const WhoWeAreDropdown = () => {
   const navigate = useNavigate();
   const [openDropdown, setOpenDropdown] = useState(null);
@@ -443,13 +443,13 @@ const WhoWeAreDropdown = () => {
     >
       <DropdownMenu open={openDropdown === "whoweare"} modal={false}>
         <DropdownMenuTrigger asChild>
-          <span className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-primary transition-colors cursor-pointer py-2 px-1 lg:px-2 group font-sans">
+          <span className="inline-flex items-center gap-1.5 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-primary transition-colors cursor-pointer py-2 px-1 lg:px-2 group font-sans">
             Who we are
             <ChevronDown className={`h-3.5 w-3.5 lg:h-4 lg:w-4 transition-transform duration-200 ${openDropdown === "whoweare" ? "rotate-180" : "group-hover:rotate-180"}`} />
           </span>
         </DropdownMenuTrigger>
         <DropdownMenuContent 
-          className="w-[240px] p-3 z-[100]" 
+          className="w-[240px] p-3 z-[100] bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700" 
           align="start" 
           sideOffset={8}
           onMouseEnter={() => handleDropdownMouseEnter("whoweare")}
@@ -457,27 +457,27 @@ const WhoWeAreDropdown = () => {
         >
           <div className="space-y-1">
             <DropdownMenuItem 
-              className="cursor-pointer px-3 py-2.5 hover:bg-accent/50 focus:bg-accent/50 rounded-lg group" 
+              className="cursor-pointer px-3 py-2.5 hover:bg-gray-100 dark:hover:bg-gray-800 focus:bg-gray-100 dark:focus:bg-gray-800 rounded-lg group" 
               onClick={() => handleNavigation('/aboutus')}
             >
               <div className="flex flex-col">
-                <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors font-sans">About Us</span>
-                <span className="text-xs text-muted-foreground/70 group-hover:text-muted-foreground transition-colors">Our story, mission & vision</span>
+                <span className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-primary dark:group-hover:text-primary transition-colors font-sans">About Us</span>
+                <span className="text-xs text-gray-500 dark:text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors">Our story, mission & vision</span>
               </div>
             </DropdownMenuItem>
             <DropdownMenuItem 
-              className="cursor-pointer px-3 py-2.5 hover:bg-accent/50 focus:bg-accent/50 rounded-lg group" 
+              className="cursor-pointer px-3 py-2.5 hover:bg-gray-100 dark:hover:bg-gray-800 focus:bg-gray-100 dark:focus:bg-gray-800 rounded-lg group" 
               onClick={() => handleNavigation('/joinus')}
             >
               <div className="flex flex-col">
-                <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors font-sans">Join Us</span>
-                <span className="text-xs text-muted-foreground/70 group-hover:text-muted-foreground transition-colors">Careers & opportunities</span>
+                <span className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-primary dark:group-hover:text-primary transition-colors font-sans">Join Us</span>
+                <span className="text-xs text-gray-500 dark:text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors">Careers & opportunities</span>
               </div>
             </DropdownMenuItem>
           </div>
-          <DropdownMenuSeparator className="my-2" />
+          <DropdownMenuSeparator className="my-2 bg-gray-200 dark:bg-gray-700" />
           <div className="px-2 py-1">
-            <p className="text-[10px] sm:text-xs text-muted-foreground/60 italic font-sans">Be part of our journey</p>
+            <p className="text-[10px] sm:text-xs text-gray-400 dark:text-gray-500 italic font-sans">Be part of our journey</p>
           </div>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -485,7 +485,7 @@ const WhoWeAreDropdown = () => {
   );
 };
 
-// ResourcesDropdown component
+// ResourcesDropdown component with improved text colors
 const ResourcesDropdown = () => {
   const navigate = useNavigate();
   const [openDropdown, setOpenDropdown] = useState(null);
@@ -515,20 +515,20 @@ const ResourcesDropdown = () => {
     >
       <DropdownMenu open={openDropdown === "resources"} modal={false}>
         <DropdownMenuTrigger asChild>
-          <span className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-primary transition-colors cursor-pointer py-2 px-1 lg:px-2 group font-sans">
+          <span className="inline-flex items-center gap-1.5 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-primary transition-colors cursor-pointer py-2 px-1 lg:px-2 group font-sans">
             Resources
             <ChevronDown className={`h-3.5 w-3.5 lg:h-4 lg:w-4 transition-transform duration-200 ${openDropdown === "resources" ? "rotate-180" : "group-hover:rotate-180"}`} />
           </span>
         </DropdownMenuTrigger>
         <DropdownMenuContent 
-          className="w-[240px] p-4 z-[100]" 
+          className="w-[240px] p-4 z-[100] bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700" 
           align="start" 
           sideOffset={8}
           onMouseEnter={() => handleDropdownMouseEnter("resources")}
           onMouseLeave={handleDropdownMouseLeave}
         >
           <div className="space-y-3">
-            <h3 className="text-xs sm:text-sm font-semibold text-foreground border-b border-border pb-1.5 font-serif">Support</h3>
+            <h3 className="text-xs sm:text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-700 pb-1.5 font-serif">Support</h3>
             <ul className="space-y-2 font-sans">
               {resourceItems.map((item) => (
                 <DropdownMenuItem 
@@ -536,7 +536,7 @@ const ResourcesDropdown = () => {
                   className="cursor-pointer px-0 py-1 hover:bg-transparent focus:bg-transparent" 
                   onClick={() => handleNavigation(item.path)}
                 >
-                  <span className="text-xs sm:text-sm text-foreground/80 hover:text-primary transition-colors">{item.label}</span>
+                  <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">{item.label}</span>
                 </DropdownMenuItem>
               ))}
             </ul>
