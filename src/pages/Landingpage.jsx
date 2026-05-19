@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, useInView, useMotionValue, useSpring } from 'framer-motion';
-import { ArrowRight, CheckCircle, XCircle, BarChart3, Bot, Layout, ArrowUpRight, MessageCircle, Sparkles, Zap, TrendingUp, Users, Clock, ChevronRight, LayoutIcon, BotIcon, BarChart3Icon } from 'lucide-react';
+import { ArrowRight, CheckCircle, XCircle, BarChart3, Bot, Layout, ArrowUpRight, MessageCircle, Sparkles, Zap, TrendingUp, Users, Clock, ChevronRight, LayoutIcon, BotIcon, BarChart3Icon, CheckCircle2 } from 'lucide-react';
 import { Button } from "../components/ui/button";
 import Loader from "../components/loader";
 import projectsData from '../data/projects.json';
@@ -22,6 +22,13 @@ import { VideoText } from '../components/ui/video-text';
 import { AuroraText } from '../components/ui/aurora-text';
 import TextGenerateEffectDemo from '../components/text-generate-effect-demo';
 import { Vortex } from '../components/ui/vortex';
+import { Meteors } from '../components/ui/meteors';
+
+import { AnimatedGridPattern } from "../components/ui/animated-grid-pattern";
+import { MagicCard } from "../components/ui/magic-card";
+import { RetroGrid } from '../components/ui/retro-grid';
+
+
 
 
 
@@ -186,7 +193,7 @@ const LandingPageWrapper = () => {
         variants={fadeInUp}
       >
         <div className="flex flex-col items-center gap-2 sm:gap-3 lg:gap-4">
-     <p className="text-4xl sm:text-6xl md:text-7xl font-bold bg-clip-text text-transparent drop-shadow-2xl bg-gradient-to-b from-neutral-900 to-neutral-700 leading-tight">
+     <p className="pointer-events-none bg-linear-to-b from-black to-gray-300/80 bg-clip-text text-center sm:text-5xl lg:text-7xl leading-none font-semibold whitespace-pre-wrap text-transparent dark:from-white dark:to-slate-900/10">
   Digital Systems Built to
 </p>
           <div className="inline-block">
@@ -632,47 +639,47 @@ const LandingPageWrapper = () => {
   </section>
   
 </SectionWrapper>
-  {/* SECTION 3: SOLUTION */}
-<SectionWrapper>
-  <section className="relative overflow-hidden bg-black py-20 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 z-10">
+{/* SECTION 3: SOLUTION - EXTRA DARK VERSION */}
 
-    {/* VORTEX BACKGROUND EFFECT */}
-    <div className="absolute inset-0 opacity-20 sm:opacity-30">
-      <Vortex
-        backgroundColor="transparent"
-        rangeY={800}
-        particleCount={500}
-        baseHue={200}
-        className="w-full h-full"
+<SectionWrapper>
+  <section className="relative overflow-hidden bg-black py-24 lg:py-32 px-4 sm:px-6 lg:px-8">
+    
+    {/* CHANGE 1: RetroGrid - Reduced opacity to 0.5, darker line colors */}
+    <div className="absolute inset-0 z-0">
+      <RetroGrid 
+        angle={35}
+        cellSize={50}
+        opacity={0.7}
+        lightLineColor="#7bacfa"
+        darkLineColor="#5c6fa9"
       />
     </div>
-
-    {/* GRID BACKGROUND */}
-    <div className="absolute inset-0 opacity-[0.03] sm:opacity-[0.05] bg-[linear-gradient(to_right,#ffffff10_1px,transparent_1px),linear-gradient(to_bottom,#ffffff10_1px,transparent_1px)] bg-[size:4rem_4rem] sm:bg-[size:5rem_5rem]" />
-
-    {/* BLUE GLOW */}
-    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] sm:w-[900px] h-[600px] sm:h-[900px] bg-blue-500/20 blur-[120px] sm:blur-[170px] rounded-full" />
     
-    {/* SECONDARY GLOW */}
-    <div className="absolute bottom-0 right-0 w-[400px] sm:w-[600px] h-[400px] sm:h-[600px] bg-indigo-500/10 blur-[100px] sm:blur-[150px] rounded-full" />
+    {/* CHANGE 2: Darker overlay - increased opacity to darken everything */}
+    <div className="absolute inset-0 bg-gradient-to-b from-black/95 via-black/85 to-black/95 pointer-events-none z-[1]" />
+    
+    {/* CHANGE 3: Reduced ambient glows - much dimmer */}
+    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-blue-500/3 rounded-full blur-[120px] z-[1]" />
+    <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-indigo-500/2 rounded-full blur-[100px] z-[1]" />
+    <div className="absolute top-1/3 left-0 w-[400px] h-[400px] bg-purple-500/1 rounded-full blur-[80px] z-[1]" />
 
-    {/* FLOATING PARTICLES */}
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {[...Array(20)].map((_, i) => (
+    {/* CHANGE 4: Fewer particles, lower opacity */}
+    <div className="absolute inset-0 overflow-hidden pointer-events-none z-[1]">
+      {[...Array(15)].map((_, i) => (
         <motion.div
           key={i}
-          className="absolute w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-blue-300/30 sm:bg-blue-300/40"
+          className="absolute w-px h-px bg-white/5 rounded-full"
           initial={{
             x: `${Math.random() * 100}%`,
             y: `${Math.random() * 100}%`,
             opacity: 0,
           }}
           animate={{
-            y: ["0%", "-120%"],
-            opacity: [0, 1, 0],
+            y: ["0%", "-100%"],
+            opacity: [0, 0.15, 0],
           }}
           transition={{
-            duration: Math.random() * 8 + 6,
+            duration: Math.random() * 10 + 8,
             repeat: Infinity,
             ease: "linear",
             delay: Math.random() * 5,
@@ -682,255 +689,348 @@ const LandingPageWrapper = () => {
     </div>
 
     <div className="relative z-10 max-w-7xl mx-auto">
-
-      {/* HERO SECTION */}
-      <div className="text-center mb-20 sm:mb-24 lg:mb-32">
+      
+      {/* Header Section */}
+      <div className="text-center max-w-4xl mx-auto mb-20 lg:mb-28">
         
-        {/* BADGE */}
+        {/* CHANGE 5: Darker badge */}
         <motion.div
-          initial={{ opacity: 0, y: 15 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
+          transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="inline-flex items-center gap-2 sm:gap-3 rounded-full border border-blue-500/20 bg-blue-500/10 px-4 sm:px-6 py-2 sm:py-2.5 mb-8 sm:mb-10"
+          className="inline-flex items-center gap-2 rounded-full border border-white/5 bg-white/3 backdrop-blur-sm px-4 py-1.5 mb-6"
         >
-          <span className="h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-blue-400 animate-pulse" />
-          <span className="text-xs sm:text-sm font-medium tracking-[0.15em] sm:tracking-[0.18em] uppercase text-blue-300">
-            Our Growth System
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-500/40 opacity-50"></span>
+            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-blue-500/60"></span>
           </span>
+          <span className="text-xs font-medium tracking-wider text-stone-600 uppercase">Our Growth System</span>
         </motion.div>
 
-        {/* HEADING */}
+        {/* CHANGE 6: Slightly dimmer text */}
         <motion.div
-          initial={{ opacity: 0, y: 35 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9 }}
+          transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="space-y-6 sm:space-y-8"
+          className="space-y-6"
         >
-
-          <h2 className="text-white">
-            {/* FIRST ROW */}
-            <div className="flex flex-wrap items-center justify-center gap-x-6 sm:gap-x-10 lg:gap-x-12 gap-y-3 sm:gap-y-4 mb-4 sm:mb-5">
-              <span className="text-4xl sm:text-6xl lg:text-7xl font-black">We</span>
-              <span className="text-4xl sm:text-6xl lg:text-7xl font-black">Build</span>
-              <span className="text-4xl sm:text-6xl lg:text-7xl font-black bg-gradient-to-r from-blue-400 via-blue-500 to-indigo-400 bg-clip-text text-transparent">
-                Structured
-              </span>
-            </div>
-
-            {/* SECOND ROW */}
-            <div className="flex flex-wrap items-center justify-center gap-x-6 sm:gap-x-10 lg:gap-x-12 gap-y-3 sm:gap-y-4 mb-4 sm:mb-5">
-              <span className="text-4xl sm:text-6xl lg:text-7xl font-black">Digital</span>
-              <span className="text-4xl sm:text-6xl lg:text-7xl font-black">Systems</span>
-              <span className="text-4xl sm:text-6xl lg:text-7xl font-black">That</span>
-            </div>
-
-            {/* THIRD ROW */}
-            <div className="flex justify-center">
-              <span className="text-3xl sm:text-5xl lg:text-6xl font-black text-stone-300">
-                Drive Growth
-              </span>
-            </div>
-          </h2>
-
-          {/* DESCRIPTION */}
-          <div className="max-w-3xl mx-auto mt-8 sm:mt-10">
-            <p className="text-base sm:text-lg lg:text-xl text-stone-300 leading-relaxed">
-              Not just websites. Not just automation.
-              <br className="hidden sm:block" />
-              We build complete growth systems engineered for scale.
-            </p>
-          </div>
-
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight">
+            <span className="text-white/85">We Build</span>
+            <br />
+            <span className="bg-gradient-to-r from-blue-400/80 via-indigo-400/80 to-purple-400/80 bg-clip-text text-transparent">
+              Structured Digital
+            </span>
+            <br />
+            <span className="text-white/85">Systems That Drive Growth</span>
+          </h1>
+          
+          <p className="text-stone-500 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+            Not just websites. Not just automation. We build complete growth systems engineered for scale.
+          </p>
         </motion.div>
       </div>
 
-      {/* CENTER SYSTEM CARD */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1 }}
-        viewport={{ once: true }}
-        className="relative mx-auto max-w-6xl mb-20 sm:mb-24 lg:mb-32"
-      >
-
-        {/* OUTER GLOW */}
-        <div className="absolute inset-0 rounded-2xl sm:rounded-[2rem] lg:rounded-[2.5rem] bg-gradient-to-r from-blue-500/20 via-blue-500/10 to-indigo-500/20 blur-2xl sm:blur-3xl" />
-
-        {/* MAIN CONTAINER */}
-        <div className="relative overflow-hidden rounded-2xl sm:rounded-[2rem] lg:rounded-[2.5rem] border border-white/10 bg-black/40 backdrop-blur-2xl p-6 sm:p-8 lg:p-12">
-
-          {/* TOP LABELS */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 lg:gap-12 mb-12 sm:mb-16">
-            
-            <div className="flex items-center gap-2 sm:gap-3">
-              <span className="h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-blue-400 animate-pulse" />
-              <span className="text-xs sm:text-sm tracking-[0.2em] uppercase text-stone-300">Strategy</span>
-            </div>
-
-            <div className="hidden sm:block h-px w-16 lg:w-24 bg-white/10" />
-
-            <div className="flex items-center gap-2 sm:gap-3">
-              <span className="h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-blue-400 animate-pulse" />
-              <span className="text-xs sm:text-sm tracking-[0.2em] uppercase text-stone-300">Automation</span>
-            </div>
-
-            <div className="hidden sm:block h-px w-16 lg:w-24 bg-white/10" />
-
-            <div className="flex items-center gap-2 sm:gap-3">
-              <span className="h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-indigo-400 animate-pulse" />
-              <span className="text-xs sm:text-sm tracking-[0.2em] uppercase text-stone-300">Conversion</span>
-            </div>
-
-          </div>
-
-          {/* MAIN GRID */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-
-            {[
-              {
-                icon: <Layout className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-blue-400" />,
-                title: "Web Development",
-                desc: "Conversion-focused architecture designed to turn visitors into qualified leads instead of passive traffic.",
-                gradient: "from-blue-400 via-blue-500 to-indigo-400"
-              },
-              {
-                icon: <Bot className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-blue-400" />,
-                title: "AI Automation",
-                desc: "Automate repetitive operations and workflows so your business scales without operational chaos.",
-                gradient: "from-blue-400 via-indigo-500 to-purple-400"
-              },
-              {
-                icon: <BarChart3 className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-indigo-400" />,
-                title: "System Thinking",
-                desc: "Every part of your digital presence works together as one scalable business growth engine.",
-                gradient: "from-indigo-400 via-purple-500 to-blue-400"
-              },
-            ].map((pillar, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{
-                  duration: 0.7,
-                  delay: i * 0.15,
-                }}
-                viewport={{ once: true }}
-                whileHover={{ y: -8 }}
-                className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-6 lg:p-8 transition-all duration-300 hover:border-blue-500/30"
-              >
-
-                {/* ICON */}
-                <div className="mb-6">
-                  <div className="flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-white/5 border border-white/10">
-                    {pillar.icon}
+      {/* Three Pillars Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-24 lg:mb-32">
+        
+        {[
+          {
+            icon: <Layout className="w-6 h-6" strokeWidth={1.5} />,
+            title: "Web Development",
+            description: "Conversion-focused architecture designed to turn visitors into qualified leads.",
+            color: "blue",
+            gradient: "from-blue-500/8 to-blue-600/4",
+            iconColor: "text-blue-400/70",
+            borderColor: "border-blue-500/15",
+            bgHover: "hover:bg-blue-500/5",
+            features: ["Performance Optimized", "SEO Ready", "Responsive Design"]
+          },
+          {
+            icon: <Bot className="w-6 h-6" strokeWidth={1.5} />,
+            title: "AI Automation",
+            description: "Automate repetitive operations so your business scales without chaos.",
+            color: "indigo",
+            gradient: "from-indigo-500/8 to-indigo-600/4",
+            iconColor: "text-indigo-400/70",
+            borderColor: "border-indigo-500/15",
+            bgHover: "hover:bg-indigo-500/5",
+            features: ["Workflow Automation", "Smart Integrations", "Real-time Analytics"]
+          },
+          {
+            icon: <BarChart3 className="w-6 h-6" strokeWidth={1.5} />,
+            title: "System Thinking",
+            description: "Every part works together as one cohesive growth engine.",
+            color: "purple",
+            gradient: "from-purple-500/8 to-purple-600/4",
+            iconColor: "text-purple-400/70",
+            borderColor: "border-purple-500/15",
+            bgHover: "hover:bg-purple-500/5",
+            features: ["Holistic Approach", "Scalable Architecture", "Data-Driven"]
+          }
+        ].map((pillar, idx) => (
+          <motion.div
+            key={idx}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: idx * 0.1 }}
+            viewport={{ once: true }}
+            whileHover={{ y: -4 }}
+            className="group relative"
+          >
+            {/* CHANGE 7: Darker cards - less opacity in gradients */}
+            <div className={`relative h-full rounded-2xl border ${pillar.borderColor} bg-gradient-to-br from-black/90 to-black/70 backdrop-blur-sm p-6 lg:p-8 transition-all duration-300 ${pillar.bgHover} hover:border-white/15`}>
+              
+              {/* Icon Container */}
+              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br from-black/90 to-black/70 border ${pillar.borderColor} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                <div className={pillar.iconColor}>
+                  {pillar.icon}
+                </div>
+              </div>
+              
+              {/* CHANGE 8: Darker text on cards */}
+              <h3 className="text-xl lg:text-2xl font-bold text-white/75 mb-3">
+                {pillar.title}
+              </h3>
+              
+              <p className="text-stone-500/80 leading-relaxed mb-4">
+                {pillar.description}
+              </p>
+              
+              {/* Feature List */}
+              <div className="space-y-2 pt-4 border-t border-white/5">
+                {pillar.features.map((feature, i) => (
+                  <div key={i} className="flex items-center gap-2 text-sm text-stone-600/80">
+                    <CheckCircle2 className="w-3 h-3 text-stone-700" />
+                    <span>{feature}</span>
                   </div>
-                </div>
+                ))}
+              </div>
+              
+              {/* Learn More Link */}
+              <div className="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-2 group-hover:translate-x-0">
+                <ArrowRight className={`w-5 h-5 ${pillar.iconColor}`} />
+              </div>
+            </div>
+          </motion.div>
+        ))}
+      </div>
 
-                {/* CONTENT */}
-                <div className="space-y-3">
-                  <h3 className={`text-xl sm:text-2xl lg:text-3xl font-black text-transparent bg-gradient-to-r ${pillar.gradient} bg-clip-text`}>
-                    {pillar.title}
-                  </h3>
-                  <p className="text-stone-300 leading-relaxed text-sm lg:text-base">
-                    {pillar.desc}
-                  </p>
-                </div>
-
-                {/* HOVER EFFECT */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-blue-500/5 to-indigo-500/5 pointer-events-none" />
-
-              </motion.div>
-            ))}
-
-          </div>
-
-        </div>
-      </motion.div>
-
-      {/* BOTTOM STATEMENT */}
+      {/* CHANGE 9: Darker bottom statement */}
       <motion.div
-        initial={{ opacity: 0, y: 25 }}
+        initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9 }}
+        transition={{ duration: 0.8, delay: 0.3 }}
         viewport={{ once: true }}
         className="text-center"
       >
-
-        <div className="space-y-4 sm:space-y-5">
-          {/* TOP TEXT */}
-          <div className="flex flex-wrap items-center justify-center gap-x-6 sm:gap-x-10 lg:gap-x-12 gap-y-3">
-            <span className="text-2xl sm:text-4xl lg:text-5xl font-black text-white">Beautiful</span>
-            <span className="text-2xl sm:text-4xl lg:text-5xl font-black text-white">Design</span>
-            <span className="text-2xl sm:text-4xl lg:text-5xl font-black text-white">Means</span>
-            <span className="text-2xl sm:text-4xl lg:text-5xl font-black text-white">Nothing</span>
-          </div>
-
-          {/* BOTTOM TEXT */}
-          <div className="flex justify-center">
-            <span className="text-2xl sm:text-4xl lg:text-5xl font-black bg-gradient-to-r from-blue-400 via-blue-500 to-indigo-400 bg-clip-text text-transparent">
-              Without Business Results
-            </span>
+        <div className="inline-block">
+          <p className="text-2xl sm:text-3xl lg:text-4xl font-light text-stone-600 mb-2">
+            Beautiful Design Means Nothing
+          </p>
+          <div className="relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-purple-500/10 blur-xl"></div>
+            
+             <span className="pointer-events-none z-10 bg-linear-to-b from-[#ffd319] via-[#ff2975] to-[#8c1eff] bg-clip-text text-center text-7xl leading-none font-bold tracking-tighter whitespace-pre-wrap text-transparent">
+         Without Business Results
+      </span>
           </div>
         </div>
-
       </motion.div>
 
     </div>
   </section>
 </SectionWrapper>
-        {/* SECTION 4: PROCESS */}
-        <SectionWrapper>
-          <section className="py-24 lg:py-32 bg-stone-50 px-6 lg:px-8 z-10 relative">
-            <div className="max-w-7xl mx-auto">
-              <motion.h2 
-                className="text-3xl lg:text-5xl font-bold clash-font text-center mb-16 lg:mb-24"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, ease: premiumEase }}
-                viewport={{ once: true }}
-              >
-                Our Proven Framework
-              </motion.h2>
-              
-              <div className="flex flex-col lg:flex-row gap-6 relative">
-                <motion.div 
-                  className="hidden lg:block absolute top-[3.5rem] left-0 w-full h-[1px] bg-stone-200 z-0"
-                  initial={{ scaleX: 0 }}
-                  whileInView={{ scaleX: 1 }}
-                  transition={{ duration: 1.5, delay: 0.2, ease: "easeInOut" }}
-                  viewport={{ once: true }}
-                  style={{ originX: 0 }}
-                />
-                
-                {[
-                  { step: "01", title: "Audit", desc: "Analyze your current system & bottlenecks." },
-                  { step: "02", title: "Strategy", desc: "Define precisely what needs to be built." },
-                  { step: "03", title: "Build", desc: "Clean, scalable, and systematic execution." },
-                  { step: "04", title: "Scale", desc: "Optimize, automate, and improve conversions." }
-                ].map((item, i) => (
-                  <motion.div 
-                    key={i} 
-                    className="flex-1 relative z-10 bg-white p-8 lg:p-10 rounded-3xl shadow-sm border border-stone-100 transition-all duration-300"
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: i * 0.15, ease: premiumEase }}
-                    viewport={{ once: true }}
-                    whileHover={{ y: -5, boxShadow: "0 15px 35px -10px rgba(0,0,0,0.05)" }}
-                  >
-                    <div className="w-14 h-14 bg-stone-900 text-white rounded-full flex items-center justify-center font-bold text-xl mb-6 lg:mb-8 shadow-md clash-font">
-                      {item.step}
-                    </div>
-                    <h3 className="text-xl font-bold mb-2 lg:mb-3 clash-font">{item.title}</h3>
-                    <p className="text-sm lg:text-base text-stone-600 leading-relaxed">{item.desc}</p>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </section>
-        </SectionWrapper>
+<SectionWrapper>
+  <section className="relative py-24 lg:py-32 px-6 lg:px-8 overflow-hidden bg-gradient-to-b from-white via-stone-50/50 to-white">
+    
+    {/* Subtle Animated Grid Pattern */}
+    <AnimatedGridPattern
+      numSquares={20}
+      maxOpacity={0.05}
+      duration={4}
+      repeatDelay={2}
+      className={cn(
+        "absolute inset-0 opacity-30",
+        "[mask-image:radial-gradient(800px_circle_at_center,white,transparent)]"
+      )}
+    />
 
+    {/* Subtle Meteors - Very subtle */}
+    <Meteors number={15} className="absolute inset-0 opacity-20" />
+
+    <div className="relative z-10 max-w-7xl mx-auto">
+      
+      {/* Section Header */}
+      <div className="text-center mb-20 lg:mb-28">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="inline-flex items-center gap-2 rounded-full bg-stone-100/50 backdrop-blur-sm px-4 py-1.5 mb-6 border border-stone-200/50"
+        >
+          <div className="relative flex h-1.5 w-1.5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-stone-500 opacity-60"></span>
+            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-stone-600"></span>
+          </div>
+          <span className="text-xs font-medium text-stone-500 tracking-wider uppercase">How We Work</span>
+        </motion.div>
+        
+        <TextAnimate 
+          animation="fadeIn" 
+          by="word"
+          className="text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-stone-900"
+          as="h2"
+        >
+          Our Proven Framework
+        </TextAnimate>
+        
+        <motion.p 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          viewport={{ once: true }}
+          className="text-stone-500 mt-4 max-w-2xl mx-auto text-base lg:text-lg"
+        >
+          A systematic approach to transform your digital presence
+        </motion.p>
+      </div>
+      
+      {/* Process Steps Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+        
+        {[
+          { 
+            step: "01", 
+            title: "Audit", 
+            description: "Analyze your current system & bottlenecks to identify growth opportunities.",
+            accent: "amber",
+            icon: (
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            )
+          },
+          { 
+            step: "02", 
+            title: "Strategy", 
+            description: "Define precisely what needs to be built with data-driven decision making.",
+            accent: "blue",
+            icon: (
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+            )
+          },
+          { 
+            step: "03", 
+            title: "Build", 
+            description: "Clean, scalable, and systematic execution with modern tech stack.",
+            accent: "purple",
+            icon: (
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            )
+          },
+          { 
+            step: "04", 
+            title: "Scale", 
+            description: "Optimize, automate, and improve conversions for exponential growth.",
+            accent: "emerald",
+            icon: (
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+              </svg>
+            )
+          }
+        ].map((item, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: i * 0.1 }}
+            viewport={{ once: true }}
+          >
+            <MagicCard
+              gradientColor="#D9D9D955"
+              className="relative h-full p-6 lg:p-8 border border-stone-200/50 shadow-sm hover:shadow-md transition-all duration-300"
+            >
+              {/* Subtle accent line */}
+              <div className={`absolute top-0 left-0 w-1 h-12 bg-${item.accent}-500 rounded-br-lg`} />
+              
+              {/* Step Number */}
+              <div className="mb-6">
+                <div className="text-4xl lg:text-5xl font-bold text-stone-200/80">
+                  {item.step}
+                </div>
+              </div>
+              
+              {/* Icon */}
+              <div className={`mb-4 text-${item.accent}-600`}>
+                {item.icon}
+              </div>
+              
+              {/* Title */}
+              <h3 className={`text-xl lg:text-2xl font-bold mb-3 text-stone-800`}>
+                {item.title}
+              </h3>
+              
+              {/* Description */}
+              <p className="text-stone-500 leading-relaxed text-sm">
+                {item.description}
+              </p>
+              
+              {/* Subtle hover indicator */}
+              <div className="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <svg className="w-5 h-5 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </div>
+            </MagicCard>
+          </motion.div>
+        ))}
+      </div>
+      
+      {/* Bottom CTA - Subtle */}
+      <motion.div 
+        className="text-center mt-16 lg:mt-20"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.6 }}
+        viewport={{ once: true }}
+      >
+        <div className="inline-flex items-center gap-4">
+          <div className="h-px w-12 bg-stone-200" />
+          <p className="text-stone-500 text-sm">Ready to transform your business?</p>
+          <div className="h-px w-12 bg-stone-200" />
+        </div>
+        
+       <button className="mt-6 group inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-stone-900 hover:bg-stone-800 transition-all duration-300 shadow-sm hover:shadow-md">
+  <span className="text-sm font-medium text-white">Get Started</span>
+
+  <svg
+    className="w-4 h-4 text-white group-hover:translate-x-1 transition-transform duration-300"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M13 7l5 5m0 0l-5 5m5-5H6"
+    />
+  </svg>
+</button>
+      </motion.div>
+      
+    </div>
+  </section>
+</SectionWrapper>
         {/* SECTION 5: CASE STUDIES */}
         <SectionWrapper>
           <section className="py-24 lg:py-32 bg-white px-6 lg:px-8 border-t border-stone-100 z-10 relative">
@@ -1151,14 +1251,14 @@ const LandingPageWrapper = () => {
                     <ArrowRight className="w-4 h-4 lg:w-5 lg:h-5 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
                   </Button>
                   
-                  <Button 
+                  <ShimmerButton
                     onClick={() => navigate('/contact')} 
                     variant="outline" 
-                    size="lg" 
-                    className="text-stone-700 hover:text-stone-900 w-full sm:w-auto bg-white rounded-full px-8 lg:px-10 py-6 lg:py-7 border-stone-300 hover:bg-stone-50 text-sm sm:text-lg shadow-sm transition-all duration-300"
+                    size="" 
+                    
                   >
                     Get Free Website Audit
-                  </Button>
+                  </ShimmerButton>
                 </div>
               </motion.div>
             </div>
