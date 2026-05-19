@@ -1,21 +1,71 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, useInView, useMotionValue, useSpring } from 'framer-motion';
-// Add Users and Clock to the imports here:
-import { ArrowRight, CheckCircle, XCircle, BarChart3, Bot, Layout, ArrowUpRight, MessageCircle, Sparkles, Zap, TrendingUp, Users, Clock } from 'lucide-react';
+import { ArrowRight, CheckCircle, XCircle, BarChart3, Bot, Layout, ArrowUpRight, MessageCircle, Sparkles, Zap, TrendingUp, Users, Clock, ChevronRight } from 'lucide-react';
 import { Button } from "../components/ui/button";
 import Loader from "../components/loader";
 import projectsData from '../data/projects.json';
+
+// Launch UI inspired components
+import { Badge } from "../components/ui/badge";
+import Glow from "../components/ui/glow";
+import { CanvasText } from '../components/ui/canvas-text';
+import { StickyBanner } from '../components/ui/sticky-banner';
+import { WavyBackground } from '../components/ui/wavy-background';
+import { ShimmerButton } from '../components/ui/shimmer-button';
+import { InteractiveHoverButton } from '../components/ui/interactive-hover-button';
+import { AnimatedGradientText } from '../components/ui/animated-gradient-text';
+import { cn } from '../lib/utils';
+
+
+
+// Animation variants
+const premiumEase = [0.22, 1, 0.36, 1];
+
+const fadeInUp = {
+  initial: { opacity: 0, y: 40 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.8, ease: premiumEase }
+};
+
+const staggerContainer = {
+  animate: {
+    transition: {
+      staggerChildren: 0.15
+    }
+  }
+};
+
+const scaleIn = {
+  initial: { opacity: 0, scale: 0.95 },
+  animate: { opacity: 1, scale: 1 },
+  transition: { duration: 0.7, ease: premiumEase }
+};
+
+const SectionWrapper = ({ children, className = "" }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.15 });
+  
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 50 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+      transition={{ duration: 0.8, ease: premiumEase }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+};
 
 const LandingPageWrapper = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // Performance fix: Use motion values instead of React state to avoid re-renders on mouse move
   const mouseX = useMotionValue(-500);
   const mouseY = useMotionValue(-500);
   
-  // Smooth spring physics for the cursor follow
   const cursorX = useSpring(mouseX, { damping: 40, stiffness: 200, mass: 0.5 });
   const cursorY = useSpring(mouseY, { damping: 40, stiffness: 200, mass: 0.5 });
 
@@ -28,7 +78,6 @@ const LandingPageWrapper = () => {
 
   useEffect(() => {
     const handleMouseMove = (e) => {
-      // Offset by half the size of the cursor div (192px)
       mouseX.set(e.clientX - 192);
       mouseY.set(e.clientY - 192);
     };
@@ -38,51 +87,10 @@ const LandingPageWrapper = () => {
 
   const featuredProjects = projectsData.projects.slice(0, 2);
 
-  // Buttery smooth enterprise easing curves
-  const premiumEase = [0.22, 1, 0.36, 1];
-
-  const fadeInUp = {
-    initial: { opacity: 0, y: 40 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 1, ease: premiumEase }
-  };
-
-  const staggerContainer = {
-    animate: {
-      transition: {
-        staggerChildren: 0.15
-      }
-    }
-  };
-
-  const scaleIn = {
-    initial: { opacity: 0, scale: 0.95 },
-    animate: { opacity: 1, scale: 1 },
-    transition: { duration: 1, ease: premiumEase }
-  };
-
-  const SectionWrapper = ({ children, className = "" }) => {
-    const ref = useRef(null);
-    const isInView = useInView(ref, { once: true, amount: 0.15 });
-    
-    return (
-      <motion.div
-        ref={ref}
-        initial={{ opacity: 0, y: 50 }}
-        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-        transition={{ duration: 1, ease: premiumEase }}
-        className={className}
-      >
-        {children}
-      </motion.div>
-    );
-  };
-
   return (
     <>
       {loading && <Loader />}
-      
-      {/* Optimized Custom Cursor Effect */}
+  
       <motion.div 
         className="fixed w-96 h-96 bg-stone-900/5 rounded-full blur-3xl pointer-events-none z-[1] hidden md:block"
         style={{
@@ -100,7 +108,7 @@ const LandingPageWrapper = () => {
           <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-stone-50 to-transparent" />
         </div>
 
-        {/* Sticky CTA with Pulse Animation */}
+        {/* Sticky CTA */}
         <motion.a 
           href="/contact" 
           onClick={(e) => { e.preventDefault(); navigate('/contact'); }}
@@ -119,258 +127,300 @@ const LandingPageWrapper = () => {
             <MessageCircle className="w-6 h-6" />
           </motion.div>
         </motion.a>
+<section className="py-24 lg:py-32 bg-white px-6 lg:px-8 border-t border-stone-100 relative z-10">
 
-        {/* SECTION 1: HERO */}
-        <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 px-6 lg:px-8 max-w-7xl mx-auto z-10">
-          <motion.div 
-            className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center"
-            variants={staggerContainer}
-            initial="initial"
-            animate="animate"
-          >
-            <motion.div className="space-y-8" variants={fadeInUp}>
-              <motion.h1 
-                className="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tight leading-[1.1] clash-font"
-                variants={fadeInUp}
-              >
-                Digital Systems Built to{' '}
-                <motion.span 
-                  className="relative inline-block"
-                  whileHover={{ scale: 1.02 }}
-                  transition={{ type: "spring", damping: 12 }}
-                >
-                  Scale Your Business
-                  <motion.span 
-                    className="absolute -bottom-1 sm:-bottom-2 left-0 w-full h-1 sm:h-2 bg-stone-200/60 -z-10"
-                    initial={{ width: 0 }}
-                    animate={{ width: "100%" }}
-                    transition={{ delay: 0.8, duration: 1, ease: premiumEase }}
-                  />
-                </motion.span>
-                <br/>
-                <span className="text-stone-400">Not Just Make It Look Good</span>
-              </motion.h1>
-              
-              <motion.p 
-                className="text-base sm:text-lg lg:text-xl text-stone-600 max-w-xl leading-relaxed"
-                variants={fadeInUp}
-              >
-                We design websites and AI automation systems that increase conversions, 
-                streamline operations, and drive real growth.
-              </motion.p>
-              
-              <motion.div 
-                className="flex flex-col sm:flex-row gap-4"
-                variants={fadeInUp}
-              >
-                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="w-full sm:w-auto">
-                  <Button 
-                    onClick={() => navigate('/contact')} 
-                    size="lg" 
-                    className="w-full sm:w-auto bg-stone-900 text-white rounded-full px-8 py-6 text-sm sm:text-base hover:bg-stone-800 transition-all duration-300 shadow-xl"
-                  >
-                    Book a Strategy Call
-                    <motion.div
-                      animate={{ x: [0, 4, 0] }}
-                      transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                      className="inline-block ml-2"
-                    >
-                      <ArrowRight className="w-4 h-4" />
-                    </motion.div>
-                  </Button>
-                </motion.div>
-                
-                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="w-full sm:w-auto">
-                  <Button 
-                    onClick={() => navigate('/contact')} 
-                    variant="outline" 
-                    size="lg" 
-                    className="text-white hover:text-gray-200 w-full sm:w-auto bg-transparent rounded-full px-8 py-6 border-stone-300  hover:bg-stone-100 transition-all duration-300 text-sm sm:text-base"
-                  >
-                    Get Free Website Audit
-                  </Button>
-                </motion.div>
-              </motion.div>
-              
-              <motion.div 
-                className="text-sm text-stone-500 font-medium flex items-center gap-2 pt-2"
-                variants={fadeInUp}
-              >
-                <motion.div
-                  animate={{ rotate: [0, 360] }}
-                  transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-                >
-                 
-                </motion.div>
-                Trusted by growing businesses & founders
-              </motion.div>
-            </motion.div>
-            <motion.div
-  className="relative w-full max-w-6xl mx-auto rounded-3xl overflow-hidden 
-  bg-white/80 backdrop-blur-xl border border-stone-200 shadow-xl 
-  p-4 sm:p-6 lg:p-8"
-  variants={scaleIn}
-  whileHover={{ y: -6 }}
->
-
-  {/* 🔥 PREMIUM TOP RUNNING LINE */}
-  <div className="absolute top-0 left-0 w-full h-[2px] overflow-hidden">
-    <motion.div
-      className="h-full w-[40%] bg-gradient-to-r from-transparent via-stone-900 to-transparent"
-      animate={{ x: ["-100%", "250%"] }}
-      transition={{
-        duration: 2.5,
-        repeat: Infinity,
-        ease: "linear",
-      }}
+  {/* Wavy Background - Full section */}
+  <div className="absolute inset-0 -z-10 w-full h-full">
+    <WavyBackground 
+      waveWidth={50}
+      blur={10}
+      speed="slow"
+      waveOpacity={0.5}
+      colors={["#38bdf8", "#818cf8", "#c084fc", "#e879f9"]}
+      containerClassName="w-full h-full"
+      backgroundFill="#fafaf9"
     />
   </div>
 
-  {/* ✨ SUBTLE BORDER GLOW SWEEP */}
-  <motion.div
-    className="pointer-events-none absolute inset-0 rounded-3xl"
-    style={{
-      background:
-        "linear-gradient(120deg, transparent, rgba(0,0,0,0.06), transparent)",
-    }}
-    animate={{ x: ["-100%", "100%"] }}
-    transition={{
-      duration: 6,
-      repeat: Infinity,
-      ease: "easeInOut",
-    }}
-  />
-
-  <div className="flex flex-col gap-4 relative z-10">
-
-    {/* HEADER */}
-    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-      <div className="flex items-center gap-3">
-        <div className="w-9 h-9 bg-stone-900 rounded-xl flex items-center justify-center">
-          <div className="w-4 h-4 bg-white rounded-sm" />
-        </div>
-        <div>
-          <div className="text-sm font-semibold text-stone-800">Dashboard</div>
-          <div className="text-xs text-stone-500">Overview</div>
-        </div>
-      </div>
-
-      <div className="flex items-center gap-2">
-        <span className="hidden sm:block text-xs text-green-600">● Live</span>
-        <div className="flex gap-1">
-          {["bg-red-400", "bg-yellow-400", "bg-green-400"].map((c, i) => (
-            <div key={i} className={`w-2.5 h-2.5 rounded-full ${c}`} />
-          ))}
-        </div>
-      </div>
-    </div>
-
-    {/* MAIN GRID */}
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-
-      {/* CHART */}
-      <div className="md:col-span-2 bg-white rounded-2xl border p-4 shadow-sm relative overflow-hidden">
-
-        {/* 🔥 MINI LINE SWEEP INSIDE CARD */}
-        <motion.div
-          className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-stone-400 to-transparent"
-          animate={{ x: ["-100%", "100%"] }}
-          transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-        />
-
-        <div className="flex justify-between items-center mb-3">
-          <div>
-            <div className="text-sm font-medium text-stone-800">Revenue</div>
-            <div className="text-xs text-stone-400">Monthly stats</div>
-          </div>
-
-          <div className="flex gap-1">
-            {["Day", "Week", "Month"].map((t, i) => (
-              <span
-                key={i}
-                className={`text-xs px-2 py-1 rounded-md ${
-                  i === 2
-                    ? "bg-stone-900 text-white"
-                    : "bg-stone-100 text-stone-600"
-                }`}
-              >
-                {t}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        <div className="h-28 sm:h-32 w-full">
-          <svg className="w-full h-full" viewBox="0 0 200 60">
-            <motion.path
-              d="M0,40 L20,30 L40,45 L60,20 L80,35 L100,25 L120,40 L140,30 L160,35 L180,20 L200,30"
-              stroke="#111"
-              strokeWidth="2"
-              fill="none"
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 1.5 }}
-            />
-          </svg>
-        </div>
-      </div>
-
-      {/* SIDEBAR */}
-      <div className="flex flex-col gap-4">
-
-        <div className="bg-stone-900 text-white rounded-2xl p-4">
-          <div className="text-xs text-stone-400">Revenue</div>
-          <div className="text-2xl font-bold">$42.5K</div>
-          <div className="text-xs text-green-400">+12.5%</div>
-        </div>
-
-        <div className="bg-white border rounded-2xl p-4">
-          <div className="text-sm font-semibold text-stone-800">Users</div>
-          <div className="text-xl font-bold">2,847</div>
-
-          <div className="mt-2 h-1 bg-stone-100 rounded-full overflow-hidden">
-            <motion.div
-              className="h-1 bg-stone-900"
-              initial={{ width: 0 }}
-              animate={{ width: "75%" }}
-              transition={{ duration: 1.2 }}
-            />
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    {/* STATS */}
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-      {["Views", "Bounce", "Session", "Conversions"].map((s, i) => (
-        <div key={i} className="bg-white border rounded-xl p-3 text-center">
-          <div className="text-xs text-stone-400">{s}</div>
-          <div className="text-sm font-semibold text-stone-800">
-            {Math.floor(Math.random() * 1000)}
-          </div>
-        </div>
-      ))}
-    </div>
-
-    {/* FOOTER */}
-    <div className="flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-stone-500 border-t pt-3">
-      <span>Updated 2 min ago</span>
-
-      <div className="flex gap-2">
-        {["New user", "Purchase", "Download"].map((a, i) => (
-          <span key={i} className="bg-stone-100 px-2 py-1 rounded-full">
-            {a}
-          </span>
-        ))}
-      </div>
-    </div>
+  <motion.div 
+    className="flex flex-col gap-12 lg:gap-16"
+    variants={staggerContainer}
+    initial="initial"
+    animate="animate"
+  >
+    {/* Text Content - Centered */}
+    <motion.div className="max-w-4xl mx-auto text-center space-y-6 sm:space-y-8" variants={fadeInUp}>
+      
+     {/* Launch UI Style Badge */}
+<motion.div variants={fadeInUp} className="flex justify-center">
+  <div className="group relative mx-auto flex items-center justify-center rounded-full px-4 py-1.5 shadow-[inset_0_-8px_10px_#8fdfff1f] transition-shadow duration-500 ease-out hover:shadow-[inset_0_-5px_10px_#8fdfff3f]">
+    <span
+      className={cn(
+        'animate-gradient absolute inset-0 block h-full w-full rounded-[inherit] bg-gradient-to-r from-[#ffaa40]/50 via-[#9c40ff]/50 to-[#ffaa40]/50 bg-[length:300%_100%] p-[1px]'
+      )}
+      style={{
+        WebkitMask:
+          'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+        WebkitMaskComposite: 'destination-out',
+        mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+        maskComposite: 'subtract',
+        WebkitClipPath: 'padding-box',
+      }}
+    />
+    🎉 
+    <hr className="mx-2 h-4 w-px shrink-0 bg-neutral-500" />
+    <span className="text-sm font-medium bg-gradient-to-r from-[#ffaa40] via-[#9c40ff] to-[#ffaa40] bg-[length:300%_100%] animate-gradient bg-clip-text text-transparent">
+      Introducing Avxonia
+    </span>
+    <ChevronRight className="ml-1 size-4 stroke-neutral-500 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5" />
   </div>
 </motion.div>
-</motion.div>
-        </section>
+      <motion.h1 
+        className="font-bold tracking-tight leading-[1.2] sm:leading-[1.1] clash-font"
+        variants={fadeInUp}
+      >
+        <div className="flex flex-col items-center gap-2 sm:gap-3 lg:gap-4">
+          <span className="text-3xl sm:text-5xl lg:text-6xl xl:text-7xl tracking-wide">
+  Digital Systems Built to
+</span>
+          <div className="inline-block">
+            <CanvasText
+              text="Scale Your Business"
+              backgroundClassName="bg-blue-600 dark:bg-blue-700"
+              colors={[
+                "rgba(0, 153, 255, 1)",
+                "rgba(0, 153, 255, 0.9)",
+                "rgba(0, 153, 255, 0.8)",
+                "rgba(0, 153, 255, 0.7)",
+                "rgba(0, 153, 255, 0.6)",
+                "rgba(0, 153, 255, 0.5)",
+                "rgba(0, 153, 255, 0.4)",
+                "rgba(0, 153, 255, 0.3)",
+                "rgba(0, 153, 255, 0.2)",
+                "rgba(0, 153, 255, 0.1)",
+              ]}
+              lineGap={4}
+              animationDuration={20}
+              className="text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold"
+            />
+          </div>
+        </div>
+      <div className="text-stone-400 text-xl sm:text-2xl lg:text-3xl xl:text-4xl leading-tight tracking-wide">
+  Not Just Make It Look Good
+</div>
+      </motion.h1>
+      
+      <motion.p 
+        className="text-sm sm:text-base lg:text-lg text-stone-600 max-w-2xl mx-auto leading-relaxed"
+        variants={fadeInUp}
+      >
+        We design websites and AI automation systems that increase conversions, 
+        streamline operations, and drive real growth.
+      </motion.p>
+      
+    <motion.div
+  className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center"
+  variants={fadeInUp}
+>
+  <motion.div
+    whileHover={{ scale: 1.02 }}
+    whileTap={{ scale: 0.98 }}
+    className="w-[260px]"
+  >
+    <InteractiveHoverButton
+      onClick={() => navigate('/contact')}
+      className="w-full bg-stone-900 text-white rounded-full px-6 sm:px-8 lg:px-10 py-3 sm:py-4 lg:py-5 text-sm sm:text-base hover:bg-stone-800 transition-all duration-300 shadow-xl justify-center"
+    >
+      Book a Strategy Call
 
-        {/* SECTION 2: PROBLEM */}
+      <motion.div
+        animate={{ x: [0, 4, 0] }}
+        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+        className="inline-block ml-2"
+      >
+        <ArrowRight className="w-4 h-4" />
+      </motion.div>
+    </InteractiveHoverButton>
+  </motion.div>
+
+  <motion.div
+    whileHover={{ scale: 1.02 }}
+    whileTap={{ scale: 0.98 }}
+    className="w-[260px]"
+  >
+    <ShimmerButton
+      onClick={() => navigate('/contact')}
+      variant="outline"
+      size="lg"
+      className="w-full justify-center"
+    >
+      Get Free Website Audit
+    </ShimmerButton>
+  </motion.div>
+</motion.div>
+      <motion.div 
+        className="text-xs sm:text-sm text-stone-500 font-medium flex items-center justify-center gap-3 sm:gap-4 pt-2"
+        variants={fadeInUp}
+      >
+        <div className="flex items-center gap-2">
+          <div className="flex -space-x-2">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-stone-200 border-2 border-white" />
+            ))}
+          </div>
+          <span>Trusted by 50+ growing businesses</span>
+        </div>
+      </motion.div>
+    </motion.div>
+
+    {/* Launch UI Style Mockup Container with Glow Effects - Below text */}
+    <motion.div
+      className="relative w-full max-w-6xl mx-auto"
+      variants={scaleIn}
+    >
+      <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden bg-white/80 backdrop-blur-xl border border-stone-200 shadow-xl p-3 sm:p-6 lg:p-8">
+        
+        {/* Glow effect from Launch UI */}
+        <div className="absolute -top-20 -left-20 w-40 h-40 bg-stone-400/20 rounded-full blur-3xl" />
+        <div className="absolute -bottom-20 -right-20 w-40 h-40 bg-stone-400/20 rounded-full blur-3xl" />
+        
+        {/* Premium top running line */}
+        <div className="absolute top-0 left-0 w-full h-[2px] overflow-hidden">
+          <motion.div
+            className="h-full w-[40%] bg-gradient-to-r from-transparent via-stone-900 to-transparent"
+            animate={{ x: ["-100%", "250%"] }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
+          />
+        </div>
+
+        {/* Subtle border glow sweep */}
+        <motion.div
+          className="pointer-events-none absolute inset-0 rounded-2xl sm:rounded-3xl"
+          style={{
+            background: "linear-gradient(120deg, transparent, rgba(0,0,0,0.03), transparent)",
+          }}
+          animate={{ x: ["-100%", "100%"] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        />
+
+        <div className="flex flex-col gap-3 sm:gap-4 relative z-10">
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="w-7 h-7 sm:w-9 sm:h-9 bg-stone-900 rounded-lg sm:rounded-xl flex items-center justify-center">
+                <div className="w-3 h-3 sm:w-4 sm:h-4 bg-white rounded-sm" />
+              </div>
+              <div>
+                <div className="text-xs sm:text-sm font-semibold text-stone-800">Analytics Dashboard</div>
+                <div className="text-[10px] sm:text-xs text-stone-500">Real-time overview</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="hidden sm:block text-xs text-green-600">● Live</span>
+              <div className="flex gap-1">
+                {["bg-red-400", "bg-yellow-400", "bg-green-400"].map((c, i) => (
+                  <div key={i} className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full ${c}`} />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Main Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
+            {/* Chart */}
+            <div className="md:col-span-2 bg-white rounded-xl sm:rounded-2xl border p-3 sm:p-4 shadow-sm relative overflow-hidden">
+              <motion.div
+                className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-stone-400 to-transparent"
+                animate={{ x: ["-100%", "100%"] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+              />
+              <div className="flex justify-between items-center mb-2 sm:mb-3">
+                <div>
+                  <div className="text-xs sm:text-sm font-medium text-stone-800">Revenue Growth</div>
+                  <div className="text-[10px] sm:text-xs text-stone-400">Monthly performance</div>
+                </div>
+                <div className="flex gap-1">
+                  {["Day", "Week", "Month"].map((t, i) => (
+                    <span key={i} className={`text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-md ${
+                      i === 2 ? "bg-stone-900 text-white" : "bg-stone-100 text-stone-600"
+                    }`}>
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div className="h-20 sm:h-28 md:h-32 w-full">
+                <svg className="w-full h-full" viewBox="0 0 200 60" preserveAspectRatio="none">
+                  <motion.path
+                    d="M0,40 L20,30 L40,45 L60,20 L80,35 L100,25 L120,40 L140,30 L160,35 L180,20 L200,30"
+                    stroke="#111"
+                    strokeWidth="2"
+                    fill="none"
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    transition={{ duration: 1.5 }}
+                  />
+                </svg>
+              </div>
+            </div>
+
+            {/* Sidebar Stats */}
+            <div className="flex flex-col gap-3 sm:gap-4">
+              <div className="bg-stone-900 text-white rounded-xl sm:rounded-2xl p-3 sm:p-4">
+                <div className="text-[10px] sm:text-xs text-stone-400">Total Revenue</div>
+                <div className="text-lg sm:text-2xl font-bold">$42.5K</div>
+                <div className="text-[10px] sm:text-xs text-green-400">↑ +12.5% from last month</div>
+              </div>
+              <div className="bg-white border rounded-xl sm:rounded-2xl p-3 sm:p-4">
+                <div className="text-xs sm:text-sm font-semibold text-stone-800">Active Users</div>
+                <div className="text-base sm:text-xl font-bold">2,847</div>
+                <div className="mt-2 h-1 bg-stone-100 rounded-full overflow-hidden">
+                  <motion.div
+                    className="h-1 bg-stone-900"
+                    initial={{ width: 0 }}
+                    animate={{ width: "75%" }}
+                    transition={{ duration: 1.2 }}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Stats Grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
+            {[
+              { label: "Page Views", value: "12.4K", change: "+8%" },
+              { label: "Bounce Rate", value: "34%", change: "-5%" },
+              { label: "Session Duration", value: "4m 32s", change: "+12%" },
+              { label: "Conversions", value: "3.2%", change: "+2.1%" }
+            ].map((stat, i) => (
+              <div key={i} className="bg-white border rounded-lg sm:rounded-xl p-2 sm:p-3">
+                <div className="text-[10px] sm:text-xs text-stone-400">{stat.label}</div>
+                <div className="text-xs sm:text-sm font-semibold text-stone-800">{stat.value}</div>
+                <div className="text-[10px] sm:text-xs text-green-600">{stat.change}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Footer */}
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-2 text-[10px] sm:text-xs text-stone-500 border-t pt-2 sm:pt-3">
+            <span>Updated just now</span>
+            <div className="flex gap-1 sm:gap-2 flex-wrap justify-center">
+              {["+12 new signups", "+3 purchases", "+45 downloads"].map((a, i) => (
+                <span key={i} className="bg-stone-100 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full whitespace-nowrap">
+                  {a}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Launch UI Glow Effect */}
+      <Glow variant="top" className="absolute -top-10 left-1/2 -translate-x-1/2 w-3/4 h-20 opacity-50" />
+    </motion.div>
+  </motion.div>
+</section>{/* SECTION 2: PROBLEM */}
         <SectionWrapper>
           <section className="py-24 lg:py-32 bg-white px-6 lg:px-8 border-t border-stone-100 relative z-10">
             <div className="max-w-5xl mx-auto text-center space-y-12 lg:space-y-16">
@@ -423,10 +473,9 @@ const LandingPageWrapper = () => {
           </section>
         </SectionWrapper>
 
-        {/* SECTION 3: SOLUTION with Parallax Cards */}
+        {/* SECTION 3: SOLUTION */}
         <SectionWrapper>
           <section className="py-24 lg:py-32 bg-stone-900 text-white px-6 lg:px-8 relative overflow-hidden z-10">
-            {/* Animated background particles */}
             <div className="absolute inset-0 opacity-[0.03]">
               {[...Array(15)].map((_, i) => (
                 <motion.div
@@ -500,7 +549,7 @@ const LandingPageWrapper = () => {
           </section>
         </SectionWrapper>
 
-        {/* SECTION 4: PROCESS with Animated Timeline */}
+        {/* SECTION 4: PROCESS */}
         <SectionWrapper>
           <section className="py-24 lg:py-32 bg-stone-50 px-6 lg:px-8 z-10 relative">
             <div className="max-w-7xl mx-auto">
@@ -515,7 +564,6 @@ const LandingPageWrapper = () => {
               </motion.h2>
               
               <div className="flex flex-col lg:flex-row gap-6 relative">
-                {/* Desktop connecting line */}
                 <motion.div 
                   className="hidden lg:block absolute top-[3.5rem] left-0 w-full h-[1px] bg-stone-200 z-0"
                   initial={{ scaleX: 0 }}
@@ -576,7 +624,7 @@ const LandingPageWrapper = () => {
                   <Button 
                     variant="ghost" 
                     onClick={() => navigate('/projects')} 
-                    className="text-white hover:text-gray-200 group flex items-center gap-2 hover:bg-blue-20 rounded-full px-6 text-sm sm:text-base"
+                    className="text-stone-700 hover:text-stone-900 group flex items-center gap-2 rounded-full px-6 text-sm sm:text-base"
                   >
                     View All Work 
                     <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -776,7 +824,7 @@ const LandingPageWrapper = () => {
                     onClick={() => navigate('/contact')} 
                     variant="outline" 
                     size="lg" 
-                    className="text-white hover:text-gray-200 w-full sm:w-auto bg-white rounded-full px-8 lg:px-10 py-6 lg:py-7 border-stone-300 hover:bg-stone-50 text-sm sm:text-lg shadow-sm transition-all duration-300"
+                    className="text-stone-700 hover:text-stone-900 w-full sm:w-auto bg-white rounded-full px-8 lg:px-10 py-6 lg:py-7 border-stone-300 hover:bg-stone-50 text-sm sm:text-lg shadow-sm transition-all duration-300"
                   >
                     Get Free Website Audit
                   </Button>

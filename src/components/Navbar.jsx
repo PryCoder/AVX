@@ -1,37 +1,63 @@
+"use client";
+
 import { useState, useEffect } from "react";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../assets/avx.png';
-import { Button } from "../components/ui/button";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetClose } from "../components/ui/sheet";
-import { NavigationMenu, NavigationMenuItem, NavigationMenuList } from "../components/ui/navigation-menu";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from "../components/ui/dropdown-menu";
+import {
+  Navbar as ResizableNavbar,
+  NavBody,
+  MobileNav,
+  MobileNavHeader,
+  MobileNavToggle,
+  MobileNavMenu,
+} from "../components/ui/resizable-navbar";
+import { RainbowButton } from "./ui/rainbow-button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from "./ui/dropdown-menu";
+// Import from your local navbar-menu components
+import { Menu, MenuItem, ProductItem, HoveredLink } from "../components/ui/navbar-menu";
+import { cn } from "../lib/utils";
 
-const Navbar = () => {
+export function NavbarDemo({ topOffset = 0 }) {
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
   const [hoverTimeout, setHoverTimeout] = useState(null);
+  const [scrolled, setScrolled] = useState(false);
+  const [activeAceternityMenu, setActiveAceternityMenu] = useState(null); // Removed TypeScript syntax
 
+  // Handle scroll effect
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 10);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  useEffect(() => {
-    const handleResize = () => { if (window.innerWidth > 1024) setIsMobileMenuOpen(false); };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  // Custom Navbar Logo component
+  const CustomNavbarLogo = () => (
+    <Link to="/" className="flex items-center gap-1.5 sm:gap-2">
+      <img src={logo} alt="AVXONIA INNOVATIONS" className="h-12 sm:h-14 w-auto object-contain" />
+    </Link>
+  );
 
-  // Cleanup timeout on unmount
-  useEffect(() => {
-    return () => {
-      if (hoverTimeout) clearTimeout(hoverTimeout);
-    };
-  }, [hoverTimeout]);
+  // Custom dropdown items for Services
+  const serviceItems = [
+    { label: "Web Development", value: "Website Development" },
+    { label: "UI/UX Design", value: "UI/UX Design" },
+    { label: "AI Automation", value: "Ai Automation" },
+  ];
+
+  const resourceItems = [
+    { label: "FAQs", path: "/faq" },
+  ];
 
   const handleNavigation = (path, service = null) => {
     if (service) {
@@ -45,6 +71,12 @@ const Navbar = () => {
 
   const handleServiceClick = (service) => handleNavigation('/projects', service);
 
+  useEffect(() => {
+    return () => {
+      if (hoverTimeout) clearTimeout(hoverTimeout);
+    };
+  }, [hoverTimeout]);
+
   const handleDropdownMouseEnter = (dropdownName) => {
     if (hoverTimeout) clearTimeout(hoverTimeout);
     setOpenDropdown(dropdownName);
@@ -53,41 +85,99 @@ const Navbar = () => {
   const handleDropdownMouseLeave = () => {
     const timeout = setTimeout(() => {
       setOpenDropdown(null);
-    }, 150); // Small delay to prevent flickering when moving between dropdown items
+    }, 150);
     setHoverTimeout(timeout);
   };
 
-  const serviceItems = [
-    { label: "Web Development", value: "Website Development" },
-    { label: "UI/UX Design", value: "UI/UX Design" },
-    { label: "AI Automation", value: "Ai Automation" },
-  ];
-
-  const resourceItems = [
-    { label: "FAQs", path: "/faq" },
-  ];
-
-  const MobileAccordionItem = ({ title, children }) => {
-    const [isOpen, setIsOpen] = useState(false);
-    return (
-      <div className="border-b border-border/60">
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="w-full flex items-center justify-between py-4 px-4 sm:px-5 text-base font-medium hover:bg-accent/30 transition-colors"
-          aria-expanded={isOpen}
-        >
-          <span className="text-white font-sans">{title}</span>
-          <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
-        </button>
-        {isOpen && (
-          <div className="px-4 sm:px-5 pb-4 pt-2 bg-accent/10 animate-in slide-in-from-top duration-200">
-            {children}
+  // Aceternity Services Dropdown using their Menu component
+  const AceternityServicesDropdown = () => (
+    <MenuItem setActive={setActiveAceternityMenu} active={activeAceternityMenu} item="Services">
+      <div className="flex flex-col space-y-4 text-sm min-w-[200px]">
+        {serviceItems.map((item) => (
+          <div
+            key={item.value}
+            onClick={() => handleServiceClick(item.value)}
+            className="cursor-pointer"
+          >
+            <HoveredLink href="#">{item.label}</HoveredLink>
           </div>
-        )}
+        ))}
       </div>
-    );
-  };
+    </MenuItem>
+  );
 
+  // Aceternity Products Dropdown
+  const AceternityProductsDropdown = () => (
+    <MenuItem setActive={setActiveAceternityMenu} active={activeAceternityMenu} item="Products">
+      <div className="text-sm grid grid-cols-2 gap-10 p-4 min-w-[600px]">
+        <ProductItem
+          title="Algochurn"
+          href="https://algochurn.com"
+          src="https://assets.aceternity.com/demos/algochurn.webp"
+          description="Prepare for tech interviews like never before."
+        />
+        <ProductItem
+          title="Tailwind Master Kit"
+          href="https://tailwindmasterkit.com"
+          src="https://assets.aceternity.com/demos/tailwindmasterkit.webp"
+          description="Production ready Tailwind css components for your next project"
+        />
+        <ProductItem
+          title="Moonbeam"
+          href="https://gomoonbeam.com"
+          src="https://assets.aceternity.com/demos/Screenshot+2024-02-21+at+11.51.31%E2%80%AFPM.png"
+          description="Never write from scratch again. Go from idea to blog in minutes."
+        />
+        <ProductItem
+          title="Rogue"
+          href="https://userogue.com"
+          src="https://assets.aceternity.com/demos/Screenshot+2024-02-21+at+11.47.07%E2%80%AFPM.png"
+          description="Respond to government RFPs, RFIs and RFQs 10x faster using AI"
+        />
+      </div>
+    </MenuItem>
+  );
+
+  // Aceternity Pricing Dropdown
+  const AceternityPricingDropdown = () => (
+    <MenuItem setActive={setActiveAceternityMenu} active={activeAceternityMenu} item="Pricing">
+      <div className="flex flex-col space-y-4 text-sm min-w-[180px]">
+        <HoveredLink href="/pricing/hobby">Hobby</HoveredLink>
+        <HoveredLink href="/pricing/individual">Individual</HoveredLink>
+        <HoveredLink href="/pricing/team">Team</HoveredLink>
+        <HoveredLink href="/pricing/enterprise">Enterprise</HoveredLink>
+      </div>
+    </MenuItem>
+  );
+
+  // Aceternity Resources Dropdown
+  const AceternityResourcesDropdown = () => (
+    <MenuItem setActive={setActiveAceternityMenu} active={activeAceternityMenu} item="Resources">
+      <div className="flex flex-col space-y-4 text-sm min-w-[180px]">
+        {resourceItems.map((item) => (
+          <div key={item.label} onClick={() => handleNavigation(item.path)} className="cursor-pointer">
+            <HoveredLink href="#">{item.label}</HoveredLink>
+          </div>
+        ))}
+      </div>
+    </MenuItem>
+  );
+
+  // Aceternity Who We Are Dropdown
+  const AceternityWhoWeAreDropdown = () => (
+    <MenuItem setActive={setActiveAceternityMenu} active={activeAceternityMenu} item="Who we are">
+      <div className="flex flex-col space-y-4 text-sm min-w-[200px]">
+        <div onClick={() => handleNavigation('/aboutus')} className="cursor-pointer">
+          <HoveredLink href="#">About Us</HoveredLink>
+        </div>
+        <div onClick={() => handleNavigation('/joinus')} className="cursor-pointer">
+          <HoveredLink href="#">Join Us</HoveredLink>
+        </div>
+      </div>
+    </MenuItem>
+  );
+
+  // Original ServicesDropdown (keep as backup or alternative)
   const ServicesDropdown = () => (
     <div 
       className="relative inline-block"
@@ -96,9 +186,9 @@ const Navbar = () => {
     >
       <DropdownMenu open={openDropdown === "services"} modal={false}>
         <DropdownMenuTrigger asChild>
-          <span className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-primary transition-colors cursor-pointer py-2 px-1 lg:px-6 group font-sans">
+          <span className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-primary transition-colors cursor-pointer py-1.5 px-1 lg:px-3 group font-sans">
             Services
-            <ChevronDown className={`h-3.5 w-3.5 lg:h-5 lg:w-5 transition-transform duration-200 ${openDropdown === "services" ? "rotate-180" : "group-hover:rotate-180"}`} />
+            <ChevronDown className={`h-3.5 w-3.5 lg:h-4 lg:w-4 transition-transform duration-200 ${openDropdown === "services" ? "rotate-180" : "group-hover:rotate-180"}`} />
           </span>
         </DropdownMenuTrigger>
         <DropdownMenuContent 
@@ -127,46 +217,225 @@ const Navbar = () => {
     </div>
   );
 
-  const ResourcesDropdown = () => (
-    <div 
-      className="relative inline-block"
-      onMouseEnter={() => handleDropdownMouseEnter("resources")}
-      onMouseLeave={handleDropdownMouseLeave}
-    >
-      <DropdownMenu open={openDropdown === "resources"} modal={false}>
-        <DropdownMenuTrigger asChild>
-          <span className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-primary transition-colors cursor-pointer py-2 px-1 lg:px-2 group font-sans">
-            Resources
-            <ChevronDown className={`h-3.5 w-3.5 lg:h-4 lg:w-4 transition-transform duration-200 ${openDropdown === "resources" ? "rotate-180" : "group-hover:rotate-180"}`} />
-          </span>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent 
-          className="w-[240px] p-4 z-[100]" 
-          align="start" 
-          sideOffset={8}
-          onMouseEnter={() => handleDropdownMouseEnter("resources")}
-          onMouseLeave={handleDropdownMouseLeave}
-        >
-          <div className="space-y-3">
-            <h3 className="text-xs sm:text-sm font-semibold text-foreground border-b border-border pb-1.5 font-serif">Support</h3>
-            <ul className="space-y-2 font-sans">
-              {resourceItems.map((item) => (
-                <DropdownMenuItem 
-                  key={item.label} 
-                  className="cursor-pointer px-0 py-1 hover:bg-transparent focus:bg-transparent" 
-                  onClick={() => handleNavigation(item.path)}
+  // Decide which menu system to use (can be toggled with a flag)
+  const USE_ACETERNITY_MENU = false; // Set to false to avoid potential issues with Aceternity components
+
+  return (
+    <div className="relative w-full">
+      <ResizableNavbar scrolled={scrolled} topOffset={topOffset}>
+        {/* Desktop Navigation */}
+        <NavBody className="py-5">
+          <div className="flex items-center justify-between w-full py-1">
+            <CustomNavbarLogo />
+            
+            <div className="hidden lg:flex items-center gap-0.5 xl:gap-2">
+              {USE_ACETERNITY_MENU ? (
+                <Menu setActive={setActiveAceternityMenu}>
+                  <AceternityServicesDropdown />
+                  <AceternityProductsDropdown />
+                  <AceternityResourcesDropdown />
+                  <AceternityWhoWeAreDropdown />
+                  <AceternityPricingDropdown />
+                </Menu>
+              ) : (
+                <>
+                  <ServicesDropdown />
+                  <ResourcesDropdown />
+                  <WhoWeAreDropdown />
+                </>
+              )}
+              
+              {!USE_ACETERNITY_MENU && (
+                <span 
+                  onClick={() => handleNavigation('/blog')} 
+                  className="inline-flex items-center text-sm font-medium text-foreground hover:text-primary transition-colors cursor-pointer py-2 px-2 font-sans"
                 >
-                  <span className="text-xs sm:text-sm text-foreground/80 hover:text-primary transition-colors">{item.label}</span>
-                </DropdownMenuItem>
-              ))}
-            </ul>
+                  Blog
+                </span>
+              )}
+            </div>
+            
+            <div className="hidden lg:flex items-center gap-1.5">
+              <button 
+                onClick={() => handleNavigation('/projects')}
+                className="bg-primary hover:bg-primary/90 text-white px-3 py-1.5 rounded-md text-xs font-sans transition-colors"
+              >
+                Discover
+              </button>
+              <RainbowButton
+                onClick={() => handleNavigation('/contact')}
+                className="px-3 xl:px-5 py-2 h-9 xl:h-10 font-sans text-xs xl:text-sm"
+              >
+                Appointment
+              </RainbowButton>
+            </div>
           </div>
-        </DropdownMenuContent>
-      </DropdownMenu>
+        </NavBody>
+
+        {/* Mobile Navigation - Keep existing mobile implementation */}
+        <MobileNav>
+          <MobileNavHeader>
+            <CustomNavbarLogo />
+            <MobileNavToggle
+              isOpen={isMobileMenuOpen}
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            />
+          </MobileNavHeader>
+
+          <MobileNavMenu
+            isOpen={isMobileMenuOpen}
+            onClose={() => setIsMobileMenuOpen(false)}
+          >
+            <div className="flex flex-col h-full overflow-y-auto">
+              {/* Services Section */}
+              <div className="border-b border-border/60">
+                <button
+                  onClick={() => setOpenDropdown(openDropdown === "mobile-services" ? null : "mobile-services")}
+                  className="w-full flex items-center justify-between py-4 px-4 text-base font-medium hover:bg-accent/30 transition-colors"
+                >
+                  <span className="text-foreground font-sans">Services</span>
+                  <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform duration-200 ${openDropdown === "mobile-services" ? "rotate-180" : ""}`} />
+                </button>
+                {openDropdown === "mobile-services" && (
+                  <div className="px-4 pb-4 pt-2 bg-accent/10">
+                    <div className="space-y-3">
+                      <h3 className="text-xs font-semibold text-foreground/80 uppercase tracking-wider mb-1.5 font-serif">Our Expertise</h3>
+                      <ul className="space-y-0.5 font-sans">
+                        {serviceItems.map((item) => (
+                          <li
+                            key={item.value}
+                            onClick={() => handleServiceClick(item.value)}
+                            className="text-xs sm:text-sm text-foreground/70 hover:text-primary transition-colors cursor-pointer py-1.5 px-2 hover:bg-accent/50 rounded-md"
+                          >
+                            {item.label}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Resources Section */}
+              <div className="border-b border-border/60">
+                <button
+                  onClick={() => setOpenDropdown(openDropdown === "mobile-resources" ? null : "mobile-resources")}
+                  className="w-full flex items-center justify-between py-4 px-4 text-base font-medium hover:bg-accent/30 transition-colors"
+                >
+                  <span className="text-foreground font-sans">Resources</span>
+                  <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform duration-200 ${openDropdown === "mobile-resources" ? "rotate-180" : ""}`} />
+                </button>
+                {openDropdown === "mobile-resources" && (
+                  <div className="px-4 pb-4 pt-2 bg-accent/10">
+                    <div className="space-y-3">
+                      <h3 className="text-xs font-semibold text-foreground/80 uppercase tracking-wider mb-1.5 font-serif">Support</h3>
+                      <ul className="space-y-0.5 font-sans">
+                        {resourceItems.map((item) => (
+                          <li
+                            key={item.label}
+                            onClick={() => handleNavigation(item.path)}
+                            className="text-xs sm:text-sm text-foreground/70 hover:text-primary transition-colors cursor-pointer py-1.5 px-2 hover:bg-accent/50 rounded-md"
+                          >
+                            {item.label}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Who We Are Section */}
+              <div className="border-b border-border/60">
+                <button
+                  onClick={() => setOpenDropdown(openDropdown === "mobile-whoweare" ? null : "mobile-whoweare")}
+                  className="w-full flex items-center justify-between py-4 px-4 text-base font-medium hover:bg-accent/30 transition-colors"
+                >
+                  <span className="text-foreground font-sans">Who we are</span>
+                  <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform duration-200 ${openDropdown === "mobile-whoweare" ? "rotate-180" : ""}`} />
+                </button>
+                {openDropdown === "mobile-whoweare" && (
+                  <div className="px-4 pb-4 pt-2 bg-accent/10">
+                    <div className="space-y-2">
+                      <div
+                        onClick={() => handleNavigation('/aboutus')}
+                        className="cursor-pointer px-3 py-3 hover:bg-accent/50 rounded-lg transition-colors group"
+                      >
+                        <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors font-sans block">About Us</span>
+                        <span className="text-xs text-muted-foreground/70">Our story, mission & vision</span>
+                      </div>
+                      <div
+                        onClick={() => handleNavigation('/joinus')}
+                        className="cursor-pointer px-3 py-3 hover:bg-accent/50 rounded-lg transition-colors group"
+                      >
+                        <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors font-sans block">Join Us</span>
+                        <span className="text-xs text-muted-foreground/70">Careers & opportunities</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Blog Link */}
+              <a
+                href="/blog"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNavigation('/blog');
+                }}
+                className="block py-4 px-4 border-b border-border/60 hover:bg-accent/30 transition-colors"
+              >
+                <span className="text-foreground font-sans">Blog</span>
+              </a>
+
+              {/* Mobile Buttons */}
+              <div className="flex w-full flex-col gap-4 p-4 mt-auto">
+                <button
+                  onClick={() => {
+                    handleNavigation('/projects');
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-md text-sm font-sans w-full transition-colors"
+                >
+                  Discover
+                </button>
+                <RainbowButton
+                  onClick={() => {
+                    handleNavigation('/contact');
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="w-full"
+                >
+                  Appointment
+                </RainbowButton>
+              </div>
+            </div>
+          </MobileNavMenu>
+        </MobileNav>
+      </ResizableNavbar>
     </div>
   );
+}
 
-  const WhoWeAreDropdown = () => (
+// WhoWeAreDropdown component
+const WhoWeAreDropdown = () => {
+  const navigate = useNavigate();
+  const [openDropdown, setOpenDropdown] = useState(null);
+  const [hoverTimeout, setHoverTimeout] = useState(null);
+
+  const handleNavigation = (path) => navigate(path);
+  
+  const handleDropdownMouseEnter = (dropdownName) => {
+    if (hoverTimeout) clearTimeout(hoverTimeout);
+    setOpenDropdown(dropdownName);
+  };
+
+  const handleDropdownMouseLeave = () => {
+    const timeout = setTimeout(() => setOpenDropdown(null), 150);
+    setHoverTimeout(timeout);
+  };
+
+  return (
     <div 
       className="relative inline-block"
       onMouseEnter={() => handleDropdownMouseEnter("whoweare")}
@@ -214,220 +483,68 @@ const Navbar = () => {
       </DropdownMenu>
     </div>
   );
+};
+
+// ResourcesDropdown component
+const ResourcesDropdown = () => {
+  const navigate = useNavigate();
+  const [openDropdown, setOpenDropdown] = useState(null);
+  const [hoverTimeout, setHoverTimeout] = useState(null);
+  
+  const resourceItems = [
+    { label: "FAQs", path: "/faq" },
+  ];
+
+  const handleNavigation = (path) => navigate(path);
+  
+  const handleDropdownMouseEnter = (dropdownName) => {
+    if (hoverTimeout) clearTimeout(hoverTimeout);
+    setOpenDropdown(dropdownName);
+  };
+
+  const handleDropdownMouseLeave = () => {
+    const timeout = setTimeout(() => setOpenDropdown(null), 150);
+    setHoverTimeout(timeout);
+  };
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${
-      scrolled 
-        ? "bg-background/95 backdrop-blur-md border-b border-border/40 shadow-sm py-1 sm:py-2" 
-        : "bg-background/90 backdrop-blur-sm border-b border-border/40"
-    }`}>
-      <div className="container mx-auto flex h-14 sm:h-16 items-center justify-between px-3 sm:px-4 md:px-6 lg:px-8">
-        <Link to="/" className="flex items-center gap-1.5 sm:gap-2">
-          <img src={logo} alt="AVXONIA INNOVATIONS" className="h-20 sm:h-22 w-auto object-contain" />
-        </Link>
-
-        <div className="hidden lg:flex items-center gap-1 xl:gap-4">
-          <NavigationMenu>
-            <NavigationMenuList className="gap-1 xl:gap-3">
-              <NavigationMenuItem><ServicesDropdown /></NavigationMenuItem>
-              <NavigationMenuItem><ResourcesDropdown /></NavigationMenuItem>
-              <NavigationMenuItem><WhoWeAreDropdown /></NavigationMenuItem>
-              <NavigationMenuItem>
-                <span 
-                  onClick={() => handleNavigation('/blog')} 
-                  className="inline-flex items-center text-sm font-medium text-foreground hover:text-primary transition-colors cursor-pointer py-2 px-2 font-sans"
+    <div 
+      className="relative inline-block"
+      onMouseEnter={() => handleDropdownMouseEnter("resources")}
+      onMouseLeave={handleDropdownMouseLeave}
+    >
+      <DropdownMenu open={openDropdown === "resources"} modal={false}>
+        <DropdownMenuTrigger asChild>
+          <span className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-primary transition-colors cursor-pointer py-2 px-1 lg:px-2 group font-sans">
+            Resources
+            <ChevronDown className={`h-3.5 w-3.5 lg:h-4 lg:w-4 transition-transform duration-200 ${openDropdown === "resources" ? "rotate-180" : "group-hover:rotate-180"}`} />
+          </span>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent 
+          className="w-[240px] p-4 z-[100]" 
+          align="start" 
+          sideOffset={8}
+          onMouseEnter={() => handleDropdownMouseEnter("resources")}
+          onMouseLeave={handleDropdownMouseLeave}
+        >
+          <div className="space-y-3">
+            <h3 className="text-xs sm:text-sm font-semibold text-foreground border-b border-border pb-1.5 font-serif">Support</h3>
+            <ul className="space-y-2 font-sans">
+              {resourceItems.map((item) => (
+                <DropdownMenuItem 
+                  key={item.label} 
+                  className="cursor-pointer px-0 py-1 hover:bg-transparent focus:bg-transparent" 
+                  onClick={() => handleNavigation(item.path)}
                 >
-                  Blog
-                </span>
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
-        </div>
-
-        <div className="hidden lg:flex items-center gap-2 xl:gap-3">
-          <Button 
-            variant="default" 
-            size="sm" 
-            className="bg-primary hover:bg-primary/90 text-white px-3 xl:px-5 h-8 xl:h-9 font-sans text-xs xl:text-sm" 
-            onClick={() => handleNavigation('/projects')}
-          >
-            Discover
-          </Button>
-          <Button 
-            variant="outline" 
-            size="sm" 
-            className="bg-primary hover:bg-primary/90 text-white px-3 xl:px-5 h-8 xl:h-9 font-sans text-xs xl:text-sm" 
-            onClick={() => handleNavigation('/contact')}
-          >
-            Appointment
-          </Button>
-        </div>
-
-        <div className="flex lg:hidden items-center gap-2">
-          <div className="hidden sm:flex lg:hidden items-center gap-2">
-            <Button 
-              variant="default" 
-              size="sm" 
-              className="bg-primary hover:bg-primary/90 text-white px-3 h-8 font-sans text-xs" 
-              onClick={() => handleNavigation('/projects')}
-            >
-              Discover
-            </Button>
-            <Button 
-              variant="outline" 
-              size="sm" 
-              className="!text-white border-white hover:!text-white hover:border-white font-sans text-xs sm:text-sm h-8 sm:h-9" 
-              onClick={() => handleNavigation('/contact')}
-            >
-              Appointment
-            </Button>
+                  <span className="text-xs sm:text-sm text-foreground/80 hover:text-primary transition-colors">{item.label}</span>
+                </DropdownMenuItem>
+              ))}
+            </ul>
           </div>
-          <Button 
-            variant="default" 
-            size="icon" 
-            className="relative h-8 w-8 sm:h-9 sm:w-9 z-[101]" 
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
-            aria-label="Toggle menu"
-          >
-            {isMobileMenuOpen
-              ? <X className="h-4 w-4 sm:h-5 sm:w-5 !text-white transition-transform rotate-90 duration-300" />
-              : <Menu className="h-4 w-4 sm:h-5 sm:w-5 !text-white transition-transform duration-300" />
-            }
-          </Button>
-        </div>
-      </div>
-
-      <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-        <SheetContent side="right" className="w-full sm:w-[450px] md:w-[500px] p-0 bg-background border-l border-border/40 z-[200] overflow-y-auto">
-          <SheetHeader className="p-4 sm:p-5 border-b border-border/40 sticky top-0 bg-background/95 backdrop-blur-sm z-[201]">
-            <SheetTitle className="text-left text-xl sm:text-2xl bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent font-bold font-serif">
-              <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>AVXONIA INNOVATIONS</Link>
-            </SheetTitle>
-            <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5 font-sans">Innovate. Transform. Succeed.</p>
-            <SheetClose className="absolute right-4 top-4 sm:right-5 sm:top-5 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none">
-              <X className="h-4 w-4" />
-              <span className="sr-only">Close</span>
-            </SheetClose>
-          </SheetHeader>
-
-          <div className="flex flex-col h-[calc(100vh-5rem)] overflow-y-auto">
-            <div className="flex-1 py-1 sm:py-2">
-              <MobileAccordionItem title="Services">
-                <div className="text-white space-y-3">
-                  <div>
-                    <h4 className="text-[10px] sm:text-xs font-semibold text-foreground/80 uppercase tracking-wider mb-1.5 font-serif">Our Expertise</h4>
-                    <ul className="space-y-0.5 font-sans">
-                      {serviceItems.map((item) => (
-                        <SheetClose asChild key={item.value}>
-                          <li 
-                            className="text-xs sm:text-sm text-foreground/70 hover:text-primary transition-colors cursor-pointer py-1.5 px-2 hover:bg-accent/50 rounded-md" 
-                            onClick={() => handleServiceClick(item.value)}
-                          >
-                            {item.label}
-                          </li>
-                        </SheetClose>
-                      ))}
-                    </ul>
-                  </div>
-                  <div className="flex flex-col sm:flex-row gap-2 pt-2">
-                    <SheetClose asChild>
-                      <Button size="sm" variant="default" className="flex-1 text-xs h-8 sm:h-9 text-white font-sans" onClick={() => handleNavigation('/projects')}>
-                        Discover work
-                      </Button>
-                    </SheetClose>
-                    <SheetClose asChild>
-                      <Button variant="outline" size="sm" className="flex-1 !text-white border-white font-sans text-xs sm:text-sm h-8 sm:h-9" onClick={() => handleNavigation('/contact')}>
-                        Make an appointment
-                      </Button>
-                    </SheetClose>
-                  </div>
-                </div>
-              </MobileAccordionItem>
-
-              <MobileAccordionItem title="Resources">
-                <div className="text-white space-y-3">
-                  <div>
-                    <h4 className="text-[10px] sm:text-xs font-semibold text-foreground/80 uppercase tracking-wider mb-1.5 font-serif">Support</h4>
-                    <ul className="space-y-0.5 font-sans">
-                      {resourceItems.map((item) => (
-                        <SheetClose asChild key={item.label}>
-                          <li 
-                            className="text-xs sm:text-sm text-foreground/70 hover:text-primary transition-colors cursor-pointer py-1.5 px-2 hover:bg-accent/50 rounded-md" 
-                            onClick={() => handleNavigation(item.path)}
-                          >
-                            {item.label}
-                          </li>
-                        </SheetClose>
-                      ))}
-                    </ul>
-                  </div>
-                  <div className="flex flex-col sm:flex-row gap-2 pt-2">
-                    <SheetClose asChild>
-                      <Button size="sm" variant="default" className="flex-1 text-xs h-8 sm:h-9 text-white font-sans" onClick={() => handleNavigation('/projects')}>
-                        Discover work
-                      </Button>
-                    </SheetClose>
-                    <SheetClose asChild>
-                      <Button variant="outline" size="sm" className="flex-1 !text-white border-white font-sans text-xs sm:text-sm h-8 sm:h-9" onClick={() => handleNavigation('/contact')}>
-                        Make an appointment
-                      </Button>
-                    </SheetClose>
-                  </div>
-                </div>
-              </MobileAccordionItem>
-
-              <MobileAccordionItem title="Who we are">
-                <div className="space-y-2">
-                  <SheetClose asChild>
-                    <div className="cursor-pointer px-3 py-3 hover:bg-accent/50 rounded-lg transition-colors group" onClick={() => handleNavigation('/aboutus')}>
-                      <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors font-sans block">About Us</span>
-                      <span className="text-xs text-muted-foreground/70">Our story, mission & vision</span>
-                    </div>
-                  </SheetClose>
-                  <SheetClose asChild>
-                    <div className="cursor-pointer px-3 py-3 hover:bg-accent/50 rounded-lg transition-colors group" onClick={() => handleNavigation('/joinus')}>
-                      <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors font-sans block">Join Us</span>
-                      <span className="text-xs text-muted-foreground/70">Careers & opportunities</span>
-                    </div>
-                  </SheetClose>
-                  <div className="pt-3 mt-1 border-t border-border/40 flex flex-col sm:flex-row gap-2">
-                    <SheetClose asChild>
-                      <Button size="sm" variant="default" className="flex-1 text-xs h-8 sm:h-9 text-white font-sans" onClick={() => handleNavigation('/projects')}>
-                        Discover work
-                      </Button>
-                    </SheetClose>
-                    <SheetClose asChild>
-                      <Button variant="outline" size="sm" className="flex-1 !text-white border-white font-sans text-xs sm:text-sm h-8 sm:h-9" onClick={() => handleNavigation('/contact')}>
-                        Make an appointment
-                      </Button>
-                    </SheetClose>
-                  </div>
-                </div>
-              </MobileAccordionItem>
-            </div>
-
-            <div className="border-t border-border/40 p-4 sm:p-5 space-y-2 bg-muted/30 mt-auto sticky bottom-0 backdrop-blur-sm">
-              <SheetClose asChild>
-                <Button className="w-full h-10 sm:h-11 text-white font-sans text-xs sm:text-sm" size="lg" variant="default" onClick={() => handleNavigation('/blog')}>
-                  Blog
-                </Button>
-              </SheetClose>
-              <SheetClose asChild>
-                <Button className="w-full h-10 sm:h-11 text-white font-sans text-xs sm:text-sm" size="lg" variant="default" onClick={() => handleNavigation('/projects')}>
-                  Discover our work
-                </Button>
-              </SheetClose>
-              <SheetClose asChild>
-                <Button className="!text-white w-full h-10 sm:h-11 font-sans text-xs sm:text-sm" variant="outline" size="lg" onClick={() => handleNavigation('/contact')}>
-                  Make an appointment
-                </Button>
-              </SheetClose>
-            </div>
-          </div>
-        </SheetContent>
-      </Sheet>
-    </nav>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
   );
 };
 
-export default Navbar;
+export default NavbarDemo;
