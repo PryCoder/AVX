@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion, useInView, useMotionValue, useSpring } from 'framer-motion';
 import { ArrowRight, CheckCircle, XCircle, BarChart3, Bot, Layout, ArrowUpRight, MessageCircle, Sparkles, Zap, TrendingUp, Users, Clock, ChevronRight, LayoutIcon, BotIcon, BarChart3Icon, CheckCircle2 } from 'lucide-react';
 import { Button } from "../components/ui/button";
@@ -27,6 +27,7 @@ import { Meteors } from '../components/ui/meteors';
 import { AnimatedGridPattern } from "../components/ui/animated-grid-pattern";
 import { MagicCard } from "../components/ui/magic-card";
 import { RetroGrid } from '../components/ui/retro-grid';
+import { MagneticButton } from '../components/ui/magnetic-button';
 
 
 
@@ -193,30 +194,58 @@ const LandingPageWrapper = () => {
         variants={fadeInUp}
       >
         <div className="flex flex-col items-center gap-2 sm:gap-3 lg:gap-4">
-     <p className="pointer-events-none bg-linear-to-b from-black to-gray-300/80 bg-clip-text text-center sm:text-5xl lg:text-7xl leading-none font-semibold whitespace-pre-wrap text-transparent dark:from-white dark:to-slate-900/10">
+     <p
+  className="
+    pointer-events-none
+    bg-gradient-to-b
+    from-stone-950
+    via-stone-800
+    to-stone-500
+    bg-clip-text
+    text-transparent
+    text-center
+    text-4xl
+    sm:text-5xl
+    lg:text-7xl
+    font-semibold
+    leading-[0.95]
+    tracking-tight
+    whitespace-pre-wrap
+  "
+>
   Digital Systems Built to
 </p>
-          <div className="inline-block">
-            <CanvasText
-              text="Scale Your Business"
-              backgroundClassName="bg-blue-600 dark:bg-blue-700"
-              colors={[
-                "rgba(0, 153, 255, 1)",
-                "rgba(0, 153, 255, 0.9)",
-                "rgba(0, 153, 255, 0.8)",
-                "rgba(0, 153, 255, 0.7)",
-                "rgba(0, 153, 255, 0.6)",
-                "rgba(0, 153, 255, 0.5)",
-                "rgba(0, 153, 255, 0.4)",
-                "rgba(0, 153, 255, 0.3)",
-                "rgba(0, 153, 255, 0.2)",
-                "rgba(0, 153, 255, 0.1)",
-              ]}
-              lineGap={4}
-              animationDuration={20}
-              className="text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold"
-            />
-          </div>
+         <div className="inline-block w-full max-w-full overflow-hidden">
+  <CanvasText
+    text="Scale Your Business"
+    backgroundClassName="bg-blue-600 dark:bg-blue-700"
+    colors={[
+      "rgba(0, 153, 255, 1)",
+      "rgba(0, 153, 255, 0.9)",
+      "rgba(0, 153, 255, 0.8)",
+      "rgba(0, 153, 255, 0.7)",
+      "rgba(0, 153, 255, 0.6)",
+      "rgba(0, 153, 255, 0.5)",
+      "rgba(0, 153, 255, 0.4)",
+      "rgba(0, 153, 255, 0.3)",
+      "rgba(0, 153, 255, 0.2)",
+      "rgba(0, 153, 255, 0.1)",
+    ]}
+    lineGap={3}
+    animationDuration={20}
+    className="
+      text-center
+      text-[2rem]
+      leading-[1]
+      sm:text-5xl
+      lg:text-6xl
+      xl:text-7xl
+      font-bold
+      break-words
+      whitespace-normal
+    "
+  />
+</div>
         </div>
       <div className="text-stone-400 text-xl sm:text-2xl lg:text-3xl xl:text-4xl leading-tight tracking-wide">
   Not Just Make It Look Good
@@ -231,45 +260,124 @@ const LandingPageWrapper = () => {
         streamline operations, and drive real growth.
       </motion.p>
       
-    <motion.div
+   <motion.div
   className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center"
   variants={fadeInUp}
 >
-  <motion.div
-    whileHover={{ scale: 1.02 }}
-    whileTap={{ scale: 0.98 }}
-    className="w-[260px]"
-  >
-    <InteractiveHoverButton
-      onClick={() => navigate('/contact')}
-      className="w-full bg-stone-900 text-white rounded-full px-6 sm:px-8 lg:px-10 py-3 sm:py-4 lg:py-5 text-sm sm:text-base hover:bg-stone-800 transition-all duration-300 shadow-xl justify-center"
+  {/* Primary Button */}
+  <Link to="/contact" className="inline-block">
+    <MagneticButton
+      strength={35}
+      onPointerDown={(e) => {
+        if (e.button != null && e.button !== 0) return;
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        e.preventDefault();
+        navigate('/contact');
+      }}
     >
-      Book a Strategy Call
-
-      <motion.div
-        animate={{ x: [0, 4, 0] }}
-        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-        className="inline-block ml-2"
+      <div
+        className="
+          group
+          relative
+          cursor-pointer
+          overflow-hidden
+          rounded-full
+          px-7
+          py-4
+          backdrop-blur-xl
+          bg-black/40
+          border
+          border-white/15
+          shadow-[0_8px_32px_rgba(0,0,0,0.45)]
+          transition-all
+          duration-500
+          hover:bg-black/50
+        "
       >
-        <ArrowRight className="w-4 h-4" />
-      </motion.div>
-    </InteractiveHoverButton>
-  </motion.div>
+        {/* Glass Overlay */}
+        <div
+          className="
+            absolute
+            inset-0
+            bg-gradient-to-b
+            from-white/15
+            via-white/5
+            to-transparent
+          "
+        />
 
-  <motion.div
-    whileHover={{ scale: 1.02 }}
-    whileTap={{ scale: 0.98 }}
-    className="w-[260px]"
-  >
-    <ShimmerButton
-      onClick={() => navigate('/contact')}
-      variant="glow"
-      size="lg"
-      className="w-full justify-center"
+        {/* Top Shine */}
+        <div
+          className="
+            absolute
+            inset-x-0
+            top-0
+            h-[1px]
+            bg-white/30
+          "
+        />
+
+        {/* Content */}
+        <span
+          className="
+            relative
+            z-10
+            flex
+            items-center
+            justify-center
+            gap-2
+            text-sm
+            font-semibold
+            tracking-wide
+            text-white
+          "
+        >
+          Book a Strategic Call
+
+          <ArrowRight
+            className="
+              h-4
+              w-4
+              transition-transform
+              duration-300
+              group-hover:translate-x-1
+            "
+          />
+        </span>
+      </div>
+    </MagneticButton>
+  </Link>
+
+  {/* Secondary Button */}
+  <Link to="/contact" className="inline-block">
+    <MagneticButton
+      strength={25}
+      onPointerDown={(e) => {
+        if (e.button != null && e.button !== 0) return;
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        e.preventDefault();
+        navigate('/contact');
+      }}
     >
-      Get Free Website Audit
-    </ShimmerButton>
-  </motion.div>
+      <div
+        className="
+          cursor-pointer
+          rounded-full
+          bg-gradient-to-b
+          from-blue-500
+          to-blue-700
+          px-6
+          py-3
+          font-medium
+          text-white
+          ring-1
+          ring-white/20
+        "
+      >
+        Get Free Website Audit
+      </div>
+    </MagneticButton>
+  </Link>
 </motion.div>
       <motion.div 
         className="text-xs sm:text-sm text-stone-500 font-medium flex items-center justify-center gap-3 sm:gap-4 pt-2"
@@ -1242,13 +1350,15 @@ const LandingPageWrapper = () => {
                 </p>
                 
                 <div className="flex flex-col sm:flex-row justify-center gap-4 pt-2 lg:pt-4">
-                  <Button 
-                    onClick={() => navigate('/contact')} 
-                    size="lg" 
+                  <Button
+                    asChild
+                    size="lg"
                     className="w-full sm:w-auto bg-stone-900 text-white rounded-full px-8 lg:px-10 py-6 lg:py-7 text-sm sm:text-lg hover:bg-stone-800 shadow-xl transition-all duration-300 group"
                   >
-                    Book a Strategy Call
-                    <ArrowRight className="w-4 h-4 lg:w-5 lg:h-5 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
+                    <Link to="/contact">
+                      Book a Strategy Call
+                      <ArrowRight className="w-4 h-4 lg:w-5 lg:h-5 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
+                    </Link>
                   </Button>
                   
                   <ShimmerButton

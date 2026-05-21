@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion, useInView, useMotionValue, useSpring } from 'framer-motion';
 // Add Users and Clock to the imports here:
 import { ArrowRight, CheckCircle, XCircle, BarChart3, Bot, Layout, ArrowUpRight, MessageCircle, Sparkles, Zap, TrendingUp, Users, Clock } from 'lucide-react';
@@ -164,30 +164,32 @@ const LandingPageWrapper = () => {
                 variants={fadeInUp}
               >
                 <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="w-full sm:w-auto">
-                  <Button 
-                    onClick={() => navigate('/contact')} 
-                    size="lg" 
+                  <Button
+                    asChild
+                    size="lg"
                     className="w-full sm:w-auto bg-stone-900 text-white rounded-full px-8 py-6 text-sm sm:text-base hover:bg-stone-800 transition-all duration-300 shadow-xl"
                   >
-                    Book a Strategy Call
-                    <motion.div
-                      animate={{ x: [0, 4, 0] }}
-                      transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                      className="inline-block ml-2"
-                    >
-                      <ArrowRight className="w-4 h-4" />
-                    </motion.div>
+                    <Link to="/contact">
+                      Book a Strategy Call
+                      <motion.div
+                        animate={{ x: [0, 4, 0] }}
+                        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                        className="inline-block ml-2"
+                      >
+                        <ArrowRight className="w-4 h-4" />
+                      </motion.div>
+                    </Link>
                   </Button>
                 </motion.div>
                 
                 <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="w-full sm:w-auto">
-                  <Button 
-                    onClick={() => navigate('/contact')} 
-                    variant="outline" 
-                    size="lg" 
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="lg"
                     className="text-white hover:text-gray-200 w-full sm:w-auto bg-transparent rounded-full px-8 py-6 border-stone-300  hover:bg-stone-100 transition-all duration-300 text-sm sm:text-base"
                   >
-                    Get Free Website Audit
+                    <Link to="/contact">Get Free Website Audit</Link>
                   </Button>
                 </motion.div>
               </motion.div>
@@ -882,22 +884,24 @@ const LandingPageWrapper = () => {
                 </p>
                 
                 <div className="flex flex-col sm:flex-row justify-center gap-4 pt-2 lg:pt-4">
-                  <Button 
-                    onClick={() => navigate('/contact')} 
-                    size="lg" 
+                  <Button
+                    asChild
+                    size="lg"
                     className="w-full sm:w-auto bg-stone-900 text-white rounded-full px-8 lg:px-10 py-6 lg:py-7 text-sm sm:text-lg hover:bg-stone-800 shadow-xl transition-all duration-300 group"
                   >
-                    Book a Strategy Call
-                    <ArrowRight className="w-4 h-4 lg:w-5 lg:h-5 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
+                    <Link to="/contact">
+                      Book a Strategy Call
+                      <ArrowRight className="w-4 h-4 lg:w-5 lg:h-5 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
+                    </Link>
                   </Button>
                   
-                  <Button 
-                    onClick={() => navigate('/contact')} 
-                    variant="outline" 
-                    size="lg" 
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="lg"
                     className="text-white hover:text-gray-200 w-full sm:w-auto bg-white rounded-full px-8 lg:px-10 py-6 lg:py-7 border-stone-300 hover:bg-stone-50 text-sm sm:text-lg shadow-sm transition-all duration-300"
                   >
-                    Get Free Website Audit
+                    <Link to="/contact">Get Free Website Audit</Link>
                   </Button>
                 </div>
               </motion.div>

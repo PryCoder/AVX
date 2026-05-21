@@ -11,8 +11,10 @@ import {
   MobileNavMenu,
 } from "../components/ui/resizable-navbar";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function NavbarDemo() {
+  const navigate = useNavigate();
   const navItems = [
     {
       name: "Features",
@@ -39,7 +41,7 @@ export default function NavbarDemo() {
           <NavItems items={navItems} />
           <div className="flex items-center gap-4">
             <NavbarButton variant="secondary">Login</NavbarButton>
-            <NavbarButton variant="primary">Book a call</NavbarButton>
+            <NavbarButton variant="primary" onClick={() => navigate("/contact")}>Book a call</NavbarButton>
           </div>
         </NavBody>
 
@@ -70,7 +72,10 @@ export default function NavbarDemo() {
                 Login
               </NavbarButton>
               <NavbarButton
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  navigate("/contact");
+                }}
                 variant="primary"
                 className="w-full">
                 Book a call
