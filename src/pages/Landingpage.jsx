@@ -263,7 +263,7 @@ const LandingPageWrapper = () => {
   >
     <ShimmerButton
       onClick={() => navigate('/contact')}
-      variant="outline"
+      variant="glow"
       size="lg"
       className="w-full justify-center"
     >

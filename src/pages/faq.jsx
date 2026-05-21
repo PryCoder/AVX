@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { 
-  ChevronDown, 
   Sparkles, 
   MessageCircle, 
   Search,
@@ -9,27 +9,34 @@ import {
   Zap,
   Layout,
   Code,
-  Bot,
   DollarSign,
   HelpCircle,
-  X
+  X,
+  ArrowRight
 } from "lucide-react";
 import { Badge } from "../components/ui/badge";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { useNavigate } from "react-router-dom";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "../components/ui/accordion";
+import { Accordion as BaseAccordion } from '@base-ui/react/accordion';
+
+// Magic UI Components
+import { TextAnimate } from "../components/ui/text-animate";
+import { AnimatedGridPattern } from "../components/ui/animated-grid-pattern";
+import { Meteors } from "../components/ui/meteors";
+import { ShimmerButton } from "../components/ui/shimmer-button";
+import { BorderBeam } from "../components/ui/border-beam";
+import { MagicCard } from "../components/ui/magic-card";
+import { Particles } from "../components/ui/particles";
+import { AuroraBackground } from "../components/ui/aurora-background";
 
 const faqs = [
   {
     category: "Services",
     icon: Zap,
     description: "What we offer and how we can help your business grow",
+    gradient: "from-blue-500 via-cyan-400 to-blue-600",
+    auroraColor: "blue",
     items: [
       {
         q: "What services does AVXONIA offer?",
@@ -65,6 +72,8 @@ const faqs = [
     category: "Process",
     icon: Layout,
     description: "How we work and what to expect when partnering with us",
+    gradient: "from-purple-500 via-pink-400 to-purple-600",
+    auroraColor: "purple",
     items: [
       {
         q: "How does your project process work?",
@@ -110,6 +119,8 @@ const faqs = [
     category: "Pricing & Payments",
     icon: DollarSign,
     description: "Transparent pricing and flexible payment options",
+    gradient: "from-emerald-500 via-green-400 to-emerald-600",
+    auroraColor: "green",
     items: [
       {
         q: "How much does a project cost?",
@@ -155,6 +166,8 @@ const faqs = [
     category: "Technical",
     icon: Code,
     description: "Technical details about our development approach",
+    gradient: "from-indigo-500 via-blue-400 to-indigo-600",
+    auroraColor: "indigo",
     items: [
       {
         q: "What technologies do you use?",
@@ -209,6 +222,8 @@ const faqs = [
     category: "Support & Maintenance",
     icon: Clock,
     description: "Ongoing support options and maintenance packages",
+    gradient: "from-rose-500 via-red-400 to-rose-600",
+    auroraColor: "rose",
     items: [
       {
         q: "What kind of post-launch support do you offer?",
@@ -248,28 +263,57 @@ const faqs = [
   },
 ];
 
-const CategoryCard = ({ category, icon: Icon, description, isActive, onClick }) => (
-  <button
-    onClick={onClick}
-    className={`flex flex-col items-start p-4 rounded-xl transition-all duration-300 text-left w-full ${
-      isActive 
-        ? "bg-stone-900 text-white shadow-lg" 
-        : "bg-white hover:bg-stone-50 text-stone-600 border border-stone-100"
-    }`}
+// Plus Icon Component for Accordion - refined artistic touch
+const PlusIcon = (props) => (
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 16 16"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.25"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+    style={{ display: 'block', transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)', ...props.style }}
   >
-    <Icon className={`w-5 h-5 mb-2 ${isActive ? "text-white" : "text-stone-400"}`} />
-    <span className="text-sm font-medium mb-1">{category}</span>
-    <span className={`text-xs ${isActive ? "text-stone-300" : "text-stone-400"}`}>
+    <path d="M1.5 8h13M8 14.5v-13" />
+  </svg>
+);
+
+// Category Card - stable, no hover color effect, refined artistic styling
+const CategoryCard = ({ category, icon: Icon, description, isActive, onClick, gradient }) => (
+  <motion.button
+    onClick={onClick}
+    whileTap={{ scale: 0.97 }}
+    className={`relative overflow-hidden flex flex-col items-start p-4 sm:p-5 rounded-2xl transition-all duration-300 text-left w-full border ${
+      isActive 
+        ? "border-stone-200 shadow-sm" 
+        : "border-stone-100 bg-white/80 backdrop-blur-sm"
+    }`}
+    style={{
+      background: isActive 
+        ? 'linear-gradient(135deg, #fafaf9, #ffffff)' 
+        : 'rgba(255, 255, 255, 0.6)'
+    }}
+  >
+    {isActive && <BorderBeam size={120} duration={6} delay={0} borderWidth={1.5} />}
+    <div className={`relative z-10 mb-2 sm:mb-3 ${isActive ? `bg-gradient-to-r ${gradient} bg-clip-text text-transparent` : "text-stone-400"}`}>
+      <Icon className="w-4 h-4 sm:w-5 sm:h-5" strokeWidth={1.5} />
+    </div>
+    <span className={`text-xs sm:text-sm font-medium tracking-wide mb-0.5 sm:mb-1 relative z-10 ${isActive ? "text-stone-800" : "text-stone-500"}`}>
+      {category}
+    </span>
+    <span className={`text-[10px] sm:text-xs leading-relaxed relative z-10 ${isActive ? "text-stone-400" : "text-stone-400"}`}>
       {description}
     </span>
-  </button>
+  </motion.button>
 );
 
 const FAQ = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [openItems, setOpenItems] = useState([]);
 
   // Filter FAQs based on search and category
   const filteredFaqs = faqs
@@ -289,70 +333,113 @@ const FAQ = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-stone-50 via-white to-stone-50">
-      {/* Hero Section */}
-      <div className="relative w-full overflow-hidden pt-24 sm:pt-32 pb-16 sm:pb-20 px-4 sm:px-6 lg:px-8">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(0,0,0,0.02)_0%,transparent_50%)]"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(0,0,0,0.02)_0%,transparent_50%)]"></div>
-        
-        <div className="max-w-4xl mx-auto text-center">
-         
-          
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-stone-900 clash-font leading-[1.1] mb-6">
-            Got questions?
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-stone-700 to-stone-900">
-              We've got answers.
-            </span>
-          </h1>
-          
-          <p className="text-base sm:text-lg md:text-xl text-stone-500 sfpro-font max-w-2xl mx-auto leading-relaxed">
-            Everything you need to know about working with AVXONIA. 
-            Can't find what you're looking for? Reach out to us directly.
-          </p>
+    <div className="min-h-screen w-full relative overflow-hidden bg-stone-50/30">
+      
+      {/* Aurora Background with subtle artistic presence */}
+      <AuroraBackground className="absolute inset-0 opacity-30" intensity={0.3}>
+        {[...Array(3)].map((_, i) => (
+          <div key={i} className="absolute inset-0 mix-blend-soft-light" />
+        ))}
+      </AuroraBackground>
+      
+      {/* Animated Grid Pattern - delicate, like rice paper texture */}
+      <AnimatedGridPattern
+        numSquares={24}
+        maxOpacity={0.03}
+        duration={4}
+        repeatDelay={2}
+        className="absolute inset-0 opacity-15 [mask-image:radial-gradient(ellipse_70%_50%_at_50%_50%,black_30%,transparent_80%)]"
+      />
 
-          {/* Search Bar */}
-          <div className="max-w-xl mx-auto mt-8 sm:mt-10">
-            <div className="relative group">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-stone-400 transition-colors group-focus-within:text-stone-600" />
-              <Input
-                type="text"
-                placeholder="Search questions..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-11 sm:pl-12 pr-12 py-5 sm:py-6 w-full text-sm sm:text-base rounded-full border-stone-200 bg-white/80 backdrop-blur-sm focus:border-stone-300 focus:ring-0 transition-all duration-300 sfpro-font shadow-sm"
-              />
-              {searchQuery && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setSearchQuery("")}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 p-0 rounded-full hover:bg-stone-100"
-                >
-                  <X className="w-4 h-4 text-white" />
-                </Button>
-              )}
-            </div>
-          </div>
-        </div>
+      {/* Colored Meteors - whisper-thin */}
+      <div className="absolute inset-0 pointer-events-none">
+        <Meteors number={12} className="opacity-20" />
       </div>
 
-      {/* Category Filters */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 sm:pb-12">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-          <button
-            onClick={() => setSelectedCategory("all")}
-            className={`p-4 rounded-xl transition-all duration-300 text-left ${
-              selectedCategory === "all"
-                ? "bg-stone-900 text-white shadow-lg"
-                : "bg-white hover:bg-stone-50 text-stone-600 border border-stone-100"
-            }`}
+      {/* Particles - single quiet color, like dust motes in sunlight */}
+      <Particles
+        className="absolute inset-0 pointer-events-none"
+        quantity={80}
+        ease={70}
+        color="#78716c"
+        refresh
+      />
+
+   {/* Hero Section - Fixed responsive heading */}
+<div className="relative w-full overflow-hidden pt-20 sm:pt-28 md:pt-36 pb-12 sm:pb-16 md:pb-20 px-4 sm:px-6 lg:px-8">
+  <div className="max-w-4xl mx-auto text-center">
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+    >
+      <Badge className="mb-4 sm:mb-6 bg-white/60 backdrop-blur-sm text-stone-500 border-stone-200/80 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-medium tracking-wide">
+        <Sparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3 mr-1 sm:mr-1.5 text-stone-400" />
+        FAQ
+      </Badge>
+    </motion.div>
+    
+    {/* Responsive heading - using standard HTML with Tailwind instead of TextAnimate for better responsiveness */}
+    <motion.h1 
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
+      className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light tracking-tight leading-[1.2] sm:leading-[1.15] mb-3 sm:mb-5 text-stone-800"
+    >
+      Got questions? <span className="font-medium">We've got answers.</span>
+    </motion.h1>
+    
+    <motion.p 
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
+      className="text-sm sm:text-base md:text-lg text-stone-500 font-light max-w-2xl mx-auto leading-relaxed px-2"
+    >
+      Everything you need to know about working with AVXONIA. 
+      Can't find what you're looking for? Reach out directly.
+    </motion.p>
+
+    {/* Search Bar */}
+    <motion.div 
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
+      className="max-w-xl mx-auto mt-8 sm:mt-10 md:mt-12"
+    >
+      <div className="relative">
+        <Search className="absolute left-4 sm:left-5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 sm:w-4 sm:h-4 text-stone-300" />
+        <Input
+          type="text"
+          placeholder="Search questions..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="pl-10 sm:pl-12 pr-10 sm:pr-12 py-3 sm:py-5 w-full text-sm rounded-full border-stone-200 bg-white/60 backdrop-blur-sm focus:border-stone-300 focus:ring-1 focus:ring-stone-200 transition-all duration-200 font-light shadow-sm"
+        />
+        {searchQuery && (
+          <motion.button
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            onClick={() => setSearchQuery("")}
+            className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 h-5 w-5 sm:h-6 sm:w-6 rounded-full hover:bg-stone-100 flex items-center justify-center transition-colors"
           >
-            <HelpCircle className={`w-5 h-5 mb-2 ${selectedCategory === "all" ? "text-white" : "text-stone-400"}`} />
-            <span className="text-sm font-medium mb-1 block">All Questions</span>
-            <span className={`text-xs ${selectedCategory === "all" ? "text-stone-300" : "text-stone-400"}`}>
-              Browse everything
-            </span>
-          </button>
+            <X className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-stone-400" strokeWidth={1.5} />
+          </motion.button>
+        )}
+      </div>
+    </motion.div>
+  </div>
+</div>
+      {/* Category Filters - stable, no hover color effects */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 sm:pb-10 md:pb-14">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-3">
+          <CategoryCard
+            category="All Questions"
+            icon={HelpCircle}
+            description="Browse everything"
+            isActive={selectedCategory === "all"}
+            onClick={() => setSelectedCategory("all")}
+            gradient="from-stone-400 to-stone-500"
+          />
           
           {faqs.map((category) => (
             <CategoryCard
@@ -362,147 +449,193 @@ const FAQ = () => {
               description={category.description}
               isActive={selectedCategory === category.category}
               onClick={() => setSelectedCategory(category.category)}
+              gradient={category.gradient}
             />
           ))}
         </div>
       </div>
 
-      {/* FAQ Content */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 sm:pb-32">
-        {filteredFaqs.length > 0 ? (
-          <div className="space-y-8 sm:space-y-12">
-            {filteredFaqs.map((section) => (
-              <div key={section.category} className="space-y-4">
-                {/* Category Header */}
-                <div className="flex items-center gap-3 px-1">
-                  <div className="p-2 bg-stone-100 rounded-lg">
-                    <section.icon className="w-4 h-4 text-stone-600" />
-                  </div>
-                  <div>
-                    <h2 className="text-sm font-medium text-stone-900 sfpro-font">
-                      {section.category}
-                    </h2>
-                    <p className="text-xs text-stone-500 sfpro-font">
-                      {section.description}
-                    </p>
-                  </div>
-                </div>
-
-                {/* FAQ Items */}
-                <div className="bg-white rounded-2xl border border-stone-100 divide-y divide-stone-100 shadow-sm">
-                  <Accordion type="multiple" className="w-full">
-                    {section.items.map((item, index) => (
-                      <AccordionItem 
-                        key={index} 
-                        value={`${section.category}-${index}`}
-                        className="border-none"
-                      >
-                        <AccordionTrigger className="bg-gray-100 text-white px-5 sm:px-8 py-5 hover:no-underline hover:bg-stone-50/50 transition-colors group">
-                          <span className="text-sm text-white sm:text-base font-medium text-stone-800 group-hover:text-stone-400 sfpro-font text-left pr-8">
-                            {item.q}
-                          </span>
-                        </AccordionTrigger>
-                        <AccordionContent className="px-5 sm:px-8 pb-6">
-                          <div className="space-y-4 text-stone-600">
-                            <p className="text-sm sm:text-base sfpro-font leading-relaxed">
-                              {item.a}
-                            </p>
-                            
-                            {item.details && (
-                              <ul className="space-y-2 pl-4">
-                                {item.details.map((detail, i) => (
-                                  <li key={i} className="text-sm sm:text-base text-stone-500 sfpro-font flex items-start gap-2">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-stone-300 mt-2 flex-shrink-0" />
-                                    {detail}
-                                  </li>
-                                ))}
-                              </ul>
-                            )}
-                            
-                            {item.note && (
-                              <p className="text-sm text-stone-400 italic sfpro-font bg-stone-50 p-3 rounded-lg">
-                                Note: {item.note}
-                              </p>
-                            )}
-                          </div>
-                        </AccordionContent>
-                      </AccordionItem>
-                    ))}
-                  </Accordion>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          // No Results State
-          <div className="text-center py-16 sm:py-20">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-stone-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
-              <Search className="w-6 h-6 sm:w-8 sm:h-8 text-stone-400" />
-            </div>
-            <h3 className="text-lg sm:text-xl font-medium text-stone-900 mb-2 clash-font">
-              No questions found
-            </h3>
-            <p className="text-sm sm:text-base text-stone-500 mb-6 sfpro-font max-w-md mx-auto">
-              We couldn't find any questions matching "{searchQuery}". Try different keywords or browse all categories.
-            </p>
-            <Button
-              variant="outline"
-              onClick={() => {
-                setSearchQuery("");
-                setSelectedCategory("all");
-              }}
-              className="rounded-full px-6 py-5 border-stone-200 hover:border-stone-300 text-stone-600 hover:text-stone-900 transition-all sfpro-font"
+      {/* FAQ Content with Base UI Accordion - artistic, handcrafted feel */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 sm:pb-24 md:pb-36">
+        <AnimatePresence mode="wait">
+          {filteredFaqs.length > 0 ? (
+            <motion.div 
+              key="results"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="space-y-8 sm:space-y-10 md:space-y-14"
             >
-              Clear search
-            </Button>
-          </div>
-        )}
+              {filteredFaqs.map((section, sectionIdx) => (
+                <motion.div 
+                  key={section.category}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: sectionIdx * 0.08, duration: 0.4 }}
+                  className="space-y-4 sm:space-y-5"
+                >
+                  {/* Category Header - subtle and refined */}
+                  <div className="flex items-center gap-2 sm:gap-3 px-1 sm:px-2 pb-1 border-b border-stone-100/80">
+                    <div className={`p-1 sm:p-1.5 rounded-md bg-gradient-to-r ${section.gradient} bg-opacity-10`}>
+                      <section.icon className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-stone-500" strokeWidth={1.5} />
+                    </div>
+                    <div>
+                      <h2 className={`text-[10px] sm:text-xs tracking-wider uppercase font-medium bg-gradient-to-r ${section.gradient} bg-clip-text text-transparent`}>
+                        {section.category}
+                      </h2>
+                      <p className="text-[10px] sm:text-[11px] text-stone-400 font-light mt-0.5">
+                        {section.description}
+                      </p>
+                    </div>
+                  </div>
 
-        {/* CTA Section */}
-        <div className="mt-16 sm:mt-20">
-          <div className="bg-gradient-to-br from-stone-900 to-stone-800 rounded-3xl p-8 sm:p-10 md:p-12 text-center relative overflow-hidden">
-            {/* Background Pattern */}
-            <div className="absolute inset-0 opacity-10">
-              <div className="absolute top-0 left-0 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
-              <div className="absolute bottom-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+                  {/* Accordion with artistic card - no hover color effects */}
+                  <MagicCard
+                    gradientColor="#E7E5E455"
+                    className="rounded-xl sm:rounded-2xl overflow-hidden shadow-sm"
+                  >
+                    <BaseAccordion.Root className="divide-y divide-stone-50" multiple>
+                      {section.items.map((item, index) => (
+                        <BaseAccordion.Item key={index} className="group">
+                          <BaseAccordion.Header className="m-0">
+                            <BaseAccordion.Trigger 
+                              className="w-full flex items-center justify-between px-4 sm:px-6 md:px-8 py-4 sm:py-5 text-left group cursor-pointer transition-all duration-200"
+                            >
+                              <span className="text-sm sm:text-base font-normal tracking-wide pr-3 sm:pr-4 text-stone-100 group-data-[popup-open]:text-stone-900 transition-colors duration-200">
+                                {item.q}
+                              </span>
+                              <PlusIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-stone-300 flex-shrink-0 group-data-[popup-open]:rotate-45 transition-transform duration-300 group-data-[popup-open]:text-stone-500" />
+                            </BaseAccordion.Trigger>
+                          </BaseAccordion.Header>
+                          <BaseAccordion.Panel className="px-4 sm:px-6 md:px-8 pb-4 sm:pb-6">
+                            <motion.div 
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              className="space-y-3 sm:space-y-4 text-stone-500 pt-1"
+                            >
+                              <p className="text-xs sm:text-sm md:text-base font-light leading-relaxed">
+                                {item.a}
+                              </p>
+                              
+                              {item.details && (
+                                <ul className="space-y-2 sm:space-y-2.5 pl-3 sm:pl-4 mt-2 sm:mt-3">
+                                  {item.details.map((detail, i) => (
+                                    <motion.li 
+                                      key={i}
+                                      initial={{ opacity: 0, x: -6 }}
+                                      animate={{ opacity: 1, x: 0 }}
+                                      transition={{ delay: i * 0.04, duration: 0.2 }}
+                                      className="text-xs sm:text-sm text-stone-400 font-light flex items-start gap-2 sm:gap-2.5 leading-relaxed"
+                                    >
+                                      <span className={`w-0.5 h-0.5 sm:w-1 sm:h-1 rounded-full bg-gradient-to-r ${section.gradient} mt-1.5 sm:mt-2 flex-shrink-0 opacity-60`} />
+                                      <span>{detail}</span>
+                                    </motion.li>
+                                  ))}
+                                </ul>
+                              )}
+                              
+                              {item.note && (
+                                <p className="text-[10px] sm:text-xs italic font-light text-stone-400 bg-stone-50/50 p-2 sm:p-3 rounded-lg border-l border-stone-100 mt-2 sm:mt-3">
+                                  Note: {item.note}
+                                </p>
+                              )}
+                            </motion.div>
+                          </BaseAccordion.Panel>
+                        </BaseAccordion.Item>
+                      ))}
+                    </BaseAccordion.Root>
+                  </MagicCard>
+                </motion.div>
+              ))}
+            </motion.div>
+          ) : (
+            // No Results State
+            <motion.div 
+              key="no-results"
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.98 }}
+              className="text-center py-16 sm:py-20 md:py-24"
+            >
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-stone-50 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-5 border border-stone-100">
+                <Search className="w-5 h-5 sm:w-6 sm:h-6 text-stone-300" strokeWidth={1.25} />
+              </div>
+              <h3 className="text-base sm:text-lg font-normal text-stone-600 mb-2 tracking-wide">
+                No questions found
+              </h3>
+              <p className="text-xs sm:text-sm text-stone-400 font-light mb-5 sm:mb-7 max-w-md mx-auto px-4">
+                We couldn't find any questions matching "{searchQuery}". Try different keywords or browse all categories.
+              </p>
+              <ShimmerButton
+                onClick={() => {
+                  setSearchQuery("");
+                  setSelectedCategory("all");
+                }}
+                className="shadow-sm bg-stone-800 text-white text-sm"
+              >
+                Clear search
+              </ShimmerButton>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* CTA Section - refined, artistic, premium feel */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          viewport={{ once: true, margin: "-50px" }}
+          className="mt-16 sm:mt-20 md:mt-24"
+        >
+          <div className="relative bg-white/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 lg:p-12 text-center overflow-hidden border border-stone-100/80 shadow-sm">
+            <BorderBeam size={300} duration={12} delay={0} borderWidth={1} />
+            
+            {/* Subtle background texture */}
+            <div className="absolute inset-0 opacity-20 pointer-events-none">
+              <div className="absolute top-0 left-0 w-64 h-64 sm:w-80 sm:h-80 bg-stone-100/50 rounded-full blur-3xl"></div>
+              <div className="absolute bottom-0 right-0 w-64 h-64 sm:w-80 sm:h-80 bg-stone-100/50 rounded-full blur-3xl"></div>
             </div>
             
             <div className="relative z-10">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-stone-800 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <MessageCircle className="w-6 h-6 sm:w-7 sm:h-7 text-stone-300" />
-              </div>
+              <motion.div 
+                whileHover={{ rotate: 3 }}
+                className="w-10 h-10 sm:w-12 sm:h-12 bg-stone-800 rounded-xl flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-sm"
+              >
+                <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 text-stone-100" strokeWidth={1.25} />
+              </motion.div>
               
-              <h3 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-white mb-4 clash-font">
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-medium text-stone-800 mb-2 sm:mb-3 tracking-tight">
                 Still have questions?
               </h3>
               
-              <p className="text-stone-400 sfpro-font text-sm sm:text-base max-w-lg mx-auto mb-8">
+              <p className="text-stone-400 font-light text-xs sm:text-sm md:text-base max-w-lg mx-auto mb-6 sm:mb-8 px-2">
                 Our team is happy to help. Send us a message and we'll get back to you within 24 hours.
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+                <ShimmerButton
                   onClick={handleContactClick}
-                  className="bg-white text-stone-900 hover:bg-stone-100 rounded-full px-8 py-6 sfpro-font text-sm font-medium shadow-lg hover:shadow-xl transition-all"
+                  className="bg-stone-800 text-white rounded-full px-6 sm:px-8 py-3 sm:py-5 text-xs sm:text-sm font-normal shadow-sm hover:bg-stone-700 transition-all"
                 >
                   Contact Us
-                </Button>
+                  <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 ml-1.5 sm:ml-2" strokeWidth={1.5} />
+                </ShimmerButton>
                 <Button
                   onClick={() => window.location.href = 'mailto:hello@avxonia.com'}
                   variant="outline"
-                  className="border-stone-700 text-white hover:bg-stone-800 rounded-full px-8 py-6 sfpro-font text-sm font-medium"
+                  className="border-stone-200 text-stone-500 hover:bg-stone-50 rounded-full px-6 sm:px-8 py-3 sm:py-5 text-xs sm:text-sm font-normal"
                 >
-                  <Mail className="w-4 h-4 mr-2" />
+                  <Mail className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1.5 sm:mr-2" strokeWidth={1.25} />
                   hello@avxonia.com
                 </Button>
               </div>
               
-              <p className="text-xs text-stone-500 mt-6 sfpro-font">
+              <p className="text-[10px] sm:text-[11px] text-stone-300 mt-5 sm:mt-7 font-light tracking-wide">
                 Or call us directly: +1 (555) 123-4567
               </p>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
