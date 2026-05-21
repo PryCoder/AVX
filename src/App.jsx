@@ -13,10 +13,12 @@ import Layout from './components/cta';
 import BlogPage from './pages/blog';
 import BlogDetail from './pages/blogDetail';
 import FAQ from './pages/faq';
+import ScrollToTop from './components/ScrollToTop';
 
 function App() {
   return (
     <Router>
+       <ScrollToTop />
      <Layout>
 
    
