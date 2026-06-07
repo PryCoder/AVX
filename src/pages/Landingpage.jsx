@@ -758,8 +758,8 @@ const LandingPageWrapper = () => {
         angle={35}
         cellSize={50}
         opacity={0.7}
-        lightLineColor="#7bacfa"
-        darkLineColor="#5c6fa9"
+        lightLineColor="#d1e2fd"
+        darkLineColor="#8e98b3"
       />
     </div>
     
