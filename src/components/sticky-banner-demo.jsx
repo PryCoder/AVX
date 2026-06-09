@@ -1,7 +1,7 @@
 "use client";
 
 import { StickyBanner } from "../components/ui/sticky-banner";
-import { X } from "lucide-react";
+import { X, Crown } from "lucide-react";
 
 export default function StickyBannerDemo({ onDismiss }) {
   return (
@@ -10,20 +10,23 @@ export default function StickyBannerDemo({ onDismiss }) {
         hideCloseButton
         className="relative z-50 bg-gradient-to-b from-blue-500 to-blue-600"
       >
-        <div className="flex items-center justify-between w-full px-4">
-          <p className="max-w-[90%] text-white drop-shadow-md">
-            Announcing project mayhem ventures.{" "}
-            <a
-              href="#"
-              className="transition duration-200 hover:underline"
-            >
-              Read announcement
-            </a>
-          </p>
+        <div className="relative flex items-center justify-center w-full px-4">
+          <div className="flex items-center gap-2 text-white drop-shadow-md">
+            <Crown className="h-4 w-4 text-yellow-300 fill-yellow-300" />
+            <p className="text-center">
+              Announcing project mayhem ventures.{" "}
+              <a
+                href="#"
+                className="transition duration-200 hover:underline"
+              >
+                Read announcement
+              </a>
+            </p>
+          </div>
 
           <button
             onClick={onDismiss}
-            className="ml-4 text-white/80 hover:text-white transition-colors duration-200"
+            className="absolute right-4 text-white/80 hover:text-white transition-colors duration-200"
             aria-label="Dismiss banner"
           >
             <X className="h-5 w-5" />

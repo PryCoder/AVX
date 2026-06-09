@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion, useInView, useMotionValue, useSpring } from 'framer-motion';
 import { ArrowRight, CheckCircle, XCircle, BarChart3, Bot, Layout, ArrowUpRight, MessageCircle, Sparkles, Zap, TrendingUp, Users, Clock, ChevronRight, LayoutIcon, BotIcon, BarChart3Icon, CheckCircle2 } from 'lucide-react';
 import { Button } from "../components/ui/button";
+
 import Loader from "../components/loader";
 import projectsData from '../data/projects.json';
 
@@ -23,6 +24,7 @@ import { AuroraText } from '../components/ui/aurora-text';
 import TextGenerateEffectDemo from '../components/text-generate-effect-demo';
 import { Vortex } from '../components/ui/vortex';
 import { Meteors } from '../components/ui/meteors';
+
 
 import { AnimatedGridPattern } from "../components/ui/animated-grid-pattern";
 import { MagicCard } from "../components/ui/magic-card";
@@ -150,7 +152,17 @@ const LandingPageWrapper = () => {
       blur={10}
       speed="slow"
       waveOpacity={0.5}
-      colors={["#38bdf8", "#818cf8", "#c084fc", "#e879f9"]}
+colors={[
+  "#22d3ee",
+  "#38bdf8",
+  "#60a5fa",
+  "#818cf8",
+  "#a78bfa",
+  "#c084fc",
+  "#dd00ff",
+  "#ff0084",
+  "#fb7185",
+]}
       containerClassName="w-full h-full"
       backgroundFill="#fafaf9"
     />
@@ -215,7 +227,7 @@ const LandingPageWrapper = () => {
 >
   Digital Systems Built to
 </p>
-         <div className="inline-block w-full max-w-full overflow-hidden">
+         <div className="inline-block w-full overflow-hidden">
   <CanvasText
     text="Scale Your Business"
     backgroundClassName="bg-blue-600 dark:bg-blue-700"
@@ -235,23 +247,25 @@ const LandingPageWrapper = () => {
     animationDuration={20}
     className="
       text-center
-      text-[2rem]
-      leading-[1]
+      text-3xl
       sm:text-5xl
       lg:text-6xl
       xl:text-7xl
-      font-bold
-      break-words
-      whitespace-normal
+      font-black
+      leading-none
+      tracking-tight
+      whitespace-nowrap
     "
   />
 </div>
         </div>
-      <div className="text-stone-400 text-xl sm:text-2xl lg:text-3xl xl:text-4xl leading-tight tracking-widest">
-  Not Just Make It Look Good
-</div>
-      </motion.h1>
       
+      </motion.h1>
+<div className="max-w-5xl mx-auto text-center">
+  <h2 className="text-2xl md:text-3xl lg:text-4xl font-black tracking-tight text-stone-800 leading-[1.1]">
+    Not Just Make It Look Good
+  </h2>
+</div>
       <motion.p 
         className="text-sm sm:text-base lg:text-lg text-stone-600 max-w-2xl mx-auto leading-relaxed"
         variants={fadeInUp}
@@ -955,16 +969,22 @@ const LandingPageWrapper = () => {
     
     {/* Subtle Animated Grid Pattern */}
     <AnimatedGridPattern
-      numSquares={20}
-      maxOpacity={0.05}
-      duration={4}
-      repeatDelay={2}
-      className={cn(
-        "absolute inset-0 opacity-30",
-        "[mask-image:radial-gradient(800px_circle_at_center,white,transparent)]"
-      )}
+      numSquares={60}
+      maxOpacity={0.25}
+      duration={2}
+      repeatDelay={0.5}
+      className="absolute inset-0 w-full h-full z-0 [mask-image:radial-gradient(600px_circle_at_center,white,transparent)]"
     />
-
+     <AnimatedGridPattern
+      numSquares={30}
+      maxOpacity={0.12}
+      duration={4}
+      repeatDelay={1.5}
+      className="absolute inset-0 w-full h-full z-0 [mask-image:radial-gradient(800px_circle_at_center,white,transparent)]"
+      style={{ animationDelay: '0.5s' }}
+    />
+ 
+    
     {/* Subtle Meteors - Very subtle */}
     <Meteors number={15} className="absolute inset-0 opacity-20" />
 
@@ -1139,17 +1159,33 @@ const LandingPageWrapper = () => {
     </div>
   </section>
 </SectionWrapper>
-     {/* SECTION 5: CASE STUDIES - Premium European Artistic Expression */}
-<SectionWrapper>
+    <SectionWrapper>
   <section className="py-24 lg:py-32 bg-[#F9F8F6] px-6 lg:px-8 relative overflow-hidden">
+    {/* Animated Grid Pattern - Magic UI Component */}
+  <AnimatedGridPattern
+      numSquares={60}
+      maxOpacity={0.25}
+      duration={2}
+      repeatDelay={0.5}
+      className="absolute inset-0 w-full h-full z-0 [mask-image:radial-gradient(600px_circle_at_center,white,transparent)]"
+    />
+     <AnimatedGridPattern
+      numSquares={30}
+      maxOpacity={0.12}
+      duration={4}
+      repeatDelay={1.5}
+      className="absolute inset-0 w-full h-full z-0 [mask-image:radial-gradient(800px_circle_at_center,white,transparent)]"
+      style={{ animationDelay: '0.5s' }}
+    />
+
     {/* Vermeer-inspired light - Single source illumination */}
-    <div className="absolute inset-0 pointer-events-none">
+    <div className="absolute inset-0 pointer-events-none z-0">
       <div className="absolute top-0 left-1/3 w-[60rem] h-[60rem] bg-amber-900/5 rounded-full blur-[120px]" />
       <div className="absolute bottom-0 right-0 w-[40rem] h-[40rem] bg-stone-800/3 rounded-full blur-[100px]" />
     </div>
 
-    {/* Danish modern grid - Subtle architectural framework */}
-    <div className="absolute inset-0 pointer-events-none opacity-[0.02]">
+    {/* Danish modern grid - Subtle architectural framework (kept as fallback) */}
+    <div className="absolute inset-0 pointer-events-none opacity-[0.015] z-0">
       <div className="absolute top-0 left-0 w-full h-full" style={{
         backgroundImage: `repeating-linear-gradient(90deg, transparent, transparent 80px, #000 80px, #000 81px)`,
         backgroundSize: '81px 100%'
@@ -1161,7 +1197,7 @@ const LandingPageWrapper = () => {
     </div>
 
     {/* Italian Renaissance color accent - Single terracotta note */}
-    <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-terracotta-50/20 to-transparent pointer-events-none" />
+    <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-terracotta-50/20 to-transparent pointer-events-none z-0" />
 
     <div className="max-w-7xl mx-auto relative z-10">
       {/* Header - Editorial layout with Dutch mastery spacing */}
@@ -1205,7 +1241,7 @@ const LandingPageWrapper = () => {
           <Button 
             variant="ghost" 
             onClick={() => navigate('/projects')} 
-            className="text-stone-700 hover:text-terracotta-700 group flex items-center gap-3 rounded-none px-0 text-xs font-normal tracking-wider border-b border-stone-300 hover:border-terracotta-500 transition-all duration-300 pb-1.5"
+            className="text-stone-400 hover:text-terracotta-700 group flex items-center gap-3 rounded-none px-0 text-xs font-normal tracking-wider border-b border-stone-300 hover:border-terracotta-500 transition-all duration-300 pb-1.5"
           >
             Explore Complete Archive
             <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
@@ -1387,87 +1423,70 @@ const LandingPageWrapper = () => {
     </div>
   </section>
 </SectionWrapper>
-        {/* SECTION 6 & 7: WHY CHOOSE US & WHO IT'S FOR - Avant-Garde European Expression */}
+       {/* SECTION 6 & 7: WHY CHOOSE US & WHO IT'S FOR - Contemporary European Expression */}
 <SectionWrapper>
   <section className="py-28 lg:py-36 bg-stone-950 text-white px-6 lg:px-8 relative overflow-hidden">
-    {/* Masterful Light Composition - Inspired by Caravaggio's Tenebrism */}
+    
+    {/* Minimalist Light Architecture - Single Source */}
     <div className="absolute inset-0 pointer-events-none">
-      {/* Central divine light source */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[80rem] h-[80rem] bg-amber-900/8 rounded-full blur-[180px]" />
-      
-      {/* Secondary warm glow - Vermeer's window light */}
-      <div className="absolute top-0 right-0 w-[60rem] h-[60rem] bg-terracotta-800/6 rounded-full blur-[150px]" />
-      
-      {/* Deep shadow accent - Rembrandt's darkness */}
-      <div className="absolute bottom-0 left-0 w-[50rem] h-[50rem] bg-stone-950/80 rounded-full blur-[120px]" />
-      
-      {/* Single dramatic ray of light */}
-      <div className="absolute top-0 left-1/4 w-px h-64 bg-gradient-to-b from-amber-400/20 via-transparent to-transparent rotate-12" />
-      <div className="absolute top-0 right-1/3 w-px h-48 bg-gradient-to-b from-terracotta-500/15 via-transparent to-transparent -rotate-6" />
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[60rem] h-[60rem] bg-amber-900/6 rounded-full blur-[150px]" />
+      <div className="absolute bottom-0 right-0 w-[40rem] h-[40rem] bg-terracotta-800/4 rounded-full blur-[120px]" />
+      <div className="absolute top-0 left-0 w-px h-48 bg-gradient-to-b from-amber-400/15 via-transparent to-transparent rotate-12" />
     </div>
 
-    {/* Architectural Canvas - Danish Modern Grid System */}
-    <div className="absolute inset-0 pointer-events-none opacity-[0.012]">
+    {/* Subtle Grid - Architectural Framework */}
+    <div className="absolute inset-0 pointer-events-none opacity-[0.008]">
       <div className="absolute inset-0" style={{
-        backgroundImage: `repeating-linear-gradient(90deg, transparent, transparent 120px, #fff 120px, #fff 121px)`,
-        backgroundSize: '121px 100%'
+        backgroundImage: `repeating-linear-gradient(90deg, transparent, transparent 100px, #fff 100px, #fff 101px)`,
+        backgroundSize: '101px 100%'
       }} />
       <div className="absolute inset-0" style={{
-        backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 120px, #fff 120px, #fff 121px)`,
-        backgroundSize: '100% 121px'
+        backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 100px, #fff 100px, #fff 101px)`,
+        backgroundSize: '100% 101px'
       }} />
-      
-      {/* Golden ratio section marks */}
-      <div className="absolute top-1/3 left-0 w-full h-px bg-gradient-to-r from-transparent via-amber-500/10 to-transparent" />
-      <div className="absolute bottom-1/3 left-0 w-full h-px bg-gradient-to-r from-transparent via-amber-500/10 to-transparent" />
     </div>
 
-    {/* Italian Renaissance Color Strip - Single Terracotta Statement */}
-    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-px bg-terracotta-500/40" />
-    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-32 h-px bg-terracotta-500/30" />
+    {/* Color Strip - Single Accent */}
+    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-px bg-terracotta-500/30" />
 
     <div className="max-w-7xl mx-auto relative z-10">
       
-      {/* WHY CHOOSE US - Baroque Drama Section */}
+      {/* WHY CHOOSE US - Clean Editorial Section */}
       <div className="mb-32 lg:mb-40">
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
           viewport={{ once: true }}
           className="text-center mb-20 lg:mb-24"
         >
-          {/* Editorial pre-title with Venetian elegance */}
-          <div className="flex items-center justify-center gap-6 mb-8">
-            <div className="w-12 h-px bg-gradient-to-r from-transparent via-terracotta-500/60 to-terracotta-500/60" />
-            <span className="text-[10px] tracking-[0.4em] uppercase text-stone-400 font-light">
-              The Covenant
+          <div className="flex items-center justify-center gap-4 mb-6">
+            <div className="w-8 h-px bg-stone-700" />
+            <span className="text-[9px] tracking-[0.35em] uppercase text-stone-500 font-light">
+              Philosophy
             </span>
-            <div className="w-12 h-px bg-gradient-to-l from-transparent via-terracotta-500/60 to-terracotta-500/60" />
+            <div className="w-8 h-px bg-stone-700" />
           </div>
           
-          <h2 className="text-5xl sm:text-6xl lg:text-7xl font-light tracking-tight leading-[1.1]">
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-light tracking-tight leading-[1.15]">
             Why Partner
             <br />
             <span className="relative inline-block mt-2">
               <span className="italic font-serif font-light text-stone-400">
                 With Us?
               </span>
-              {/* Handcrafted underline - Artisan touch */}
-              <svg className="absolute -bottom-4 left-0 w-full" height="2" viewBox="0 0 200 2" preserveAspectRatio="none">
-                <path d="M0,1 Q50,2 100,1 Q150,0 200,1" stroke="#c2410c" strokeWidth="0.5" fill="none" opacity="0.4" />
-              </svg>
+              <div className="absolute -bottom-2 left-0 w-16 h-px bg-terracotta-500/40" />
             </span>
           </h2>
           
-          <p className="text-stone-500 text-sm font-light mt-8 max-w-md mx-auto">
-            Built on principles that transcend conventional agency partnerships
+          <p className="text-stone-500 text-sm font-light mt-6 max-w-md mx-auto">
+            Principles over promises. Substance over spectacle.
           </p>
         </motion.div>
         
-        {/* The Four Pillars - Bauhaus Precision Grid */}
+        {/* Four Pillars - Clean Grid */}
         <motion.div 
-          className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6"
+          className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5"
           variants={staggerContainer}
           initial="initial"
           whileInView="animate"
@@ -1475,241 +1494,161 @@ const LandingPageWrapper = () => {
         >
           {[
             { 
-              pillar: '01',
+              number: '01',
               title: 'Strategic Thinking', 
-              description: 'Every decision anchored in long-term vision',
-              accent: 'terracotta'
+              description: 'Every decision anchored in long-term vision'
             },
             { 
-              pillar: '02',
+              number: '02',
               title: 'Conversion-Focused', 
-              description: 'Architecture engineered for measurable growth',
-              accent: 'stone'
+              description: 'Architecture engineered for measurable growth'
             },
             { 
-              pillar: '03',
+              number: '03',
               title: 'Clean & Scalable', 
-              description: 'Systems built to evolve with your ambition',
-              accent: 'stone'
+              description: 'Systems built to evolve with your ambition'
             },
             { 
-              pillar: '04',
+              number: '04',
               title: 'Long-Term Focus', 
-              description: 'Partnerships that mature into legacy',
-              accent: 'stone'
+              description: 'Partnerships that mature into legacy'
             }
           ].map((point, i) => (
             <motion.div 
               key={i} 
-              className="group relative"
+              className="group"
               variants={fadeInUp}
             >
-              {/* Card with Scandinavian restraint */}
-              <div className="relative bg-gradient-to-br from-stone-900/40 to-stone-950/40 backdrop-blur-sm border border-stone-800/50 rounded-none p-7 lg:p-8 overflow-hidden transition-all duration-700 hover:border-terracotta-500/20">
-                {/* Abstract light sweep on hover */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-terracotta-500/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                
-                {/* Pillar number - Swiss typography */}
-                <div className="text-stone-700 text-xs tracking-wider font-mono mb-6 group-hover:text-terracotta-500/50 transition-colors duration-500">
-                  {point.pillar}
+              <div className="relative p-6 lg:p-7 border-t border-stone-800 hover:border-terracotta-500/30 transition-all duration-500">
+                <div className="text-stone-600 text-[10px] tracking-wider font-mono mb-4">
+                  {point.number}
                 </div>
-                
-                {/* Title with artistic weight */}
-                <h3 className="font-light text-xl lg:text-2xl tracking-tight mb-3 text-stone-200">
+                <h3 className="font-light text-lg lg:text-xl tracking-tight mb-2 text-stone-200">
                   {point.title}
                 </h3>
-                
-                <p className="text-stone-500 text-sm font-light leading-relaxed">
+                <p className="text-stone-500 text-xs leading-relaxed">
                   {point.description}
                 </p>
-                
-                {/* Minimalist accent line - Bauhaus signature */}
-                <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-terracotta-500/0 to-transparent group-hover:via-terracotta-500/30 transition-all duration-700" />
               </div>
             </motion.div>
           ))}
         </motion.div>
-        
-        {/* Nordic truth statement */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          viewport={{ once: true }}
-          className="mt-16 text-center"
-        >
-          <div className="inline-flex items-center gap-3 text-stone-600 text-[9px] tracking-[0.3em] uppercase font-light">
-            <div className="w-6 h-px bg-stone-800" />
-            <span>Authentic Partnership</span>
-            <div className="w-6 h-px bg-stone-800" />
-          </div>
-        </motion.div>
       </div>
 
-      {/* WHO IT'S FOR - Dualistic Composition (Light & Shadow) */}
-      <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
+      {/* WHO IT'S FOR - Dual Columns */}
+      <div className="grid md:grid-cols-2 gap-5 lg:gap-6">
         
-        {/* LEFT: Who We Are For - The Illuminated Path (Vermeer Light) */}
+        {/* LEFT: Who We Are For */}
         <motion.div 
-          className="group relative overflow-hidden"
-          initial={{ opacity: 0, x: -40 }}
+          className="group"
+          initial={{ opacity: 0, x: -30 }}
           whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           viewport={{ once: true }}
         >
-          {/* Warm light source - Dutch masters window light */}
-          <div className="absolute -top-32 -right-32 w-64 h-64 bg-amber-500/10 rounded-full blur-[80px] group-hover:bg-amber-500/15 transition-all duration-1000" />
-          <div className="absolute -bottom-20 -left-20 w-48 h-48 bg-terracotta-500/5 rounded-full blur-[60px]" />
-          
-          <div className="relative bg-gradient-to-br from-stone-900/60 to-stone-950/60 backdrop-blur-sm border-l-4 border-terracotta-500/40 p-8 sm:p-10 lg:p-12 h-full">
-            {/* Editorial marker */}
-            <div className="flex items-center gap-3 mb-8">
-              <div className="w-8 h-px bg-terracotta-500/60" />
-              <span className="text-[10px] tracking-[0.3em] uppercase text-terracotta-400 font-light">
+          <div className="relative p-6 lg:p-8 border-l-2 border-terracotta-500/40 bg-stone-900/30">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-6 h-px bg-terracotta-500/50" />
+              <span className="text-[9px] tracking-[0.3em] uppercase text-terracotta-400 font-light">
                 Alignment
               </span>
-              <div className="flex-1" />
-              <span className="text-stone-700 text-[9px] font-mono">01</span>
+              <span className="text-stone-700 text-[9px] font-mono ml-auto">01</span>
             </div>
             
-            <h3 className="text-3xl lg:text-4xl font-light tracking-tight mb-4">
+            <h3 className="text-2xl lg:text-3xl font-light tracking-tight mb-3">
               Who We Are
               <br />
-              <span className="italic font-serif text-stone-300">For</span>
+              <span className="italic font-serif text-stone-400">For</span>
             </h3>
             
-            <p className="text-stone-400 text-sm font-light mb-8 leading-relaxed border-l border-terracotta-500/30 pl-4">
-              Strategic partners seeking transformative collaboration
-            </p>
-            
-            <ul className="space-y-5">
+            <ul className="space-y-4 mt-8">
               {[
-                { text: "Businesses ready to scale & grow", icon: "↑" },
-                { text: "Founders who value actual systems", icon: "◆" },
-                { text: "Long-term thinkers and visionaries", icon: "∞" }
+                "Businesses ready to scale & grow",
+                "Founders who value actual systems",
+                "Long-term thinkers and visionaries"
               ].map((item, i) => (
-                <li key={i} className="group/item flex items-center gap-4">
-                  <div className="w-6 text-terracotta-500/50 text-sm group-hover/item:text-terracotta-500 transition-colors duration-300">
-                    {item.icon}
-                  </div>
-                  <span className="text-stone-300 font-light text-sm lg:text-base tracking-wide">
-                    {item.text}
-                  </span>
+                <li key={i} className="flex items-center gap-3 group/item">
+                  <span className="text-terracotta-500/40 text-sm">→</span>
+                  <span className="text-stone-300 font-light text-sm">{item}</span>
                 </li>
               ))}
             </ul>
             
-            {/* Artisan signature */}
-            <div className="mt-10 pt-6 border-t border-stone-800/50">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-px bg-terracotta-500/30" />
-                <p className="text-stone-600 text-[9px] tracking-[0.2em] uppercase font-light">
-                  Invitation Only
-                </p>
-              </div>
+            <div className="mt-8 pt-5 border-t border-stone-800">
+              <p className="text-stone-600 text-[8px] tracking-[0.2em] uppercase font-light">
+                Strategic Partnership
+              </p>
             </div>
           </div>
         </motion.div>
         
-        {/* RIGHT: Who We Are Not For - The Shadow Realm (Rembrandt Darkness) */}
+        {/* RIGHT: Who We Are Not For */}
         <motion.div 
-          className="group relative overflow-hidden"
-          initial={{ opacity: 0, x: 40 }}
+          className="group"
+          initial={{ opacity: 0, x: 30 }}
           whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
           viewport={{ once: true }}
         >
-          {/* Dark atmosphere - dramatic shadow */}
-          <div className="absolute -bottom-32 -right-32 w-64 h-64 bg-stone-800/40 rounded-full blur-[100px]" />
-          <div className="absolute -top-20 -left-20 w-48 h-48 bg-stone-900/60 rounded-full blur-[80px]" />
-          
-          <div className="relative bg-gradient-to-br from-stone-900/30 to-stone-950/50 backdrop-blur-sm border-r border-stone-800/50 p-8 sm:p-10 lg:p-12 h-full">
-            {/* Editorial marker */}
-            <div className="flex items-center gap-3 mb-8">
-              <div className="w-8 h-px bg-stone-700" />
-              <span className="text-[10px] tracking-[0.3em] uppercase text-stone-500 font-light">
-                Misalignment
+          <div className="relative p-6 lg:p-8 border-l border-stone-800 bg-stone-900/20">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-6 h-px bg-stone-700" />
+              <span className="text-[9px] tracking-[0.3em] uppercase text-stone-500 font-light">
+                Boundaries
               </span>
-              <div className="flex-1" />
-              <span className="text-stone-800 text-[9px] font-mono">02</span>
+              <span className="text-stone-800 text-[9px] font-mono ml-auto">02</span>
             </div>
             
-            <h3 className="text-3xl lg:text-4xl font-light tracking-tight mb-4">
+            <h3 className="text-2xl lg:text-3xl font-light tracking-tight mb-3">
               Who We Are
               <br />
               <span className="italic font-serif text-stone-600">Not For</span>
             </h3>
             
-            <p className="text-stone-600 text-sm font-light mb-8 leading-relaxed border-l border-stone-800 pl-4">
-              Honest boundaries for authentic collaboration
-            </p>
-            
-            <ul className="space-y-5">
+            <ul className="space-y-4 mt-8">
               {[
-                { text: '"Just need a quick cheap website" clients', icon: "✕" },
-                { text: "Highly price-sensitive buyers", icon: "✕" },
-                { text: "Short-term mindset without a strategy", icon: "✕" }
+                '"Just need a quick cheap website" clients',
+                "Highly price-sensitive buyers",
+                "Short-term mindset without a strategy"
               ].map((item, i) => (
-                <li key={i} className="group/item flex items-center gap-4">
-                  <div className="w-6 text-stone-600 text-sm group-hover/item:text-stone-500 transition-colors duration-300">
-                    {item.icon}
-                  </div>
-                  <span className="text-stone-500 font-light text-sm lg:text-base tracking-wide">
-                    {item.text}
-                  </span>
+                <li key={i} className="flex items-center gap-3 group/item">
+                  <span className="text-stone-600 text-sm">∕</span>
+                  <span className="text-stone-500 font-light text-sm">{item}</span>
                 </li>
               ))}
             </ul>
             
-            {/* Clear boundaries statement */}
-            <div className="mt-10 pt-6 border-t border-stone-800/30">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-px bg-stone-700" />
-                <p className="text-stone-700 text-[9px] tracking-[0.2em] uppercase font-light">
-                  Clear Expectations
-                </p>
-              </div>
+            <div className="mt-8 pt-5 border-t border-stone-800/50">
+              <p className="text-stone-700 text-[8px] tracking-[0.2em] uppercase font-light">
+                Clear Expectations
+              </p>
             </div>
           </div>
         </motion.div>
       </div>
 
-      {/* ARTISTIC CLOSURE - Poetic Resolution */}
+      {/* Closing Statement - Minimal */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 15 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, delay: 0.4 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
         viewport={{ once: true }}
-        className="mt-28 lg:mt-36 text-center space-y-8"
+        className="mt-24 lg:mt-32 text-center space-y-5"
       >
-        {/* Elegant divider composition */}
-        <div className="flex justify-center items-center gap-4">
-          <div className="w-16 h-px bg-gradient-to-r from-transparent to-stone-700" />
-          <div className="w-1 h-1 rounded-full bg-terracotta-500/40" />
-          <div className="w-16 h-px bg-gradient-to-l from-transparent to-stone-700" />
+        <div className="flex justify-center items-center gap-3">
+          <div className="w-12 h-px bg-stone-800" />
+          <div className="w-1 h-1 rounded-full bg-terracotta-500/30" />
+          <div className="w-12 h-px bg-stone-800" />
         </div>
         
-        {/* Poetic statement - Scandinavian minimalism */}
-        <div className="space-y-3 max-w-lg mx-auto">
-          <p className="text-stone-500 text-[10px] tracking-[0.35em] uppercase font-light">
-            The Foundation of Trust
-          </p>
-          <p className="text-stone-400 text-sm font-light italic leading-relaxed">
-            We don't just build — we build to last, with integrity as our cornerstone
-          </p>
-        </div>
+        <p className="text-stone-500 text-[9px] tracking-[0.25em] uppercase font-light">
+          Built on trust, delivered with precision
+        </p>
         
-        {/* Artistic signature - Three dots (Danish punctuation) */}
-        <div className="flex justify-center gap-2">
-          <div className="w-1 h-1 rounded-full bg-terracotta-500/50" />
-          <div className="w-1 h-1 rounded-full bg-terracotta-500/25" />
-          <div className="w-0.5 h-0.5 rounded-full bg-terracotta-500/12" />
+        <div className="flex justify-center gap-1.5">
+          <div className="w-0.5 h-0.5 rounded-full bg-terracotta-500/40" />
+          <div className="w-0.5 h-0.5 rounded-full bg-terracotta-500/20" />
         </div>
-        
-        {/* Subtle calligraphic flourish */}
-        <svg className="mx-auto opacity-20" width="40" height="6" viewBox="0 0 40 6" fill="none">
-          <path d="M0,3 Q10,0 20,3 Q30,6 40,3" stroke="#c2410c" strokeWidth="0.5" />
-        </svg>
       </motion.div>
     </div>
   </section>

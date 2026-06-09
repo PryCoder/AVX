@@ -256,12 +256,12 @@ export function NavbarDemo({ topOffset = 0 }) {
             </div>
             
             <div className="hidden lg:flex items-center gap-1.5">
-              <button 
-                onClick={() => handleNavigation('/projects')}
-                className="bg-primary hover:bg-primary/90 text-white px-3 py-1 rounded-md text-xs font-sans transition-colors"
-              >
-                Discover
-              </button>
+             <button
+  onClick={() => handleNavigation('/projects')}
+  className="flex items-center justify-center px-3 xl:px-5 py-1.5 h-8 xl:h-9 text-xs xl:text-sm font-sans text-white bg-gradient-to-b from-white/20 to-white/5 backdrop-blur-md border border-white/30 rounded-md shadow-lg hover:from-white/30 hover:to-white/10 transition-all"
+>
+  Discover
+</button>
               <RainbowButton
                 onClick={() => handleNavigation('/contact')}
                 className="px-3 xl:px-5 py-1.5 h-8 xl:h-9 font-sans text-xs xl:text-sm"
