@@ -12,7 +12,7 @@ export default function StickyBannerDemo({ onDismiss }) {
       >
         <div className="flex items-center justify-between w-full px-4">
           <p className="max-w-[90%] text-white drop-shadow-md">
-            Announcing $10M seed funding from project mayhem ventures.{" "}
+            Announcing project mayhem ventures.{" "}
             <a
               href="#"
               className="transition duration-200 hover:underline"
