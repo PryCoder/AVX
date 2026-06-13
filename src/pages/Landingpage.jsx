@@ -7,6 +7,7 @@ import { Button } from "../components/ui/button";
 import Loader from "../components/loader";
 import projectsData from '../data/projects.json';
 
+
 // Launch UI inspired components
 import { Badge } from "../components/ui/badge";
 import Glow from "../components/ui/glow";
@@ -31,6 +32,7 @@ import { MagicCard } from "../components/ui/magic-card";
 import { RetroGrid } from '../components/ui/retro-grid';
 import { MagneticButton } from '../components/ui/magnetic-button';
 import CTASection from './cta';
+import CallToAction from './cta';
 
 
 
@@ -1671,7 +1673,9 @@ colors={[
 </SectionWrapper>
         {/* SECTION 8: FOUNDER & SECTION 9: FINAL CTA */}
         <SectionWrapper>
-         <CTASection/>
+        <div className="flex min-h-screen items-center justify-center p-4">
+			<CallToAction />
+		</div>
         </SectionWrapper>
         
       </div>
