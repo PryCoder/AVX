@@ -30,6 +30,7 @@ import { AnimatedGridPattern } from "../components/ui/animated-grid-pattern";
 import { MagicCard } from "../components/ui/magic-card";
 import { RetroGrid } from '../components/ui/retro-grid';
 import { MagneticButton } from '../components/ui/magnetic-button';
+import CTASection from './cta';
 
 
 
@@ -261,11 +262,7 @@ colors={[
         </div>
       
       </motion.h1>
-<div className="max-w-5xl mx-auto text-center">
-  <h2 className="text-2xl md:text-3xl lg:text-4xl font-black tracking-tight text-stone-800 leading-[1.1]">
-    Not Just Make It Look Good
-  </h2>
-</div>
+
       <motion.p 
         className="text-sm sm:text-base lg:text-lg text-stone-600 max-w-2xl mx-auto leading-relaxed"
         variants={fadeInUp}
@@ -1006,15 +1003,34 @@ colors={[
           <span className="text-xs font-medium text-stone-500 tracking-wider uppercase">How We Work</span>
         </motion.div>
         
-        <TextAnimate 
-          animation="fadeIn" 
-          by="word"
-          className="text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-stone-900"
-          as="h2"
-        >
-          Our Proven Framework
-        </TextAnimate>
-        
+       <TextAnimate 
+  animation="fadeIn" 
+  by="word"
+  className="text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight"
+  as="h2"
+>
+  <p
+    className="
+      pointer-events-none
+      bg-gradient-to-b
+      from-stone-600
+      via-stone-700
+      to-stone-800
+      bg-clip-text
+      text-transparent
+      text-center
+      text-4xl
+      sm:text-5xl
+      lg:text-7xl
+      font-semibold
+      leading-[0.95]
+      tracking-tight
+      whitespace-pre-wrap
+    "
+  >
+    Our Proven Framework
+  </p>
+</TextAnimate>
         <motion.p 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -1655,70 +1671,7 @@ colors={[
 </SectionWrapper>
         {/* SECTION 8: FOUNDER & SECTION 9: FINAL CTA */}
         <SectionWrapper>
-          <section className="py-24 lg:py-32 bg-stone-100 px-6 lg:px-8 border-t border-stone-200 z-10 relative">
-            <div className="max-w-5xl mx-auto space-y-20 lg:space-y-24">
-              
-              {/* Founder/Brand Statement */}
-              <motion.div 
-                className="flex flex-col md:flex-row items-center gap-8 lg:gap-10 bg-white p-8 sm:p-10 lg:p-12 rounded-[2rem] shadow-sm border border-stone-200"
-                initial={{ opacity: 0, scale: 0.97 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.8, ease: premiumEase }}
-                viewport={{ once: true }}
-              >
-                <div className="w-28 h-28 lg:w-36 lg:h-36 bg-stone-900 rounded-full shrink-0 flex items-center justify-center text-white font-bold text-3xl lg:text-4xl font-serif italic shadow-inner">
-                  A
-                </div>
-                
-                <div className="text-center md:text-left">
-                  <h3 className="text-2xl lg:text-3xl font-bold mb-3 lg:mb-4 clash-font">The AVXONIA Standard</h3>
-                  <p className="text-stone-600 text-base lg:text-xl leading-relaxed">
-                    AVXONIA was built to help businesses move from having just a basic online presence 
-                    to deploying structured digital systems that drive predictable, long-term growth.
-                  </p>
-                </div>
-              </motion.div>
-
-              {/* FINAL CTA */}
-              <motion.div 
-                className="text-center space-y-8 lg:space-y-10"
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, ease: premiumEase }}
-                viewport={{ once: true }}
-              >
-                <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold clash-font leading-tight max-w-3xl mx-auto">
-                  Ready to Build a System That Actually Grows Your Business?
-                </h2>
-                
-                <p className="text-stone-500 font-medium text-base sm:text-lg lg:text-xl">
-                  Limited slots available each month to ensure highest quality execution.
-                </p>
-                
-                <div className="flex flex-col sm:flex-row justify-center gap-4 pt-2 lg:pt-4">
-                  <Button
-                    asChild
-                    size="lg"
-                    className="w-full sm:w-auto bg-stone-900 text-white rounded-full px-8 lg:px-10 py-6 lg:py-7 text-sm sm:text-lg hover:bg-stone-800 shadow-xl transition-all duration-300 group"
-                  >
-                    <Link to="/contact">
-                      Book a Strategy Call
-                      <ArrowRight className="w-4 h-4 lg:w-5 lg:h-5 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
-                    </Link>
-                  </Button>
-                  
-                  <ShimmerButton
-                    onClick={() => navigate('/contact')} 
-                    variant="outline" 
-                    size="" 
-                    
-                  >
-                    Get Free Website Audit
-                  </ShimmerButton>
-                </div>
-              </motion.div>
-            </div>
-          </section>
+         <CTASection/>
         </SectionWrapper>
         
       </div>
