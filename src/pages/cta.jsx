@@ -44,22 +44,32 @@ export default function CallToAction() {
       </p>
 
       <div className="flex flex-col text-white sm:flex-row items-center justify-center gap-3 pt-4">
-        <Button variant="outline" size="lg" className="gap-2 " onClick={handleNavigation}>
-          <Calendar className="w-4 h-4" />
-          Book a Strategy Call
-        </Button>
-        <Button size="lg" className="gap-2 group" onClick={handleNavigation}>
-          Get Free Website Audit
-          <Sparkles className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-all duration-300" />
-        </Button>
+     <Button
+  size="lg"
+  className="gap-2 !bg-white !border-2 !border-white !shadow-none"
+  onClick={handleNavigation}
+>
+  <Calendar className="w-4 h-4 text-gray-400" />
+  <span className="bg-gradient-to-b from-white to-gray-900 bg-clip-text text-transparent">
+    Book a Strategy Call
+  </span>
+</Button>
+
+        <Button
+  size="lg"
+  onClick={handleNavigation}
+  className="group gap-2 rounded-xl bg-white border border-zinc-200 text-zinc-900 px-6 py-6 shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-[0_12px_32px_rgba(0,0,0,0.12)] hover:border-zinc-300 hover:-translate-y-0.5 transition-all duration-300"
+>
+  <span className="font-semibold bg-gradient-to-b from-zinc-100 to-zinc-600 bg-clip-text text-transparent">
+    Get Free Website Audit
+  </span>
+
+  <Sparkles className="w-4 h-4 text-amber-500 group-hover:rotate-12 group-hover:scale-110 transition-all duration-300" />
+</Button>
       </div>
 
       {/* Trust Badge */}
-      <div className="pt-4 text-center">
-        <p className="text-sm text-muted-foreground">
-          Trusted by <span className="font-semibold text-foreground">50+</span> businesses worldwide
-        </p>
-      </div>
+      
     </div>
   );
 }

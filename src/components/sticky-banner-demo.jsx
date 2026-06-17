@@ -2,35 +2,34 @@
 
 import { StickyBanner } from "../components/ui/sticky-banner";
 import { X, Crown } from "lucide-react";
+import { Button } from "../components/ui/button";
 
 export default function StickyBannerDemo({ onDismiss }) {
   return (
     <div className="relative w-full">
       <StickyBanner
         hideCloseButton
-        className="relative z-50 bg-gradient-to-b from-blue-500 to-blue-600"
+        className="relative z-50 bg-gradient-to-r from-pink-500 to-rose-500 text-white"
       >
-        <div className="relative flex items-center justify-center w-full px-4">
-          <div className="flex items-center gap-2 text-white drop-shadow-md">
-            <Crown className="h-4 w-4 text-yellow-300 fill-yellow-300" />
-            <p className="text-center">
-              Announcing project mayhem ventures.{" "}
-              <a
-                href="#"
-                className="transition duration-200 hover:underline"
-              >
-                Read announcement
-              </a>
-            </p>
-          </div>
-
-          <button
+        <div className="max-w-7xl mx-auto px-3 py-3 flex items-center justify-center text-left md:text-center gap-2">
+          <Crown className="size-5 stroke-2 shrink-0 text-yellow-300 fill-yellow-300" />
+          <span className="font-medium">
+            Announcing project mayhem ventures.{" "}
+            <a
+              href="#"
+              className="text-white/90 hover:text-white transition duration-200 hover:underline font-semibold"
+            >
+              Read announcement
+            </a>
+          </span>
+          <Button
             onClick={onDismiss}
-            className="absolute right-4 text-white/80 hover:text-white transition-colors duration-200"
-            aria-label="Dismiss banner"
+            variant="ghost"
+            className="size-8 text-white hover:text-white hover:bg-white/20"
           >
-            <X className="h-5 w-5" />
-          </button>
+            <X className="size-4 stroke-2" />
+            <span className="sr-only">Dismiss banner</span>
+          </Button>
         </div>
       </StickyBanner>
     </div>

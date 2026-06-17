@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, useInView, useMotionValue, useSpring } from 'framer-motion';
-import { ArrowRight, CheckCircle, XCircle, BarChart3, Bot, Layout, ArrowUpRight, MessageCircle, Sparkles, Zap, TrendingUp, Users, Clock, ChevronRight, LayoutIcon, BotIcon, BarChart3Icon, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, CheckCircle, XCircle, BarChart3, Bot, Layout, ArrowUpRight, MessageCircle, Sparkles, Zap, TrendingUp, Users, Clock, ChevronRight, LayoutIcon, BotIcon, BarChart3Icon, CheckCircle2, TrendingDown, MapPinOff, Settings2, Gauge } from 'lucide-react';
 import { Button } from "../components/ui/button";
 
 import Loader from "../components/loader";
@@ -645,9 +645,7 @@ colors={[
   colors={[
     "#7f1d1d", // red-900
     "#991b1b", // red-800
-    "#b91c1c", // red-700
-    "#dc2626", // red-600
-    "#ef4444", // red-500
+  
     "#f87171", // red-400
     "#fca5a5", // red-300
   ]}
@@ -664,66 +662,79 @@ colors={[
 
 </motion.div>
       {/* Problem Cards */}
-      <motion.div
-        className="grid sm:grid-cols-2 gap-5 lg:gap-7 text-left max-w-5xl mx-auto mt-16 lg:mt-20"
-        variants={staggerContainer}
-        initial="initial"
-        whileInView="animate"
-        viewport={{ once: true }}
-      >
-        {[
-          {
-            title: "Low Conversion",
-            desc: "Visitors come, but don't take action",
-          },
-          {
-            title: "Poor User Journey",
-            desc: "No clear structure or customer flow",
-          },
-          {
-            title: "No Systems",
-            desc: "Operations depend on manual work",
-          },
-          {
-            title: "Growth Bottlenecks",
-            desc: "Manual processes limit scalability",
-          },
-        ].map((item, i) => (
-          <motion.div
-            key={i}
-            variants={fadeInUp}
-            whileHover={{
-              y: -6,
-              scale: 1.015,
-            }}
-            transition={{ duration: 0.25 }}
-            className="group relative overflow-hidden rounded-3xl border border-stone-200 bg-white/80 backdrop-blur-xl p-7 lg:p-8 shadow-[0_10px_40px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.08)] transition-all duration-500"
-          >
+     {/* Problem Cards with Red BentoGrid styling */}
+<motion.div
+  className="grid sm:grid-cols-2 gap-5 lg:gap-7 text-left max-w-5xl mx-auto mt-16 lg:mt-20"
+  variants={staggerContainer}
+  initial="initial"
+  whileInView="animate"
+  viewport={{ once: true }}
+>
+  {[
+    {
+      title: "Low Conversion",
+      desc: "Visitors come, but don't take action",
+      icon: <TrendingDown className="size-6" />
+    },
+    {
+      title: "Poor User Journey",
+      desc: "No clear structure or customer flow",
+      icon: <MapPinOff className="size-6" />
+    },
+    {
+      title: "No Systems",
+      desc: "Operations depend on manual work",
+      icon: <Settings2 className="size-6" />
+    },
+    {
+      title: "Growth Bottlenecks",
+      desc: "Manual processes limit scalability",
+      icon: <Gauge className="size-6" />
+    },
+  ].map((item, i) => (
+    <motion.div
+      key={i}
+      variants={fadeInUp}
+      whileHover={{
+        y: -6,
+        scale: 1.015,
+      }}
+      transition={{ duration: 0.25 }}
+      className="group border-red-500/10 bg-background hover:border-red-500/30 relative flex h-full cursor-pointer flex-col justify-between overflow-hidden rounded-xl border px-6 pt-6 pb-10 shadow-md transition-all duration-500"
+    >
+      {/* Grid Pattern Background - Red tint */}
+      <div className="absolute top-0 -right-1/2 z-0 size-full cursor-pointer bg-[linear-gradient(to_right,#ff00001e_1px,transparent_1px),linear-gradient(to_bottom,#ff00001e_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] bg-[size:24px_24px]" />
 
-            {/* Hover Glow */}
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[radial-gradient(circle_at_top_right,rgba(0,0,0,0.04),transparent_45%)]" />
+      {/* Large Background Icon - Red */}
+      <div className="text-red-500/5 group-hover:text-red-500/10 absolute right-1 bottom-3 scale-[6] transition-all duration-700 group-hover:scale-[6.2]">
+        {item.icon}
+      </div>
 
-            {/* Icon */}
-            <div className="relative z-10 mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-stone-100 border border-stone-200">
-              <XCircle className="w-6 h-6 text-stone-700" />
-            </div>
+      {/* Content */}
+      <div className="relative z-10 flex h-full flex-col justify-between">
+        <div>
+          {/* Icon Circle - Red */}
+          <div className="bg-red-500/10 text-red-500 shadow-red-500/10 group-hover:bg-red-500/20 group-hover:shadow-red-500/20 mb-4 flex h-12 w-12 items-center justify-center rounded-full shadow transition-all duration-500">
+            {item.icon}
+          </div>
 
-            {/* Content */}
-            <div className="relative z-10 space-y-3">
-              <h4 className="text-xl font-semibold text-stone-900 clash-font">
-                {item.title}
-              </h4>
+          {/* Title */}
+          <h4 className="mb-2 text-xl font-semibold tracking-tight text-foreground">
+            {item.title}
+          </h4>
 
-              <p className="text-stone-600 leading-relaxed text-base sm:text-lg">
-                {item.desc}
-              </p>
-            </div>
+          {/* Description */}
+          <p className="text-muted-foreground text-sm">
+            {item.desc}
+          </p>
+        </div>
+      </div>
 
-            {/* Bottom Border Animation */}
-            <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-stone-900 transition-all duration-500 group-hover:w-full" />
-          </motion.div>
-        ))}
-      </motion.div>
+      {/* Bottom Gradient Bar - Red */}
+      <div className="from-red-500 to-red-500/30 absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r blur-2xl transition-all duration-500 group-hover:blur-lg" />
+    </motion.div>
+  ))}
+</motion.div>
 
       {/* Bottom Statement */}
       <motion.div
